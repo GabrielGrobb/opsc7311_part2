@@ -28,7 +28,8 @@
                 android:layout_width="174dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
-                app:srcCompat="@drawable/colossal" />
+                app:srcCompat="@drawable/colossal"
+                android:layout_marginRight="16dp"/>
 
             <ImageView
                 android:id="@+id/imgTracker"
@@ -46,8 +47,8 @@
             app:srcCompat="@drawable/time_tracker_icon" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="102dp"
+            android:layout_height="105dp"
             android:background="@drawable/circle"
             android:gravity="center"
             android:text="@string/login"
