@@ -12,4 +12,15 @@
     <string name="submit">Submit</string>
     <string name="surname">Surname...</string>
     <string name="user_name">Username...</string>
+    --Add Activity Page
+    <string name="add_activity">Add Activity</string>
+    <string name="add_activity_icon">Add Activity Icon?</string>
+    <string name="title">Title...</string>
+    <string name="client">Client...</string>
+    <string name="location">Location...</string>
+    <string name="category">Category...</string>
+    <string name="duration">Duration (Hours)</string>
+    <string name="start_date">Start Date...</string>
+    <string name="end_date">End Date...</string>
+    <string name="repeat_activity">Will this Activity be repeated daily?</string>
 </resources>
