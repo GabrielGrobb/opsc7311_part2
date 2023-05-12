@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">opsc7311_part2</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirmpassword">Confirm Password...</string>
+    <string name="donthaveacc">Dont have an account? Click here to register</string>
+    <string name="email">Email...</string>
+    <string name="firstName">Firstname...</string>
+    <string name="forgotpassword">Forgot Password?</string>
+    <string name="login">Login</string>
+    <string name="password">Password...</string>
+    <string name="register">Register</string>
+    <string name="submit">Submit</string>
+    <string name="surname">Surname...</string>
+    <string name="user_name">Username...</string>
 </resources>
