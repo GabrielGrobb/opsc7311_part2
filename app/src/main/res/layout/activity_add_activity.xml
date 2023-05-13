@@ -95,7 +95,6 @@
                 android:gravity="start"
                 android:textColor="@color/txt_color"
                 android:textStyle="italic" />
-
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -104,17 +103,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-
             android:hint="@string/location"
-            app:endIconMode="custom"
-            app:endIconScaleType="fitXY"
             android:textColorHint="@color/black"
             app:boxBackgroundColor="@color/default_background"
             app:boxCornerRadiusBottomEnd="20dp"
             app:boxCornerRadiusBottomStart="20dp"
             app:boxCornerRadiusTopEnd="20dp"
             app:boxCornerRadiusTopStart="20dp"
-            app:hintTextColor="@color/black">
+            app:hintTextColor="@color/black"
+            app:endIconMode="custom"
+            app:endIconDrawable="@drawable/add_location">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/txtLocation"
@@ -133,14 +131,15 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:hint="@string/category"
-            app:endIconScaleType="fitXY"
             android:textColorHint="@color/black"
             app:boxBackgroundColor="@color/default_background"
             app:boxCornerRadiusBottomEnd="20dp"
             app:boxCornerRadiusBottomStart="20dp"
             app:boxCornerRadiusTopEnd="20dp"
             app:boxCornerRadiusTopStart="20dp"
-            app:hintTextColor="@color/black">
+            app:hintTextColor="@color/black"
+            app:endIconMode="custom"
+            app:endIconDrawable="@drawable/drop_down">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/txtCategory"
@@ -185,13 +184,14 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:hint="@string/start_date"
-            app:endIconScaleType="fitXY"
             android:textColorHint="@color/black"
             app:boxBackgroundColor="@color/default_background"
             app:boxCornerRadiusBottomEnd="20dp"
             app:boxCornerRadiusBottomStart="20dp"
             app:boxCornerRadiusTopEnd="20dp"
             app:boxCornerRadiusTopStart="20dp"
+            app:endIconMode="custom"
+            app:endIconDrawable="@drawable/calendar"
             app:hintTextColor="@color/black">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -211,14 +211,16 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:hint="@string/end_date"
-            app:endIconScaleType="fitXY"
             android:textColorHint="@color/black"
             app:boxBackgroundColor="@color/default_background"
             app:boxCornerRadiusBottomEnd="20dp"
             app:boxCornerRadiusBottomStart="20dp"
             app:boxCornerRadiusTopEnd="20dp"
             app:boxCornerRadiusTopStart="20dp"
-            app:hintTextColor="@color/black">
+            app:endIconMode="custom"
+            app:endIconDrawable="@drawable/calendar"
+            app:hintTextColor="@color/black"
+            >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/txtEndDate"
@@ -260,7 +262,7 @@
             android:layout_height="48dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
-            android:background="@drawable/custome_button1"
+            android:background="@drawable/custom_button1"
             android:text="@string/add_activity"
             android:textAllCaps="false"
             android:textColor="#FFFBF6" />
