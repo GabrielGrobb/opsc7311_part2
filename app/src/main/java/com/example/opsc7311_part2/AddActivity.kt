@@ -1,12 +1,8 @@
 package com.example.opsc7311_part2
 
 //Add necessary references for view
-import android.icu.util.Calendar
 import android.os.Bundle
-import android.view.View
-import android.widget.CalendarView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.text.set
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
@@ -19,7 +15,9 @@ class AddActivity : AppCompatActivity() {
         //
         //Start Date for both text box and editable text
         val  tilStartDate: TextInputLayout = findViewById(R.id.til_StartDate)
-        val tilStartDate2: TextInputEditText = findViewById(R.id.txtStartDate)
+        val txtStartDate: TextInputEditText = findViewById(R.id.txtStartDate)
+
+
 
         //Manipulate the view
         //Adding event handlers to check when the end icon is clicked
