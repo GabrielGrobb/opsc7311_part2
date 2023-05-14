@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">opsc7311_part2</string>
+    <string name="app_name">Colossal Tracker</string>
     <string name="cancel">Cancel</string>
     <string name="confirmpassword">Confirm Password...</string>
     <string name="donthaveacc">Dont have an account? Click here to register</string>
@@ -23,4 +23,7 @@
     <string name="start_date">Start Date...</string>
     <string name="end_date">End Date...</string>
     <string name="repeat_activity">Will this Activity be repeated daily?</string>
+    --Add Category Page
+    <string name="add_category_icon">Add Category Icon?</string>
+    <string name="add_activity_header">Add Activity</string>
 </resources>
