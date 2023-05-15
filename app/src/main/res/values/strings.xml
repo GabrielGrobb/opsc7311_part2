@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">opsc7311_part2</string>
+    <string name="app_name">Colossal Tracker</string>
     <string name="cancel">Cancel</string>
     <string name="confirmpassword">Confirm Password...</string>
     <string name="donthaveacc">Dont have an account? Click here to register</string>
@@ -12,6 +12,21 @@
     <string name="submit">Submit</string>
     <string name="surname">Surname...</string>
     <string name="user_name">Username...</string>
+    --Add Home Page
     <string name="homepage_title">Home Page</string>
     <string name="homepage_categorytitle">Categories</string>
+    --Add Activity Page
+    <string name="add_activity">Add Activity</string>
+    <string name="add_activity_icon">Add Activity Icon?</string>
+    <string name="title">Title...</string>
+    <string name="client">Client...</string>
+    <string name="location">Location...</string>
+    <string name="category">Category...</string>
+    <string name="duration">Duration (Hours)</string>
+    <string name="start_date">Start Date...</string>
+    <string name="end_date">End Date...</string>
+    <string name="repeat_activity">Will this Activity be repeated daily?</string>
+    --Add Category Page
+    <string name="add_category_icon">Add Category Icon?</string>
+    <string name="add_activity_header">Add Activity</string>
 </resources>
