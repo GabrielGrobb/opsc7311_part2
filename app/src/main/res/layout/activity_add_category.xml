@@ -24,7 +24,7 @@
 
         <TextView
             android:id="@+id/Header"
-            android:text="@string/add_activity_header"
+            android:text="@string/add_category"
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
             android:gravity="end"
