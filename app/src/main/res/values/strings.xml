@@ -27,5 +27,8 @@
     --Add Category Page
     <string name="add_category_icon">Add Category Icon?</string>
     <string name="add_category">Add Category</string>
-
+    <string name="add_category_colour">Add Category Color</string>
+    <string name="category_name">Category Name...</string>
+    --Category Page
+    <string name="category_header">Category</string>
 </resources>
