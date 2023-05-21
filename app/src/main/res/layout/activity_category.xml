@@ -14,20 +14,21 @@
         android:layout_marginTop="20dp">
 
         <ImageView
+            android:id="@+id/MenuIcon"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            app:srcCompat="@drawable/close_icon"></ImageView>
+            app:srcCompat="@drawable/menu"></ImageView>
 
         <TextView
+            android:id="@+id/Header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
+            android:layout_marginLeft="60dp"
             android:text="@string/category_header"
             android:layout_weight="4"
             android:textSize="30dp"
             android:textStyle="italic|bold"
-            android:textAlignment="center"
             ></TextView>
 
     </LinearLayout>
@@ -40,17 +41,59 @@
         android:orientation="horizontal">
 
         <ImageView
+            android:id="@+id/IconPicture"
             android:layout_width="70dp"
             android:layout_height="70dp"
             app:srcCompat="@drawable/default_category"
             ></ImageView>
 
+        <TextView
+            android:id="@+id/CategoryName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Category Name"
+            android:textStyle="italic|bold"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="25dp"
+            ></TextView>
+
         <ImageView
+            android:id="@+id/SettingsIcon"
             android:layout_width="40dp"
             android:layout_height="40dp"
             app:srcCompat="@drawable/settings"
-
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="15dp"
             ></ImageView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="20dp"
+        android:padding="12dp">
+
+        <ProgressBar
+            android:id="@+id/MainProgress"
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:progress="25"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/start_date">
+
+        </TextView>
 
     </LinearLayout>
 
