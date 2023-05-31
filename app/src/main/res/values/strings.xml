@@ -25,8 +25,13 @@
     <string name="duration">Duration (Hours)</string>
     <string name="start_date">Start Date...</string>
     <string name="end_date">End Date...</string>
+    <string name="add_activity_header">Add Activity</string>
     <string name="repeat_activity">Will this Activity be repeated daily?</string>
     --Add Category Page
     <string name="add_category_icon">Add Category Icon?</string>
-    <string name="add_activity_header">Add Activity</string>
+    <string name="add_category">Add Category</string>
+    <string name="add_category_colour">Add Category Color</string>
+    <string name="category_name">Category Name...</string>
+    --Category Page
+    <string name="category_header">Category</string>
 </resources>

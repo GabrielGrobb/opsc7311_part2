@@ -1,69 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <RelativeLayout
-        android:layout_height="50dp"
-        android:layout_width="fill_parent"
-        android:id="@+id/headerNav"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/add_category"
+            android:layout_weight="1"
+            android:textSize="30dp"
+            android:textStyle="italic|bold"
+            ></TextView>
+
         <ImageView
-            android:id="@+id/til_BackButton"
-            android:layout_width="30dp"
-            android:layout_height="40dp"
-            android:layout_toRightOf="@id/Header"
-            android:layout_gravity="end"
-            android:layout_marginLeft="160dp"
-            android:layout_centerVertical="true"
-            app:srcCompat="@drawable/close_icon"
-            ></ImageView>
+            android:layout_width="117dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/close_icon"></ImageView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        >
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="96dp"
+            android:layout_height="94dp"
+            app:srcCompat="@drawable/default_profile"
+            android:layout_weight="1"></ImageView>
 
         <TextView
-            android:id="@+id/Header"
-            android:text="@string/add_activity_header"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="20dp"
-            android:gravity="end"
+            android:id="@+id/usernameTextView"
+            android:text="@string/add_category_icon"
+            android:layout_toRightOf="@id/imageView"
             android:layout_height="wrap_content"
             android:textStyle="italic|bold"
             android:layout_width="wrap_content"
-            android:textSize="30dp"
-            >
+            android:layout_weight="4"
+            android:layout_marginTop="35dp">
         </TextView>
 
-    </RelativeLayout>
+    </LinearLayout>
 
-    <RelativeLayout
-        android:layout_height="wrap_content"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_Title"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="match_parent"
-        android:id="@+id/headerLinearLay"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:padding="10dp"
+        android:textColorHint="@color/black"
+        app:boxBackgroundColor="@color/default_background"
+        app:boxCornerRadiusBottomEnd="20dp"
+        app:boxCornerRadiusBottomStart="20dp"
+        app:boxCornerRadiusTopEnd="20dp"
+        app:boxCornerRadiusTopStart="20dp"
+        app:hintTextColor="@color/black">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txtTitle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="start"
+            android:hint="@string/category_name"
+            android:inputType="text"
+            android:textColor="@color/txt_color"
+            android:textColorHighlight="@color/txt_color"
+            android:textColorHint="@color/txt_color"
+            android:textStyle="italic" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="100dp">
+        android:layout_marginTop="40dp"
+        >
 
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="96dp"
-                android:layout_height="94dp"
-                android:layout_gravity="left"
-                app:srcCompat="@drawable/default_profile"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/color_picker"></TextView>
 
-                <TextView
-                    android:id="@+id/usernameTextView"
-                    android:text="@string/add_category_icon"
-                    android:paddingLeft="4dp"
-                    android:layout_toRightOf="@id/imageView"
-                    android:layout_centerVertical="true"
-                    android:paddingTop="20dp"
-                    android:layout_marginLeft="20dp"
-                    android:gravity="end"
-                    android:layout_height="wrap_content"
-                    android:textStyle="italic|bold"
-                    android:layout_width="wrap_content"></TextView>
-    </RelativeLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/add_category_colour"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="20dp"
+            android:textStyle="italic|bold">
 
+        </TextView>
 
-</RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:padding="10dp">
+
+        <Button
+            android:id="@+id/btnAddCategory"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/custom_button1"
+            android:text="@string/add_category"
+            android:textAllCaps="false"
+            android:textColor="#FFFBF6" />
+
+    </LinearLayout>
+
+</LinearLayout>
