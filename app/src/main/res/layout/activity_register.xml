@@ -121,6 +121,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                 android:layout_width="178dp"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="16dp"
                 android:layout_marginBottom="15dp"
                 android:textColorHint="@color/black"
                 app:boxBackgroundColor="@color/default_background"
@@ -128,8 +129,7 @@
                 app:boxCornerRadiusBottomStart="20dp"
                 app:boxCornerRadiusTopEnd="20dp"
                 app:boxCornerRadiusTopStart="20dp"
-                app:hintTextColor="@color/black"
-                android:layout_marginRight="16dp">
+                app:hintTextColor="@color/black">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/txtFirstname"
@@ -150,6 +150,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                 android:layout_width="178dp"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
                 android:layout_marginBottom="15dp"
                 android:textColorHint="@color/black"
                 app:boxBackgroundColor="@color/default_background"
@@ -157,8 +158,7 @@
                 app:boxCornerRadiusBottomStart="20dp"
                 app:boxCornerRadiusTopEnd="20dp"
                 app:boxCornerRadiusTopStart="20dp"
-                app:hintTextColor="@color/black"
-                android:layout_marginLeft="16dp">
+                app:hintTextColor="@color/black">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/txtSurname"

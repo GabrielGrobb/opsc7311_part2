@@ -34,4 +34,12 @@
     <string name="category_name">Category Name...</string>
     --Category Page
     <string name="category_header">Category</string>
+    -- Capture Task Page
+    <string name="activity_current_date">Current Date:</string>
+    <string-array name="timeformat_array">
+        <item>Hrs</item>
+        <item>Min</item>
+        <item>Sec</item>
+    </string-array>
+
 </resources>
