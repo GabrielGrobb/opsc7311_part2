@@ -47,4 +47,6 @@
         <item>Min</item>
         <item>Sec</item>
     </string-array>
+    <string name="navigation_drawer_open">Open Navigation</string>
+    <string name="navigation_drawer_close">Close Navigation</string>>
 </resources>
