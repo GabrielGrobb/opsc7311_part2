@@ -42,5 +42,8 @@
         <item>Min</item>
         <item>Sec</item>
     </string-array>
+    -- Testing burger menu
+    <string name="navigation_drawer_open">Open naviagtion drawer</string>
+    <string name="navigation_drawer_close">Close naviagtion drawer</string>>
 
 </resources>
