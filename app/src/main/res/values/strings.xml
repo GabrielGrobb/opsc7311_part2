@@ -12,38 +12,39 @@
     <string name="submit">Submit</string>
     <string name="surname">Surname...</string>
     <string name="user_name">Username...</string>
+
     --Add Home Page
     <string name="homepage_title">Home Page</string>
     <string name="homepage_categorytitle">Categories</string>
+
     --Add Activity Page
     <string name="add_activity">Add Activity</string>
     <string name="add_activity_icon">Add Activity Icon?</string>
-    <string name="title">Title...</string>
-    <string name="client">Client...</string>
-    <string name="location">Location...</string>
-    <string name="category">Category...</string>
+    <string name="title">Title</string>
+    <string name="client">Client</string>
+    <string name="location">Location</string>
+    <string name="category">Category</string>
     <string name="duration">Duration (Hours)</string>
-    <string name="start_date">Start Date...</string>
-    <string name="end_date">End Date...</string>
+    <string name="start_date">Start Date</string>
+    <string name="end_date">End Date</string>
     <string name="add_activity_header">Add Activity</string>
     <string name="repeat_activity">Will this Activity be repeated daily?</string>
+
     --Add Category Page
     <string name="add_category_icon">Add Category Icon?</string>
     <string name="add_category">Add Category</string>
     <string name="add_category_colour">Add Category Color</string>
     <string name="category_name">Category Name...</string>
+
     --Category Page
     <string name="category_header">Category</string>
+    <string name="TotalHoursWorked">Total Hours Worked:</string>
+
     -- Capture Task Page
     <string name="activity_current_date">Current Date:</string>
-    <string name="capture_text">CAPTURE</string>>
     <string-array name="timeformat_array">
         <item>Hrs</item>
         <item>Min</item>
         <item>Sec</item>
     </string-array>
-    -- Testing burger menu
-    <string name="navigation_drawer_open">Open naviagtion drawer</string>
-    <string name="navigation_drawer_close">Close naviagtion drawer</string>>
-
 </resources>
