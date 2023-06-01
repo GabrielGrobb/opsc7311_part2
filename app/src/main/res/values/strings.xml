@@ -42,6 +42,7 @@
 
     -- Capture Task Page
     <string name="activity_current_date">Current Date:</string>
+    <string name="capture_text">CAPTURE</string>
     <string-array name="timeformat_array">
         <item>Hrs</item>
         <item>Min</item>
