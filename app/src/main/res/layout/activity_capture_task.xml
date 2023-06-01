@@ -1,32 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CaptureTask">
+    android:id="@+id/drawer_layout"
+    tools:context=".CaptureTask"
+    android:orientation="vertical">
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        app:headerLayout="@layout/header"
+        app:menu="@menu/main_menu" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
-
-
-        <!--<androidx.appcompat.widget.Toolbar
-            android:id="@+id/nav_toolbar"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
-            android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme" />-->
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/nav_toolbar"
-            android:layout_width="56dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#00008577"
+            android:background="?attr/colorPrimary"
             android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:navigationIcon="@drawable/menu" />
 
         <LinearLayout
@@ -59,7 +62,6 @@
                 android:layout_marginLeft="50dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginRight="50dp"
-
                 app:srcCompat="@drawable/settings" />
 
         </LinearLayout>
@@ -70,12 +72,12 @@
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginBottom="16dp"
-            android:progressDrawable="@drawable/custom_progress_bg"
-            android:progress="25"/>
+            android:progress="25"
+            android:progressDrawable="@drawable/custom_progress_bg" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -104,7 +106,6 @@
                 android:textSize="20dp"
                 android:textStyle="bold" />
 
-
         </LinearLayout>
 
         <LinearLayout
@@ -125,9 +126,8 @@
 
             <Spinner
                 android:id="@+id/dropDownTimeFormat"
-                android:layout_width="150dp"
-                android:layout_height="match_parent" />
-
+                android:layout_width="136dp"
+                android:layout_height="69dp" />
 
         </LinearLayout>
 
@@ -135,18 +135,18 @@
             android:id="@+id/txtTimerCounter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="60dp"
-            android:text="00:00:00"
-            android:textColor="@color/black"
             android:layout_gravity="center"
             android:layout_marginTop="32dp"
-            android:layout_marginBottom="32dp"/>
+            android:layout_marginBottom="32dp"
+            android:text="00:00:00"
+            android:textColor="@color/black"
+            android:textSize="60dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="16dp">
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal">
 
             <ImageButton
                 android:id="@+id/btnPlay"
@@ -166,23 +166,18 @@
                 android:background="@color/white"
                 app:srcCompat="@drawable/baseline_stop_circle_24" />
 
-
         </LinearLayout>
-
-
 
         <Button
             android:id="@+id/btnCapture"
             android:layout_width="165dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:textSize="18dp"
             android:layout_marginTop="32dp"
-            android:text="@string/capture_text" />
-
-
+            android:text="@string/capture_text"
+            android:textSize="18dp" />
 
 
     </LinearLayout>
 
-</RelativeLayout>
+</androidx.drawerlayout.widget.DrawerLayout>
