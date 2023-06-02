@@ -6,16 +6,26 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.ImageButton
 import android.widget.Spinner
+import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import com.example.opsc7311_part2.databinding.ActivityCaptureTaskBinding
 import com.google.android.material.navigation.NavigationView
+import java.util.*
 
 class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.OnNavigationItemSelectedListener
 {
     private lateinit var binding: ActivityCaptureTaskBinding
 
+    private lateinit var timerText: TextView
+    private lateinit var stopStartButton: ImageButton
+    private lateinit var timer: Timer
+    private lateinit var timerTask: TimerTask
+    private var time = 0.0
+    private var timerStarted = false
     //............................................................................................//
 
     override fun onCreate(savedInstanceState: Bundle?)
@@ -39,6 +49,79 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
         binding.navView.bringToFront()
         binding.navView.setNavigationItemSelectedListener(this)
 
+        populateDropDowns()
+
+        timerText = findViewById(R.id.txtTimerCounter)
+        stopStartButton = findViewById(R.id.btnPlay)
+        stopStartButton.setOnClickListener{startStopTapped()}
+
+        timer = Timer()
+
+    }
+
+    //............................................................................................//
+
+    private fun startStopTapped()
+    {
+        if (!timerStarted)
+        {
+            timerStarted = true
+            setButtonUI(R.drawable.pause_circle)
+            startTimer()
+        }
+        else
+        {
+            timerStarted = false
+            setButtonUI(R.drawable.baseline_play_circle_24)
+            timerTask.cancel()
+        }
+    }
+
+    //............................................................................................//
+
+    private fun setButtonUI(drawableResId: Int) {
+        stopStartButton.setImageResource(drawableResId)
+    }
+
+    //............................................................................................//
+
+    private fun startTimer()
+    {
+        timerTask = object : TimerTask()
+        {
+            override fun run()
+            {
+                runOnUiThread {
+                    time++
+                    timerText.text = getTimerText()
+                }
+            }
+        }
+        timer.scheduleAtFixedRate(timerTask, 0, 1000)
+    }
+
+    //............................................................................................//
+
+    private fun getTimerText(): String {
+        val rounded = time.toInt()
+
+        val seconds = ((rounded % 86400) % 3600) % 60
+        val minutes = ((rounded % 86400) % 3600) / 60
+        val hours = (rounded % 86400) / 3600
+
+        return formatTime(seconds, minutes, hours)
+    }
+
+    //............................................................................................//
+
+    private fun formatTime(seconds: Int, minutes: Int, hours: Int): String {
+        return String.format("%02d", hours) + " : " + String.format("%02d", minutes) + " : " + String.format("%02d", seconds)
+    }
+
+    //............................................................................................//
+
+    fun populateDropDowns()
+    {
         val spinner: Spinner = findViewById(R.id.dropDownTimeFormat)
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter.createFromResource(
@@ -51,6 +134,7 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
             // Apply the adapter to the spinner
             spinner.adapter = adapter
         }
+
     }
 
     //............................................................................................//

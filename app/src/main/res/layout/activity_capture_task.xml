@@ -34,8 +34,27 @@
 
         <LinearLayout
             android:layout_width="match_parent"
+            android:layout_height="49dp"
+            android:layout_marginTop="0dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/Actvity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="25dp"
+                android:layout_marginTop="16dp"
+                android:layout_weight="4"
+                android:gravity="center"
+                android:text="@string/activity"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal">
 
             <ImageView
@@ -155,7 +174,8 @@
                 android:layout_gravity="left"
                 android:layout_marginLeft="20dp"
                 android:background="@color/white"
-                app:srcCompat="@drawable/baseline_play_circle_24" />
+                app:srcCompat="@drawable/baseline_play_circle_24"
+                />
 
             <ImageButton
                 android:id="@+id/btnStop"
@@ -167,16 +187,6 @@
                 app:srcCompat="@drawable/baseline_stop_circle_24" />
 
         </LinearLayout>
-
-        <Button
-            android:id="@+id/btnCapture"
-            android:layout_width="165dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="32dp"
-            android:text="@string/capture_text"
-            android:textSize="18dp" />
-
 
     </LinearLayout>
 

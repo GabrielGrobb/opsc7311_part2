@@ -41,6 +41,7 @@
     <string name="TotalHoursWorked">Total Hours Worked:</string>
 
     -- Capture Task Page
+    <string name="activity">Activity</string>
     <string name="activity_current_date">Current Date:</string>
     <string name="capture_text">CAPTURE</string>
     <string-array name="timeformat_array">
@@ -52,6 +53,7 @@
     <string name="navigation_drawer_close">Close Navigation</string>>
 
     -- Account Settings
+    <string name="account_settings_heading">Account Settings</string>
     <string name="edit_profile_icon">Edit Profile Icon?</string>
     <string name="profile_icon">Profile Icon</string>
     <string name="min_hrs">Minimum hrs/day</string>
