@@ -12,6 +12,15 @@
         android:theme="@style/Theme.Opsc7311_part2"
         tools:targetApi="31">
         <activity
+            android:name=".HomePage"
+            android:exported="false" />
+        <activity
+            android:name=".Category"
+            android:exported="false" />
+        <activity
+            android:name=".AddCategory"
+            android:exported="false" />
+        <activity
             android:name=".AchievementActivity"
             android:exported="false" />
         <activity
