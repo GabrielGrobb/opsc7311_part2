@@ -75,7 +75,7 @@ class AccountSettings : AppCompatActivity(), View.OnClickListener, NavigationVie
         when(item.itemId)
         {
             R.id.nav_home -> {
-                val intent = Intent(applicationContext, HomePage::class.java)
+                val intent = Intent(applicationContext, HomePageTest::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)
             }

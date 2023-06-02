@@ -18,7 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            app:srcCompat="@drawable/menu"></ImageView>
+            app:srcCompat="@drawable/menu" />
 
         <TextView
             android:id="@+id/Header"
@@ -28,8 +28,7 @@
             android:text="@string/category_header"
             android:layout_weight="4"
             android:textSize="30dp"
-            android:textStyle="italic|bold"
-            ></TextView>
+            android:textStyle="italic|bold" />
 
     </LinearLayout>
 
@@ -44,8 +43,7 @@
             android:id="@+id/IconPicture"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            app:srcCompat="@drawable/default_category"
-            ></ImageView>
+            app:srcCompat="@drawable/default_category" />
 
         <TextView
             android:id="@+id/CategoryName"
@@ -54,8 +52,7 @@
             android:text="Category Name"
             android:textStyle="italic|bold"
             android:layout_marginLeft="50dp"
-            android:layout_marginTop="25dp"
-            ></TextView>
+            android:layout_marginTop="25dp" />
 
         <ImageView
             android:id="@+id/SettingsIcon"
@@ -63,8 +60,7 @@
             android:layout_height="40dp"
             app:srcCompat="@drawable/settings"
             android:layout_marginLeft="100dp"
-            android:layout_marginTop="15dp"
-            ></ImageView>
+            android:layout_marginTop="15dp" />
 
     </LinearLayout>
 

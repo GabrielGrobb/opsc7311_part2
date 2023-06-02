@@ -159,6 +159,12 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
     {
 
         when(item.itemId) {
+
+            R.id.nav_account -> {
+                val intent = Intent(applicationContext, AccountSettings::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
+            }
             R.id.nav_logout -> {
                 val intent = Intent(applicationContext, LoginActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)

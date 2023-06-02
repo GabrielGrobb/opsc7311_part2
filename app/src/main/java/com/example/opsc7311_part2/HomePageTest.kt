@@ -5,29 +5,22 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import android.widget.Button
-import android.widget.FrameLayout
-import android.widget.ImageButton
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
-import com.example.opsc7311_part2.databinding.ActivityCaptureTaskBinding
 import com.example.opsc7311_part2.databinding.ActivityHomePageBinding
+import com.example.opsc7311_part2.databinding.ActivityHomePageTestBinding
+import com.getbase.floatingactionbutton.FloatingActionButton
+import com.getbase.floatingactionbutton.FloatingActionsMenu
 import com.google.android.material.navigation.NavigationView
 
-class HomePage : AppCompatActivity(), View.OnClickListener, NavigationView.OnNavigationItemSelectedListener
+class HomePageTest : AppCompatActivity(), View.OnClickListener, NavigationView.OnNavigationItemSelectedListener
 {
-    private lateinit var binding: ActivityHomePageBinding
-    private lateinit var ivAddActivity: ImageButton
-    private lateinit var addActivityButton: Button
-    private lateinit var addCategoryButton: Button
+    private lateinit var binding: ActivityHomePageTestBinding
 
-    private var areButtonsVisible = false
-
-    //private var isOverlayVisible = false
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
-        binding = ActivityHomePageBinding.inflate(layoutInflater)
+        binding = ActivityHomePageTestBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         setSupportActionBar(binding.navToolbar)
@@ -39,12 +32,43 @@ class HomePage : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
             R.string.navigation_drawer_open,
             R.string.navigation_drawer_close)
 
+        binding.drawerLayout.addDrawerListener(toggleOnOff)
+        toggleOnOff.syncState()
 
+        binding.navView.bringToFront()
+        binding.navView.setNavigationItemSelectedListener(this)
 
+        navButton()
 
     }
-
     //............................................................................................//
+
+    private fun navButton()
+    {
+        val fabMenu: FloatingActionsMenu = findViewById(R.id.fab_menu)
+        val fabCategory: FloatingActionButton = findViewById(R.id.fab_category)
+        val fabActivity: FloatingActionButton = findViewById(R.id.fab_activity)
+
+        fabCategory.setOnClickListener {
+            // Perform action when the "Add Category" button is clicked
+            // Navigate to the desired page for adding a category
+            val intent = Intent(this, AddCategory::class.java)
+            startActivity(intent)
+
+            // Close the floating action menu after navigation
+            fabMenu.collapse()
+        }
+
+        fabActivity.setOnClickListener {
+            // Perform action when the "Add Activity" button is clicked
+            // Navigate to the desired page for adding an activity
+            val intent = Intent(this, AddActivity::class.java)
+            startActivity(intent)
+
+            // Close the floating action menu after navigation
+            fabMenu.collapse()
+        }
+    }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean
     {
@@ -93,7 +117,4 @@ class HomePage : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
     }
 
     //............................................................................................//
-
-
 }
-//.........................................EndOfFile..............................................//
