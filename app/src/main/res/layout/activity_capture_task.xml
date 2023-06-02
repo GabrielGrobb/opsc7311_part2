@@ -95,7 +95,8 @@
             android:layout_marginTop="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginBottom="16dp"
-            android:progress="25"
+            android:max="100"
+            android:progress="0"
             android:progressDrawable="@drawable/custom_progress_bg" />
 
         <LinearLayout
@@ -133,13 +134,13 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/txtvDuration"
+                android:id="@+id/txtDuration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:paddingLeft="20dp"
                 android:paddingTop="20dp"
-                android:text="2 Hours"
+                android:text="@string/max_time"
                 android:textSize="20dp"
                 android:textStyle="bold" />
 

@@ -5,11 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.Spinner
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import com.example.opsc7311_part2.databinding.ActivityCaptureTaskBinding
@@ -25,6 +21,12 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
     private lateinit var timer: Timer
     private lateinit var timerTask: TimerTask
     private var time = 0.0
+    private lateinit var progressBar: ProgressBar
+    private lateinit var progressionBar: View
+    private lateinit var maxTimeTextView: TextView
+    private val maxProgress = 100
+    private var currentProgress = 0
+    private var maxTime = 240.0
     private var timerStarted = false
     //............................................................................................//
 
@@ -56,6 +58,11 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
         stopStartButton.setOnClickListener{startStopTapped()}
 
         timer = Timer()
+
+        progressBar = findViewById(R.id.progressBar)
+
+        maxTimeTextView = findViewById(R.id.txtDuration)
+        maxTimeTextView.text = getString(R.string.max_time, maxTime)
 
     }
 
@@ -94,13 +101,22 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
                 runOnUiThread {
                     time++
                     timerText.text = getTimerText()
+                    updateProgressBar()
                 }
             }
         }
-        timer.scheduleAtFixedRate(timerTask, 0, 1000)
+
+        // Sped up the timer counter to see if the progress bar progresses.
+        // remember to change period: 1000
+        timer.scheduleAtFixedRate(timerTask, 0, 10)
     }
 
     //............................................................................................//
+
+    private fun updateProgressBar() {
+        currentProgress = (((time/60) / maxTime) * maxProgress).toInt()
+        progressBar.progress = currentProgress
+    }
 
     private fun getTimerText(): String {
         val rounded = time.toInt()
@@ -120,7 +136,7 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
 
     //............................................................................................//
 
-    fun populateDropDowns()
+    private fun populateDropDowns()
     {
         val spinner: Spinner = findViewById(R.id.dropDownTimeFormat)
         // Create an ArrayAdapter using the string array and a default spinner layout
