@@ -50,4 +50,41 @@
     </string-array>
     <string name="navigation_drawer_open">Open Navigation</string>
     <string name="navigation_drawer_close">Close Navigation</string>>
+
+    -- Account Settings
+    <string name="edit_profile_icon">Edit Profile Icon?</string>
+    <string name="profile_icon">Profile Icon</string>
+    <string name="min_hrs">Minimum hrs/day</string>
+    <string name="max_hrs">Maximum hrs/day</string>
+    <string-array name="min_time_array">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+    </string-array>
+    <string-array name="max_time_array">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+    </string-array>
+    <string name="profile_email">Email..</string>
+    <string name="profile_username">Username..</string>
+    <string name="profile_first_name">Firstname..</string>
+    <string name="profile_surname">Surname..</string>
+    <string name="profile_password">Password</string>
+
+
 </resources>
