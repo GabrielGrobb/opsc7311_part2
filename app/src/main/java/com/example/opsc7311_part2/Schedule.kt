@@ -1,13 +1,23 @@
 package com.example.opsc7311_part2
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.TextView
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.core.view.GravityCompat
+import com.example.opsc7311_part2.databinding.ActivityAccountSettingsBinding
+import com.example.opsc7311_part2.databinding.ActivityScheduleBinding
+import com.google.android.material.navigation.NavigationView
 
-class Schedule : AppCompatActivity() {
+class Schedule : AppCompatActivity(), View.OnClickListener, NavigationView.OnNavigationItemSelectedListener
+{
+    private lateinit var binding: ActivityScheduleBinding
+
     private lateinit var menuButton: ImageView
     private lateinit var schedulePageTitle: TextView
     private lateinit var currentDate: TextView
@@ -15,23 +25,94 @@ class Schedule : AppCompatActivity() {
     private lateinit var spinnerSchedule: Spinner
     private lateinit var dateToday: TextView
     private lateinit var dateTomorrow: TextView
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?)
+    {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_schedule)
-        menuButton = findViewById(R.id.IV_menubutton)
-        schedulePageTitle = findViewById(R.id.txt_SchedulePageTitle)
+        binding = ActivityScheduleBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        setSupportActionBar(binding.navToolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+
+        var toggleOnOff = ActionBarDrawerToggle(this,
+            binding.drawerLayout, binding.navToolbar,
+            R.string.navigation_drawer_open,
+            R.string.navigation_drawer_close)
+
+        binding.drawerLayout.addDrawerListener(toggleOnOff)
+        toggleOnOff.syncState()
+
+        binding.navView.bringToFront()
+        binding.navView.setNavigationItemSelectedListener(this)
+
         currentDate = findViewById(R.id.CurrentDate)
         completedTasks = findViewById(R.id.txtCompletedTasks)
         spinnerSchedule = findViewById(R.id.spinnerSchedule)
-        dateToday = findViewById(R.id.DateToday)
-        dateTomorrow = findViewById(R.id.DateTomorrow)
 
-        // Set click listener for the menu button
-        menuButton.setOnClickListener {
-            // Handle menu button click
-        }
-
-        // TODO: Add code for handling other UI elements and implementing functionality
 
     }
+
+    //............................................................................................//
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean
+    {
+
+        when(item.itemId)
+        {
+            R.id.nav_home -> {
+                val intent = Intent(applicationContext, HomePageTest::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
+            }
+
+            R.id.nav_achievements -> {
+                val intent = Intent(applicationContext, AchievementActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
+
+            }
+
+            R.id.nav_account -> {
+                val intent = Intent(applicationContext, AccountSettings::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
+
+            }
+
+            R.id.nav_logout -> {
+                val intent = Intent(applicationContext, LoginActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
+            }
+        }
+        binding.drawerLayout.closeDrawer(GravityCompat.START)
+        // return true marks the item as selected
+        return true
+    }
+
+    //............................................................................................//
+
+    override fun onBackPressed()
+    {
+        //if the drawer is open, close it
+        if(binding.drawerLayout.isDrawerOpen(GravityCompat.START))
+        {
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+        }
+        else
+        {
+            //otherwise, let the super class handle it
+            super.onBackPressed()
+        }
+    }
+
+    //............................................................................................//
+
+    override fun onClick(v: View?)
+    {
+        /*TODO("Not yet implemented")*/
+    }
+
+    //............................................................................................//
 }

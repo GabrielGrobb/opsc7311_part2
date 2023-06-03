@@ -18,6 +18,9 @@
             android:name=".AccountSettings"
             android:exported="false" />
         <activity
+            android:name=".Schedule"
+            android:exported="false" />
+        <activity
             android:name=".custom_homepage_icon"
             android:exported="false" />
         <activity
