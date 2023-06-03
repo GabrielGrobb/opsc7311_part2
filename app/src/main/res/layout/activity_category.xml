@@ -22,11 +22,11 @@
 
         <TextView
             android:id="@+id/Header"
-            android:layout_width="wrap_content"
+            android:layout_width="270dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="60dp"
-            android:text="@string/category_header"
             android:layout_weight="4"
+            android:text="@string/category_header"
             android:textSize="30dp"
             android:textStyle="italic|bold" />
 
@@ -47,12 +47,12 @@
 
         <TextView
             android:id="@+id/CategoryName"
-            android:layout_width="wrap_content"
+            android:layout_width="131dp"
             android:layout_height="wrap_content"
-            android:text="Category Name"
-            android:textStyle="italic|bold"
             android:layout_marginLeft="50dp"
-            android:layout_marginTop="25dp" />
+            android:layout_marginTop="25dp"
+            android:text="Category Name"
+            android:textStyle="italic|bold" />
 
         <ImageView
             android:id="@+id/SettingsIcon"

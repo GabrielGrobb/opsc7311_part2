@@ -5,9 +5,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
-import com.example.opsc7311_part2.databinding.ActivityHomePageBinding
 import com.example.opsc7311_part2.databinding.ActivityHomePageTestBinding
 import com.getbase.floatingactionbutton.FloatingActionButton
 import com.getbase.floatingactionbutton.FloatingActionsMenu
@@ -16,7 +17,7 @@ import com.google.android.material.navigation.NavigationView
 class HomePageTest : AppCompatActivity(), View.OnClickListener, NavigationView.OnNavigationItemSelectedListener
 {
     private lateinit var binding: ActivityHomePageTestBinding
-
+    /*var category = CategoryObject()*/
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
@@ -40,6 +41,17 @@ class HomePageTest : AppCompatActivity(), View.OnClickListener, NavigationView.O
 
         navButton()
 
+        val displayView = findViewById<LinearLayout>(R.id.AddNewCategory)
+        val imageResource = resources.getIdentifier("home_icon", "drawable", packageName)
+        val customView = custom_homepage_icon(this)
+
+        customView.setCatName("College")
+        customView.setIcon(imageResource)
+        displayView.addView(customView)
+
+        binding.AddNewCategory.setOnClickListener(this)
+
+        ToolBox.categoryName = "College"
     }
     //............................................................................................//
 
@@ -120,7 +132,7 @@ class HomePageTest : AppCompatActivity(), View.OnClickListener, NavigationView.O
 
     override fun onClick(v: View?)
     {
-        /*TODO("Not yet implemented")*/
+
     }
 
     //............................................................................................//
