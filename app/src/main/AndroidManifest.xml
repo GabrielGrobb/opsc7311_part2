@@ -18,7 +18,7 @@
             android:name=".AccountSettings"
             android:exported="false" />
         <activity
-            android:name=".HomePage"
+            android:name=".custom_homepage_icon"
             android:exported="false" />
         <activity
             android:name=".Category"
