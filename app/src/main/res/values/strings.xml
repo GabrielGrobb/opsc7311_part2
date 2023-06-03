@@ -35,6 +35,7 @@
     <string name="add_category">Add Category</string>
     <string name="add_category_colour">Add Category Color</string>
     <string name="category_name">Category Name...</string>
+    <string name="pick_start_date">Start Date</string>
 
     --Category Page
     <string name="category_header">Category</string>
