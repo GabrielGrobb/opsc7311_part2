@@ -75,6 +75,13 @@ class HomePageTest : AppCompatActivity(), View.OnClickListener, NavigationView.O
 
         when(item.itemId)
         {
+            R.id.nav_schedule -> {
+                val intent = Intent(applicationContext, Schedule::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
+
+            }
+
             R.id.nav_account -> {
                 val intent = Intent(applicationContext, AccountSettings::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)

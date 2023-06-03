@@ -4,16 +4,25 @@ package com.example.opsc7311_part2
 import android.os.Bundle
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import com.example.opsc7311_part2.databinding.ActivityAddActivityBinding
+import com.example.opsc7311_part2.databinding.ActivityAddCategoryBinding
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
 class AddActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityAddActivityBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add_activity)
+        binding = ActivityAddActivityBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        binding.btnClose.setOnClickListener {
+            finish()
+        }
 
         //Views
-        val backButton: ImageView = findViewById(R.id.til_BackButton)
         val tilLocation: TextInputLayout = findViewById(R.id.til_Location)
         val txtLocation: TextInputEditText = findViewById(R.id.txtLocation)
         val tilCategory: TextInputLayout = findViewById(R.id.til_Category)
@@ -30,9 +39,6 @@ class AddActivity : AppCompatActivity() {
         }
 
         //Listeners
-        backButton.setOnClickListener(){
-
-        }
 
         tilLocation.setEndIconOnClickListener(){
 

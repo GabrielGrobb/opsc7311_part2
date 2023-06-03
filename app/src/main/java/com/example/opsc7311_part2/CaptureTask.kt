@@ -51,6 +51,8 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
         binding.navView.bringToFront()
         binding.navView.setNavigationItemSelectedListener(this)
 
+
+
         populateDropDowns()
 
         timerText = findViewById(R.id.txtTimerCounter)
@@ -131,7 +133,9 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
     //............................................................................................//
 
     private fun formatTime(seconds: Int, minutes: Int, hours: Int): String {
-        return String.format("%02d", hours) + " : " + String.format("%02d", minutes) + " : " + String.format("%02d", seconds)
+        return String.format("%02d", hours) + " : " +
+                String.format("%02d", minutes) + " : " +
+                String.format("%02d", seconds)
     }
 
     //............................................................................................//
@@ -159,6 +163,12 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
     {
 
         when(item.itemId) {
+
+            R.id.nav_home -> {
+                val intent = Intent(applicationContext, HomePageTest::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
+            }
 
             R.id.nav_account -> {
                 val intent = Intent(applicationContext, AccountSettings::class.java)

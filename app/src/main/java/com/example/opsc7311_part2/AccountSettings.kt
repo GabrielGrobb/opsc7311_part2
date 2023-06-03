@@ -80,6 +80,13 @@ class AccountSettings : AppCompatActivity(), View.OnClickListener, NavigationVie
                 startActivity(intent)
             }
 
+            R.id.nav_schedule -> {
+                val intent = Intent(applicationContext, Schedule::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
+
+            }
+
             R.id.nav_logout -> {
                 val intent = Intent(applicationContext, LoginActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
