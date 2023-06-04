@@ -36,7 +36,7 @@ class LoginActivity : AppCompatActivity() {
             if(bool)
             {
                 // (intent) Allows you to navigate from one activity to another.
-                val intent = Intent(this,CaptureTask::class.java)
+                val intent = Intent(this,HomePageTest::class.java)
                 startActivity(intent)
             }
             else{

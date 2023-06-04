@@ -175,15 +175,16 @@
                     app:endIconMode="custom"
                     app:hintTextColor="@color/black">
 
-                    <com.google.android.material.textfield.TextInputEditText
+                    <AutoCompleteTextView
                         android:id="@+id/txtCategory"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="start"
+
                         android:textColor="@color/txt_color"
                         android:textStyle="italic" />
 
                 </com.google.android.material.textfield.TextInputLayout>
+
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/til_Duration"
@@ -289,7 +290,7 @@
                 </LinearLayout>
 
                 <Button
-                    android:id="@+id/btnLogin"
+                    android:id="@+id/btnAddActivity"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:layout_marginTop="10dp"

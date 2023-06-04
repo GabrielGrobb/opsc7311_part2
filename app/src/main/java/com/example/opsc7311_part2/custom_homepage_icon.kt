@@ -22,11 +22,10 @@ class custom_homepage_icon @JvmOverloads constructor(
             relContainer.setOnClickListener {
                 // Handle the click event for the RelativeLayout here
                 // You can perform any actions you want when the RelativeLayout is clicked
-                //Toast.makeText(context, "RelativeLayout clicked!", Toast.LENGTH_SHORT).show()
 
                 val intent = Intent(context, Category::class.java)
                 intent.putExtra("categoryName", categoryName)
-                intent.putExtra("imageResource", imageResource)
+                intent.putExtra("imageIcon",imageResource)
                 context.startActivity(intent)
 
             }
@@ -41,13 +40,15 @@ class custom_homepage_icon @JvmOverloads constructor(
 
             img.setImageResource(imgResource)
 
+            imageResource = imgResource
+
         }
 
         fun setCatName(name: String)
         {
             val catName = findViewById<TextView>(R.id.categoryName)
-
             catName.text = name
+            categoryName = name
 
         }
 

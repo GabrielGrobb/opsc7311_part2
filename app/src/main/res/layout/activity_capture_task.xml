@@ -146,7 +146,7 @@
 
             <Spinner
                 android:id="@+id/dropDownTimeFormat"
-                android:layout_width="136dp"
+                android:layout_width="151dp"
                 android:layout_height="69dp" />
 
         </LinearLayout>

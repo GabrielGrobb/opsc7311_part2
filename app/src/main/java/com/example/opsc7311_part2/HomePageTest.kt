@@ -55,7 +55,14 @@ class HomePageTest : AppCompatActivity(), View.OnClickListener, NavigationView.O
             customView.setCatName(category.name)
             customView.setIcon(imageResource)
             displayView.addView(customView)
+
+            /*val selectedCategory = categoryList[1] // Assuming you have a list of categories
+            val intent = Intent(this, Category::class.java)
+            intent.putExtra("category", selectedCategory)
+            startActivity(intent)*/
         }
+
+
 
         /*val categoryList = ToolBox.CategoryManager.getCategoryList()
         val displayView = findViewById<LinearLayout>(R.id.AddNewCategory)

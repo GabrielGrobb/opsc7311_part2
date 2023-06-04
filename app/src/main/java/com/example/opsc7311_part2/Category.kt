@@ -1,16 +1,17 @@
 package com.example.opsc7311_part2
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import com.example.opsc7311_part2.databinding.ActivityCategoryBinding
-import com.example.opsc7311_part2.databinding.ActivityHomePageTestBinding
 import com.google.android.material.navigation.NavigationView
 
 class Category : AppCompatActivity(), View.OnClickListener, NavigationView.OnNavigationItemSelectedListener
@@ -37,9 +38,38 @@ class Category : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
         binding.navView.bringToFront()
         binding.navView.setNavigationItemSelectedListener(this)
 
-        var cattxt = findViewById<TextView>(R.id.CategoryName)
+/*      val categoryNameTextView = findViewById<TextView>(R.id.CategoryName)
+        val categoryIconImageView = findViewById<ImageView>(R.id.iconPicture)*/
 
-        cattxt.text = ToolBox.categoryName
+       /* val catName = intent.getStringExtra("categoryName")
+        val imgResource = intent.getIntExtra("imageIcon", 0)
+
+        val categoryNameTextView = findViewById<TextView>(R.id.CategoryName)
+        val categoryIconImageView = findViewById<ImageView>(R.id.iconPicture)
+
+        categoryNameTextView.text = catName
+        categoryIconImageView.setImageResource(imgResource)*/
+
+        val catName = intent.getStringExtra("categoryName")
+        val imgResource = intent.getIntExtra("imageIcon", 0)
+
+        val categoryNameTextView = findViewById<TextView>(R.id.CategoryName)
+        val categoryIconImageView = findViewById<ImageView>(R.id.iconPicture)
+
+        categoryNameTextView.text = catName
+        categoryIconImageView.setImageResource(imgResource)
+
+        /*val category = intent.getParcelableExtra<ToolBox.CategoryDataClass>("category")
+        if (category != null) {
+            val categoryName = category.name
+            val categoryIconResourceId = category.icon
+
+            val categoryNameTextView = findViewById<TextView>(R.id.CategoryName)
+            val categoryIconImageView = findViewById<ImageView>(R.id.iconPicture)
+
+            categoryNameTextView.text = categoryName
+            categoryIconImageView.setImageResource(categoryIconResourceId)
+        }*/
     }
 
     //............................................................................................//

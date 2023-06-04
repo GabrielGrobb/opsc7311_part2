@@ -1,7 +1,11 @@
 package com.example.opsc7311_part2
 
+import android.os.Parcel
+import android.os.Parcelable
+import android.widget.DatePicker
 import android.widget.ImageView
 import android.widget.TextView
+import java.io.Serializable
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -13,11 +17,33 @@ class ToolBox
         //val color: String
         )
 
-    companion object
+    data class ActivityDataClass(
+        val actTitle: String,
+        val actClient: String,
+        val actLocation:String,
+        val actCategory : CategoryDataClass,
+        val actDuration : Double,
+        val actStartDate: String,
+        val actEndDate: String
+    )
+
+
+    object ActivityManager{
+        private val activityList = mutableListOf<ActivityDataClass>()
+
+        fun addActivity(activity: ActivityDataClass) {
+            activityList.add(activity)
+        }
+
+        fun getActivityList(): List<ActivityDataClass> {
+            return activityList
+        }
+    }
+    /*companion object
     {
         var categoryName: String = ""
 
-    }
+    }*/
 
     object CategoryManager {
         private val categoryList = mutableListOf<CategoryDataClass>()
