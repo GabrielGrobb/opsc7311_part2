@@ -26,6 +26,9 @@ class AddActivity : AppCompatActivity() {
             finish()
         }
 
+        //Adding an Activity
+
+
         //Views
         val tilLocation: TextInputLayout = findViewById(R.id.til_Location)
         val txtLocation: TextInputEditText = findViewById(R.id.txtLocation)

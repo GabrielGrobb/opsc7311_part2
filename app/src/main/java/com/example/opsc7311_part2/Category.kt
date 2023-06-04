@@ -37,9 +37,8 @@ class Category : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
         binding.navView.bringToFront()
         binding.navView.setNavigationItemSelectedListener(this)
 
-        var cattxt = findViewById<TextView>(R.id.CategoryName)
-
-        cattxt.text = ToolBox.categoryName
+        val intent = intent
+        val Category = intent.getSerializableExtra("category") as ToolBox.CategoryDataClass
     }
 
     //............................................................................................//
