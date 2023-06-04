@@ -3,14 +3,25 @@ package com.example.opsc7311_part2
 import android.widget.ImageView
 import android.widget.TextView
 import java.text.SimpleDateFormat
+import java.time.Duration
 import java.util.*
 
 class ToolBox
 {
+    data class ActivityDataClass(
+        val title: String,
+        val client: String,
+        val location: String,
+        val category: CategoryDataClass,
+        val duration: Int,
+        val startDate: Date,
+        val endDate: Date
+    )
+
     data class CategoryDataClass(
         val name: String,
         val icon: ImageView,
-        //val color: String
+        val activites: Array<ActivityDataClass>
         )
 
     companion object
