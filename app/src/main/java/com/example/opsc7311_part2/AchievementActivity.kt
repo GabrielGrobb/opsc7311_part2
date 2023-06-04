@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import com.example.opsc7311_part2.databinding.ActivityAccountSettingsBinding
@@ -22,6 +23,9 @@ class AchievementActivity : AppCompatActivity(), View.OnClickListener, Navigatio
         super.onCreate(savedInstanceState)
         binding = ActivityAchievementsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        //Setting the current Date
+        val CurrentDateTextView = findViewById<TextView>(R.id.CurrentDate)
+        CurrentDateTextView.text = ToolBox.CategoryManager.getCurrentDateString()
 
         setSupportActionBar(binding.navToolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)

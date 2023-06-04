@@ -10,6 +10,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import com.example.opsc7311_part2.databinding.ActivityCaptureTaskBinding
 import com.google.android.material.navigation.NavigationView
+import org.w3c.dom.Text
 import java.util.*
 
 class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.OnNavigationItemSelectedListener
@@ -35,6 +36,10 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
         super.onCreate(savedInstanceState)
         binding = ActivityCaptureTaskBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        //Setting the Current Date
+        var CurrentDateTextView = findViewById<TextView>(R.id.CurrentDate)
+        CurrentDateTextView.text = ToolBox.CategoryManager.getCurrentDateString()
 
         setSupportActionBar(binding.navToolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)

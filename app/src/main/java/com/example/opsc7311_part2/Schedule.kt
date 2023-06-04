@@ -10,9 +10,12 @@ import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
-import com.example.opsc7311_part2.databinding.ActivityAccountSettingsBinding
 import com.example.opsc7311_part2.databinding.ActivityScheduleBinding
 import com.google.android.material.navigation.NavigationView
+import java.util.Calendar
+import java.text.SimpleDateFormat
+import java.util.Locale
+
 
 class Schedule : AppCompatActivity(), View.OnClickListener, NavigationView.OnNavigationItemSelectedListener
 {
@@ -30,6 +33,11 @@ class Schedule : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
         super.onCreate(savedInstanceState)
         binding = ActivityScheduleBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        //Finding the TextView we want to update
+        var CurrentDateTextView = findViewById<TextView>(R.id.CurrentDate)
+        //Setting the value of the text view to the Calendar's current date
+        CurrentDateTextView.text = ToolBox.CategoryManager.getCurrentDateString()
+
 
         setSupportActionBar(binding.navToolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
