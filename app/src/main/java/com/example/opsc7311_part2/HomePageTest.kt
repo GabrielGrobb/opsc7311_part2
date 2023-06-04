@@ -41,6 +41,23 @@ class HomePageTest : AppCompatActivity(), View.OnClickListener, NavigationView.O
 
         navButton()
 
+        binding.AddNewCategory.setOnClickListener(this)
+
+
+        val categoryList = ToolBox.CategoryManager.getCategoryList()
+
+        val displayView = findViewById<LinearLayout>(R.id.AddNewCategory)
+
+        for (category in categoryList) {
+            val imageResource = resources.getIdentifier("home_icon", "drawable", packageName)
+            val customView = custom_homepage_icon(this)
+
+            customView.setCatName(category.name)
+            customView.setIcon(imageResource)
+            displayView.addView(customView)
+        }
+
+        /*val categoryList = ToolBox.CategoryManager.getCategoryList()
         val displayView = findViewById<LinearLayout>(R.id.AddNewCategory)
         val imageResource = resources.getIdentifier("home_icon", "drawable", packageName)
         val customView = custom_homepage_icon(this)
@@ -49,9 +66,9 @@ class HomePageTest : AppCompatActivity(), View.OnClickListener, NavigationView.O
         customView.setIcon(imageResource)
         displayView.addView(customView)
 
-        binding.AddNewCategory.setOnClickListener(this)
 
-        ToolBox.categoryName = "College"
+
+        ToolBox.categoryName = "College"*/
     }
     //............................................................................................//
 

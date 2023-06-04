@@ -12,4 +12,16 @@
     <color name="txt_field_background_color">#D9D9D9</color>
     <color name="txt_AddActivityButton">#03A9F4</color>
     <color name="LoggedIn_Background">#03A9F4</color>
+
+    --- Default Colours for the user categories/ or in-general.
+    --- Colours of the rainbow.
+
+    <color name="default_violet">#9400D3</color>
+    <color name="default_indigo">#4B0082</color>
+    <color name="default_blue">#0000FF</color>
+    <color name="default_green">#00FF00</color>
+    <color name="default_yellow">#FFFF00</color>
+    <color name="default_orange">#FF7F00</color>
+    <color name="default_red">#FF0000</color>
+
 </resources>
