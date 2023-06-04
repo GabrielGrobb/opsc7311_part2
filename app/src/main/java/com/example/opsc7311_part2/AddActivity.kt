@@ -2,21 +2,22 @@ package com.example.opsc7311_part2
 
 //Add necessary references for view
 import android.os.Bundle
-import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
-import android.widget.DatePicker
+import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.opsc7311_part2.databinding.ActivityAddActivityBinding
+import com.example.opsc7311_part2.databinding.ActivityAddCategoryBinding
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import java.util.Calendar
+import android.app.DatePickerDialog
+import android.widget.EditText
 
 class AddActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddActivityBinding
 
-    override fun onCreate(savedInstanceState: Bundle?)
-    {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -25,47 +26,67 @@ class AddActivity : AppCompatActivity() {
             finish()
         }
 
-        val categoryNames = ToolBox.CategoryManager.getCategoryList()
+        //Adding an Activity
 
-        val txtCategory = findViewById<AutoCompleteTextView>(R.id.txtCategory)
-        val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, categoryNames)
-        txtCategory.setAdapter(adapter)
 
-        binding.btnAddActivity.setOnClickListener {
-            val actTitle = findViewById<TextInputEditText>(R.id.txtTitle).text.toString()
-            val actClient = findViewById<TextInputEditText>(R.id.txtClient).text.toString()
-            val actLocation = findViewById<TextInputEditText>(R.id.txtLocation).text.toString()
-            val actCategoryName = findViewById<AutoCompleteTextView>(R.id.txtCategory).text.toString()
-            val actCategory = getCategoryByName(actCategoryName)
-            val actDuration = findViewById<TextInputEditText>(R.id.txtDuration).text.toString().toDouble()
-            val actStartDate = parseDatePicker(findViewById<DatePicker>(R.id.txtStartDate))
-            val actEndDate = parseDatePicker(findViewById<DatePicker>(R.id.txtEndDate))
+        //Views
+        val tilLocation: TextInputLayout = findViewById(R.id.til_Location)
+        val txtLocation: TextInputEditText = findViewById(R.id.txtLocation)
+        val tilCategory: TextInputLayout = findViewById(R.id.til_Category)
+        val txtCategory: TextInputEditText = findViewById(R.id.txtCategory)
+        val tilStartDate: TextInputLayout = findViewById(R.id.til_StartDate)
+        val txtStartDate: TextInputEditText = findViewById(R.id.txtStartDate)
+        val tilEndDate: TextInputLayout = findViewById(R.id.til_EndDate)
+        val txtEndDate: TextInputEditText = findViewById(R.id.txtEndDate)
+        val imgActivityIcon: ImageView = findViewById(R.id.ActivityIcon)
 
-            if (actCategory != null) {
-                val newActivity = ToolBox.ActivityDataClass(
-                    actTitle,
-                    actClient,
-                    actLocation,
-                    actCategory,
-                    actDuration,
-                    actStartDate,
-                    actEndDate
-                )
 
-                ToolBox.ActivityManager.addActivity(newActivity)
-            }
+        //Functions
+        //Allows the user to select an icon for a given activity from the list of icons
+        fun performActionOnClick() {
+
         }
-    }
 
-    fun parseDatePicker(datePicker: DatePicker): String {
-        val day = datePicker.dayOfMonth
-        val month = datePicker.month + 1 // Month starts from 0
-        val year = datePicker.year
-        return "$year-$month-$day"
-    }
+        //Shows the date picker dialog for a given text input
+        fun showDatePickerDialog(textField: EditText) {
+            val calendar = Calendar.getInstance()
+            val year = calendar.get(Calendar.YEAR)
+            val month = calendar.get(Calendar.MONTH)
+            val day = calendar.get(Calendar.DAY_OF_MONTH)
 
-    fun getCategoryByName(categoryName: String): ToolBox.CategoryDataClass? {
-        val categoryList = ToolBox.CategoryManager.getCategoryList()
-        return categoryList.find { it.name == categoryName }
+            val datePickerDialog = DatePickerDialog(
+                this,
+                { _, selectedYear, selectedMonth, selectedDay ->
+                    // Update the text field with the selected date
+                    val formattedDate = String.format("%d-%02d-%02d", selectedYear, selectedMonth + 1, selectedDay)
+                    textField.setText(formattedDate)
+                },
+                year,
+                month,
+                day
+            )
+
+            datePickerDialog.show()
+        }
+
+        //
+
+        //Listeners
+        tilLocation.setEndIconOnClickListener(){
+
+        }
+
+        tilCategory.setEndIconOnClickListener(){
+
+        }
+
+        tilStartDate.setEndIconOnClickListener {
+            showDatePickerDialog(txtStartDate)
+        }
+
+        tilEndDate.setEndIconOnClickListener(){
+            showDatePickerDialog(txtEndDate)
+        }
+
     }
 }

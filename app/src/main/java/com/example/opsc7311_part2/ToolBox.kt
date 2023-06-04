@@ -7,14 +7,25 @@ import android.widget.ImageView
 import android.widget.TextView
 import java.io.Serializable
 import java.text.SimpleDateFormat
+import java.time.Duration
 import java.util.*
 
 class ToolBox
 {
+    data class ActivityDataClass(
+        val title: String,
+        val client: String,
+        val location: String,
+        val category: CategoryDataClass,
+        val duration: Int,
+        val startDate: Date,
+        val endDate: Date
+    )
+
     data class CategoryDataClass(
         val name: String,
         val icon: ImageView,
-        //val color: String
+        val activites: List<ActivityDataClass>
         )
 
     data class ActivityDataClass(
@@ -47,13 +58,22 @@ class ToolBox
 
     object CategoryManager {
         private val categoryList = mutableListOf<CategoryDataClass>()
+        private val activityList = mutableListOf<ActivityDataClass>()
 
         fun addCategory(category: CategoryDataClass) {
             categoryList.add(category)
         }
 
+        fun addActivity(activity: ActivityDataClass){
+            activityList.add(activity)
+        }
+
         fun getCategoryList(): List<CategoryDataClass> {
             return categoryList
+        }
+
+        fun getActivityList(): List<ActivityDataClass>{
+            return activityList
         }
 
         //Returns the current Date as a String

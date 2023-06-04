@@ -49,7 +49,7 @@
             android:layout_marginTop="30dp">
 
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/ActivityIcon"
                 android:layout_width="96dp"
                 android:layout_height="94dp"
                 android:layout_weight="1"
@@ -235,6 +235,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="start"
                         android:textColor="@color/txt_color"
+                        android:enabled="false"
                         android:textStyle="italic" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -262,7 +263,8 @@
                         android:layout_height="wrap_content"
                         android:gravity="start"
                         android:textColor="@color/txt_color"
-                        android:textStyle="italic" />
+                        android:textStyle="italic"
+                        android:enabled="false"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 

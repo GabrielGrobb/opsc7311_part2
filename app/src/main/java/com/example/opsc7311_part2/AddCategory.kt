@@ -32,11 +32,13 @@ class AddCategory : AppCompatActivity() {
 
             val categoryName = findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.txtTitle).text.toString()
             val categoryIcon = findViewById<ImageView>(R.id.categoryImage)
+            val activities = ToolBox.CategoryManager.getActivityList()
             //val categoryColor = findViewById<TextView>(R.id.txtTitle)
 
             val newCategory = ToolBox.CategoryDataClass(
                 categoryName,
                 categoryIcon,
+                activities
                 //categoryColor
             )
             ToolBox.CategoryManager.addCategory(newCategory)
