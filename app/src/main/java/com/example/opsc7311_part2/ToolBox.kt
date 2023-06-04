@@ -21,7 +21,7 @@ class ToolBox
     data class CategoryDataClass(
         val name: String,
         val icon: ImageView,
-        val activites: Array<ActivityDataClass>
+        val activites: List<ActivityDataClass>
         )
 
     companion object
@@ -32,13 +32,22 @@ class ToolBox
 
     object CategoryManager {
         private val categoryList = mutableListOf<CategoryDataClass>()
+        private val activityList = mutableListOf<ActivityDataClass>()
 
         fun addCategory(category: CategoryDataClass) {
             categoryList.add(category)
         }
 
+        fun addActivity(activity: ActivityDataClass){
+            activityList.add(activity)
+        }
+
         fun getCategoryList(): List<CategoryDataClass> {
             return categoryList
+        }
+
+        fun getActivityList(): List<ActivityDataClass>{
+            return activityList
         }
 
         //Returns the current Date as a String
