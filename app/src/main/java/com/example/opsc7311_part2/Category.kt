@@ -57,9 +57,11 @@ class Category : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
 
         val categoryNameTextView = findViewById<TextView>(R.id.CategoryName)
         val categoryIconImageView = findViewById<ImageView>(R.id.iconPicture)
+        val categoryIdentification = findViewById<TextView>(R.id.categoryId)
 
         categoryNameTextView.text = catName
         categoryIconImageView.setImageResource(imgResource)
+        categoryIdentification.text = catID.toString()
 
         val categoryList = ToolBox.CategoryManager.getCategoryList()
         //val activityList = ToolBox.ActivityManager.getActivityList()
@@ -74,7 +76,7 @@ class Category : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
 
             for (activity in activities)
             {
-                if (activity.categoryId == category.catID && activity.category == category.name)
+                if (activity.categoryId == catID && activity.category == catName)
                 {
                         // Match found, perform desired actions with the activity
                         val imageResource = resources.getIdentifier("home_icon", "drawable", packageName)

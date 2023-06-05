@@ -27,6 +27,7 @@ class custom_homepage_icon @JvmOverloads constructor(
                 val intent = Intent(context, Category::class.java)
                 intent.putExtra("categoryName", categoryName)
                 intent.putExtra("imageIcon",imageResource)
+                intent.putExtra("categoryID", categoryID)
                 context.startActivity(intent)
 
             }
@@ -57,7 +58,7 @@ class custom_homepage_icon @JvmOverloads constructor(
         //categoryID = ID+1 // Increment the counter by 1
         val catID = findViewById<TextView>(R.id.categoryID)
         catID.text = ID.toString()
-        categoryID = ID +1
+        categoryID = ID
     }
 
 }
