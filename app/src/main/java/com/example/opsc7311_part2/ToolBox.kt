@@ -12,23 +12,25 @@ import java.util.*
 
 class ToolBox
 {
-   /* data class ActivityDataClass(
+    data class ActivityDataClass(
         val title: String,
         val client: String,
         val location: String,
-        val category: CategoryDataClass,
+        val category: String,
+        val categoryId: Int, // ID of the category
         val duration: Int,
-        val startDate: Date,
-        val endDate: Date
-    )*/
+        //val startDate: Date,
+        //val endDate: Date
+    )
 
     data class CategoryDataClass(
-        val name: String,
+        var catID : Int,
+        var name: String,
         val icon: ImageView,
-        val activites: List<ActivityDataClass>
+        val activities: MutableList<ActivityDataClass>
         )
 
-    data class ActivityDataClass(
+    /*data class ActivityDataClass(
         val actTitle: String,
         val actClient: String,
         val actLocation:String,
@@ -36,7 +38,7 @@ class ToolBox
         val actDuration : Double,
         val actStartDate: String,
         val actEndDate: String
-    )
+    )*/
 
 
     object ActivityManager{
@@ -50,31 +52,26 @@ class ToolBox
             return activityList
         }
     }
-    /*companion object
-    {
-        var categoryName: String = ""
-
-    }*/
 
     object CategoryManager {
         private val categoryList = mutableListOf<CategoryDataClass>()
-        private val activityList = mutableListOf<ActivityDataClass>()
+        //private val activityList = mutableListOf<ActivityDataClass>()
 
         fun addCategory(category: CategoryDataClass) {
             categoryList.add(category)
         }
 
-        fun addActivity(activity: ActivityDataClass){
+       /* fun addActivity(activity: ActivityDataClass){
             activityList.add(activity)
-        }
+        }*/
 
         fun getCategoryList(): List<CategoryDataClass> {
             return categoryList
         }
 
-        fun getActivityList(): List<ActivityDataClass>{
+        /*fun getActivityList(): List<ActivityDataClass>{
             return activityList
-        }
+        }*/
 
         //Returns the current Date as a String
         fun getCurrentDateString(): String{

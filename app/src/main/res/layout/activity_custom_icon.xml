@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".custom_homepage_icon">
+    tools:context=".custom_activity_icon">
 
     <RelativeLayout
         android:id="@+id/relContainer"
@@ -15,31 +15,22 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="20dp"
-        android:clickable="true">
+        android:clickable="true"
+        >
 
-        <ImageView
-            android:id="@+id/categoryIcon"
+        <!--<ImageView
+            android:id="@+id/ActivityIcon"
             android:layout_width="100dp"
             android:layout_height="match_parent"
-            android:src="@drawable/settings"/>
+            android:src="@drawable/settings"/>-->
 
 
         <TextView
-            android:id="@+id/categoryName"
-            android:layout_width="150dp"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="Category Name"
-            android:layout_toRightOf="@id/categoryIcon"/>
-
-        <TextView
-            android:id="@+id/categoryID"
+            android:id="@+id/txtActivityName"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginRight="20dp"
             android:gravity="center"
-            android:text="0"
-            android:layout_toRightOf="@id/categoryName"/>
+            android:text="Activity Name" />
 
     </RelativeLayout>
 </RelativeLayout>

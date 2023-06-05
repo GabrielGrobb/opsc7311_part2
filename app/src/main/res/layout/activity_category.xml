@@ -74,13 +74,14 @@
                 android:text="Category Name"
                 android:textStyle="italic|bold" />
 
-            <!--<ImageView
-                android:id="@+id/SettingsIcon"
-                android:layout_width="40dp"
+            <TextView
+                android:id="@+id/categoryId"
+                android:layout_width="30dp"
                 android:layout_height="40dp"
+                android:gravity="center"
                 android:layout_marginLeft="100dp"
                 android:layout_marginTop="15dp"
-                app:srcCompat="@drawable/settings" />-->
+                android:text="0" />
 
         </LinearLayout>
 
@@ -187,6 +188,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical" />
+
         </ScrollView>
 
     </LinearLayout>
