@@ -21,12 +21,12 @@
         <activity
             android:name=".custom_activity_icon"
             android:exported="false" />
-        <activity
+       <!-- <activity
             android:name=".custom_activity"
             android:exported="false" />
         <activity
             android:name=".custom_category"
-            android:exported="false" />
+            android:exported="false" />-->
         <activity
             android:name=".HomePageTest"
             android:exported="false" />

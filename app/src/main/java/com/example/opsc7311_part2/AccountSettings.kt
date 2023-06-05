@@ -10,7 +10,6 @@ import android.widget.Spinner
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import com.example.opsc7311_part2.databinding.ActivityAccountSettingsBinding
-import com.example.opsc7311_part2.databinding.ActivityCaptureTaskBinding
 import com.google.android.material.navigation.NavigationView
 import android.widget.ImageView
 import android.widget.Toast
