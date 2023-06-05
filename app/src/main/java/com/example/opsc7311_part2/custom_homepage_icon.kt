@@ -12,6 +12,7 @@ import android.widget.*
 class custom_homepage_icon @JvmOverloads constructor(
         context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : LinearLayout(context, attrs) {
 
+            private var categoryID:Int = 0;
             private var categoryName: String = ""
             private var imageResource: Int = 0
 
@@ -51,5 +52,12 @@ class custom_homepage_icon @JvmOverloads constructor(
             categoryName = name
 
         }
+
+    fun setCatID(ID: Int) {
+        //categoryID = ID+1 // Increment the counter by 1
+        val catID = findViewById<TextView>(R.id.categoryID)
+        catID.text = ID.toString()
+        categoryID = ID +1
+    }
 
 }

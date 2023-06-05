@@ -56,8 +56,6 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
         binding.navView.bringToFront()
         binding.navView.setNavigationItemSelectedListener(this)
 
-
-
         populateDropDowns()
 
         timerText = findViewById(R.id.txtTimerCounter)
@@ -70,6 +68,15 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
 
         maxTimeTextView = findViewById(R.id.txtDuration)
         maxTimeTextView.text = getString(R.string.max_time, maxTime)
+
+        val actName = intent.getStringExtra("activityName")
+        //val imgResource = intent.getIntExtra("imageIcon", 0)
+
+        val activityNameTextView = findViewById<TextView>(R.id.txtActivityName)
+        //val categoryIconImageView = findViewById<ImageView>(R.id.iconPicture)
+
+        activityNameTextView.text = actName
+        //categoryIconImageView.setImageResource(imgResource)
 
     }
 

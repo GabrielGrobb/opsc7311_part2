@@ -38,10 +38,10 @@ class Category : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
         binding.navView.bringToFront()
         binding.navView.setNavigationItemSelectedListener(this)
 
-/*      val categoryNameTextView = findViewById<TextView>(R.id.CategoryName)
-        val categoryIconImageView = findViewById<ImageView>(R.id.iconPicture)*/
+      /*val categoryNameTextView = findViewById<TextView>(R.id.CategoryName)
+        val categoryIconImageView = findViewById<ImageView>(R.id.iconPicture)
 
-       /* val catName = intent.getStringExtra("categoryName")
+       *//* val catName = intent.getStringExtra("categoryName")
         val imgResource = intent.getIntExtra("imageIcon", 0)
 
         val categoryNameTextView = findViewById<TextView>(R.id.CategoryName)
@@ -49,6 +49,8 @@ class Category : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
 
         categoryNameTextView.text = catName
         categoryIconImageView.setImageResource(imgResource)*/
+
+        val catID = intent.getIntExtra("categoryID", 1) // Default value if category ID is not provided
 
         val catName = intent.getStringExtra("categoryName")
         val imgResource = intent.getIntExtra("imageIcon", 0)
@@ -59,17 +61,32 @@ class Category : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
         categoryNameTextView.text = catName
         categoryIconImageView.setImageResource(imgResource)
 
-        /*val category = intent.getParcelableExtra<ToolBox.CategoryDataClass>("category")
-        if (category != null) {
-            val categoryName = category.name
-            val categoryIconResourceId = category.icon
+        val categoryList = ToolBox.CategoryManager.getCategoryList()
+        //val activityList = ToolBox.ActivityManager.getActivityList()
+        val displayView = findViewById<LinearLayout>(R.id.ActivityView)
 
-            val categoryNameTextView = findViewById<TextView>(R.id.CategoryName)
-            val categoryIconImageView = findViewById<ImageView>(R.id.iconPicture)
+        for (category in categoryList)
+        {
+            /*category.name = catName.toString()
+            category.catID = catID*/
 
-            categoryNameTextView.text = categoryName
-            categoryIconImageView.setImageResource(categoryIconResourceId)
-        }*/
+            val activities = category.activities
+
+            for (activity in activities)
+            {
+                if (activity.categoryId == category.catID && activity.category == category.name)
+                {
+                        // Match found, perform desired actions with the activity
+                        val imageResource = resources.getIdentifier("home_icon", "drawable", packageName)
+                        val customView = custom_activity_icon(this)
+
+                        customView.setActName(activity.title)
+                        // customView.setIcon(imageResource)
+                        displayView.addView(customView)
+                }
+            }
+        }
+
     }
 
     //............................................................................................//

@@ -170,20 +170,17 @@
                     app:boxCornerRadiusBottomEnd="20dp"
                     app:boxCornerRadiusBottomStart="20dp"
                     app:boxCornerRadiusTopEnd="20dp"
-                    app:boxCornerRadiusTopStart="20dp"
-                    app:endIconDrawable="@drawable/drop_down"
-                    app:endIconMode="custom"
-                    app:hintTextColor="@color/black">
+                    app:boxCornerRadiusTopStart="20dp">
 
-                    <AutoCompleteTextView
-                        android:id="@+id/txtCategory"
+                    <Spinner
+                        android:id="@+id/spCategory"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-
                         android:textColor="@color/txt_color"
                         android:textStyle="italic" />
 
                 </com.google.android.material.textfield.TextInputLayout>
+
 
 
                 <com.google.android.material.textfield.TextInputLayout

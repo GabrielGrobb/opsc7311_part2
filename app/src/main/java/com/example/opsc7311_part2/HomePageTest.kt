@@ -52,6 +52,7 @@ class HomePageTest : AppCompatActivity(), View.OnClickListener, NavigationView.O
             val imageResource = resources.getIdentifier("home_icon", "drawable", packageName)
             val customView = custom_homepage_icon(this)
 
+            customView.setCatID(category.catID)
             customView.setCatName(category.name)
             customView.setIcon(imageResource)
             displayView.addView(customView)
