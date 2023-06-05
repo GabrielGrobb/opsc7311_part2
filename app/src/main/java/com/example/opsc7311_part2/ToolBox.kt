@@ -12,16 +12,6 @@ import java.util.*
 
 class ToolBox
 {
-    data class ActivityDataClass(
-        val title: String,
-        val client: String,
-        val location: String,
-        val category: CategoryDataClass,
-        val duration: Int,
-        val startDate: Date,
-        val endDate: Date
-    )
-
     data class CategoryDataClass(
         val name: String,
         val icon: ImageView,

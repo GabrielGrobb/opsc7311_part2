@@ -11,6 +11,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import java.util.Calendar
 import android.app.DatePickerDialog
+import android.widget.AutoCompleteTextView
 import android.widget.EditText
 
 class AddActivity : AppCompatActivity() {
@@ -33,7 +34,7 @@ class AddActivity : AppCompatActivity() {
         val tilLocation: TextInputLayout = findViewById(R.id.til_Location)
         val txtLocation: TextInputEditText = findViewById(R.id.txtLocation)
         val tilCategory: TextInputLayout = findViewById(R.id.til_Category)
-        val txtCategory: TextInputEditText = findViewById(R.id.txtCategory)
+        val txtCategory: AutoCompleteTextView = findViewById(R.id.txtCategory)
         val tilStartDate: TextInputLayout = findViewById(R.id.til_StartDate)
         val txtStartDate: TextInputEditText = findViewById(R.id.txtStartDate)
         val tilEndDate: TextInputLayout = findViewById(R.id.til_EndDate)
