@@ -12,7 +12,7 @@ import java.util.*
 
 class ToolBox
 {
-    data class ActivityDataClass(
+   /* data class ActivityDataClass(
         val title: String,
         val client: String,
         val location: String,
@@ -20,7 +20,7 @@ class ToolBox
         val duration: Int,
         val startDate: Date,
         val endDate: Date
-    )
+    )*/
 
     data class CategoryDataClass(
         val name: String,
