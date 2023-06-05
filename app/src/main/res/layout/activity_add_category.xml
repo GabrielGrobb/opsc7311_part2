@@ -37,7 +37,7 @@
         android:layout_marginTop="30dp">
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/categoryImage"
             android:layout_width="96dp"
             android:layout_height="94dp"
             app:srcCompat="@drawable/default_profile"
@@ -98,11 +98,11 @@
             android:background="@drawable/color_picker"/>
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="140dp"
             android:layout_height="wrap_content"
-            android:text="@string/add_category_colour"
-            android:layout_marginTop="30dp"
             android:layout_marginLeft="20dp"
+            android:layout_marginTop="30dp"
+            android:text="@string/add_category_colour"
             android:textStyle="italic|bold">
 
         </TextView>

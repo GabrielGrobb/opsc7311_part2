@@ -75,8 +75,12 @@
             android:layout_marginBottom="20dp">
 
             <LinearLayout
+                android:id="@+id/AddNewCategory"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+
 
 
             </LinearLayout>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".custom_homepage_icon">
+
+    <RelativeLayout
+        android:id="@+id/relContainer"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@color/teal_200"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:clickable="true">
+
+        <ImageView
+            android:id="@+id/categoryIcon"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/settings"/>
+
+
+        <TextView
+            android:id="@+id/categoryName"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="Category Name"
+            android:layout_toRightOf="@id/categoryIcon"/>
+
+
+    </RelativeLayout>
+
+
+
+</RelativeLayout>

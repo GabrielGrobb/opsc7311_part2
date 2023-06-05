@@ -1,43 +1,108 @@
 package com.example.opsc7311_part2
 
-import android.app.Activity
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.ProgressBar
+import android.view.MenuItem
+import android.view.View
 import android.widget.TextView
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.core.view.GravityCompat
+import com.example.opsc7311_part2.databinding.ActivityAccountSettingsBinding
+import com.example.opsc7311_part2.databinding.ActivityAchievementsBinding
+import com.google.android.material.navigation.NavigationView
 
-class AchievementActivity : Activity() {
+class AchievementActivity : AppCompatActivity(), View.OnClickListener, NavigationView.OnNavigationItemSelectedListener
+{
 
-    private lateinit var achievementsProgressBar: ProgressBar
-    private lateinit var achievementsProgressText: TextView
-    private lateinit var task1ProgressBar: ProgressBar
-    private lateinit var task1ProgressText: TextView
-    private lateinit var task2ProgressBar: ProgressBar
-    private lateinit var task2ProgressText: TextView
-    private lateinit var task3ProgressBar: ProgressBar
-    private lateinit var task3ProgressText: TextView
+    private lateinit var binding: ActivityAchievementsBinding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    //............................................................................................//
+    override fun onCreate(savedInstanceState: Bundle?)
+    {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_achievements)
+        binding = ActivityAchievementsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        //Setting the current Date
+        val CurrentDateTextView = findViewById<TextView>(R.id.CurrentDate)
+        CurrentDateTextView.text = ToolBox.CategoryManager.getCurrentDateString()
 
-        achievementsProgressBar = findViewById(R.id.AchievementsProgressBar)
-        achievementsProgressText = findViewById(R.id.achievementsProgressText)
-        task1ProgressBar = findViewById(R.id.Task1ProgressBar)
-        task1ProgressText = findViewById(R.id.Task1ProgressText)
-        task2ProgressBar = findViewById(R.id.Task2ProgressBar)
-        task2ProgressText = findViewById(R.id.Task2ProgressText)
-        task3ProgressBar = findViewById(R.id.Task3ProgressBar)
-        task3ProgressText = findViewById(R.id.Task3ProgressText)
+        setSupportActionBar(binding.navToolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
 
-        //Initial progress values
-        achievementsProgressBar.progress = 0
-        achievementsProgressText.text = "0%"
-        task1ProgressBar.progress = 0
-        task1ProgressText.text = "0%"
-        task2ProgressBar.progress = 0
-        task2ProgressText.text = "0%"
-        task3ProgressBar.progress = 0
-        task3ProgressText.text = "0%"
+        var toggleOnOff = ActionBarDrawerToggle(this,
+            binding.drawerLayout, binding.navToolbar,
+            R.string.navigation_drawer_open,
+            R.string.navigation_drawer_close)
+
+        binding.drawerLayout.addDrawerListener(toggleOnOff)
+        toggleOnOff.syncState()
+
+        binding.navView.bringToFront()
+        binding.navView.setNavigationItemSelectedListener(this)
+
+
     }
+
+    //............................................................................................//
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean
+    {
+        when(item.itemId)
+        {
+            R.id.nav_home -> {
+                val intent = Intent(applicationContext, HomePageTest::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
+            }
+
+            R.id.nav_schedule -> {
+                val intent = Intent(applicationContext, Schedule::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
+
+            }
+
+            R.id.nav_account -> {
+                val intent = Intent(applicationContext, AccountSettings::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
+            }
+
+            R.id.nav_logout -> {
+                val intent = Intent(applicationContext, LoginActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
+            }
+        }
+        binding.drawerLayout.closeDrawer(GravityCompat.START)
+        // return true marks the item as selected
+        return true
+    }
+
+    //............................................................................................//
+
+    override fun onBackPressed()
+    {
+        //if the drawer is open, close it
+        if(binding.drawerLayout.isDrawerOpen(GravityCompat.START))
+        {
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+        }
+        else
+        {
+            //otherwise, let the super class handle it
+            super.onBackPressed()
+        }
+    }
+
+    //............................................................................................//
+
+    override fun onClick(v: View?)
+    {
+        /*TODO("Not yet implemented")*/
+    }
+
+    //............................................................................................//
 }
