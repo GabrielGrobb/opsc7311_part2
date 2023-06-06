@@ -28,6 +28,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
 import android.os.Build
 import android.os.Environment
 import androidx.activity.result.contract.ActivityResultContracts
@@ -47,10 +48,6 @@ class AddActivity : AppCompatActivity() {
     private var activityCounter = ToolBox.ActivityManager.getActivityList().size
     private val CAMERA_PERMISSION_REQUEST_CODE = 100
     private val STORAGE_PERMISSION_REQUEST_CODE = 101
-
-
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -111,6 +108,9 @@ class AddActivity : AppCompatActivity() {
             val actEndDate = findViewById<TextInputEditText>(R.id.txtEndDate).text
             val actStartDate = findViewById<TextInputEditText>(R.id.txtStartDate).text
             val selectedCategory = spCategory.selectedItem.toString()
+            val activityImg = findViewById<ImageView>(R.id.ActivityIcon)
+            val bitmap: Bitmap? = (activityImg.drawable as? BitmapDrawable)?.bitmap
+
 
             val category = categoryList.find { it.name == selectedCategory }
             val categoryId = category?.catID ?: -1 // Default value if category not found
@@ -125,7 +125,8 @@ class AddActivity : AppCompatActivity() {
                     Duration.ofHours(txtDuration.text.toString().toLong()),
                     Duration.ZERO,
                     actStartDate.toString(),
-                    actEndDate.toString()
+                    actEndDate.toString(),
+                    bitmap
                 )
                 //ToolBox.ActivityManager.addActivity(newActivity)
             ToolBox.ActivityManager.addActivity(newActivity)

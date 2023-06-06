@@ -1,6 +1,7 @@
 package com.example.opsc7311_part2
 
 import android.content.Intent
+import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
@@ -49,7 +50,14 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
 
         val actName = intent.getStringExtra("activityName")
         val actID = intent.getIntExtra("activityID", -1)
-        //val imgResource = intent.getIntExtra("imageIcon", 0)
+
+        val bitmap = intent.getParcelableExtra<Bitmap>("imageIcon")
+        val activityImage = findViewById<ImageView>(R.id.imageView)
+        activityImage.setImageBitmap(bitmap)
+
+        /*val imgResource = intent.getIntExtra("imageIcon", 0)
+        val activityImag = findViewById<ImageView>(R.id.imageView)
+        activityImag.setImageBitmap(imgResource)*/
 
         val activityNameTextView = findViewById<TextView>(R.id.txtActivityName)
         //val categoryIconImageView = findViewById<ImageView>(R.id.iconPicture)
@@ -57,8 +65,12 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
         activityNameTextView.text = actName
         //categoryIconImageView.setImageResource(imgResource)
 
+
+
         //Getting the current Activity object we are working with
         val activityObject = ToolBox.ActivityManager.getActivityObjectByID(actID)
+
+
 
         setSupportActionBar(binding.navToolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -132,7 +144,7 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
     fun recordTimerToActivity(){
         //Get the current activity
         val currentActivity = ToolBox.ActivityManager.getActivityObjectByID(intent.getIntExtra("activityID", -1))
-        timer
+        //timer
     }
 
     //............................................................................................//
@@ -151,6 +163,7 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
             setButtonUI(R.drawable.baseline_play_circle_24)
             timerTask.cancel()
         }
+
     }
 
     //............................................................................................//
@@ -242,6 +255,12 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
 
             R.id.nav_account -> {
                 val intent = Intent(applicationContext, AccountSettings::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
+            }
+
+            R.id.nav_schedule -> {
+                val intent = Intent(applicationContext, Schedule::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)
             }

@@ -79,12 +79,20 @@ class Category : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
                     /// Preventing duplication of an activity in the linearlayout
                     if (!addedActivities.contains(currentActivityId)) {
 
-                        val imageResource = resources.getIdentifier("home_icon", "drawable", packageName)
+                        //val imageResource = resources.getIdentifier("home_icon", "drawable", packageName)
                         val customView = custom_activity_icon(this)
 
+                        // Set activity ID and name
                         customView.setActID(activity.actID)
                         customView.setActName(activity.title)
-                        // customView.setIcon(imageResource)
+
+                        // Set the bitmap image
+                        //customView.setIcon(imageResource)
+                        activity.actImage?.let { bitmap ->
+                            customView.setIcon(bitmap)
+                        }
+
+
                         displayView.addView(customView)
 
                         // Adding its ID to the HashSet

@@ -1,5 +1,6 @@
 package com.example.opsc7311_part2
 
+import android.graphics.Bitmap
 import android.os.Parcel
 import android.os.Parcelable
 import android.widget.DatePicker
@@ -25,7 +26,8 @@ class ToolBox
         val duration: Duration,
         val currentTimeSpent: Duration,
         val startDate: String,
-        val endDate: String
+        val endDate: String,
+        val actImage: Bitmap?
     )
 
     data class CategoryDataClass(

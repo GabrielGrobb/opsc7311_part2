@@ -2,6 +2,7 @@ package com.example.opsc7311_part2
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.drawable.Icon
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -14,7 +15,7 @@ class custom_activity_icon @JvmOverloads constructor(
 
     private var activityID:Int = 0;
     private var activityName: String = ""
-    //private var imageResource: Int = 0
+    private var imageResource: Bitmap? = null
 
     init {
         LayoutInflater.from(context).inflate(R.layout.activity_custom_icon, this, true)
@@ -27,7 +28,7 @@ class custom_activity_icon @JvmOverloads constructor(
             val intent = Intent(context, CaptureTask::class.java)
             intent.putExtra("activityName", activityName)
             intent.putExtra("activityID", activityID)
-            //intent.putExtra("imageIcon",imageResource)
+            intent.putExtra("imageIcon",imageResource)
             context.startActivity(intent)
 
         }
@@ -36,13 +37,13 @@ class custom_activity_icon @JvmOverloads constructor(
     // Perform any initialization or customization here
     // You can access and modify the views within the custom component layout
 
-    fun setIcon(imgResource: Int)
+    fun setIcon(bitmap: Bitmap)
     {
         val img = findViewById<ImageView>(R.id.ActivityIcon)
 
-        img.setImageResource(imgResource)
+        img.setImageBitmap(bitmap)
 
-        //imageResource = imgResource
+        imageResource = bitmap
 
     }
 

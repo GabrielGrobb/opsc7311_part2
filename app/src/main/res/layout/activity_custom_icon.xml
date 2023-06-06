@@ -17,27 +17,26 @@
         android:layout_marginTop="20dp"
         android:clickable="true">
 
-        <!--<ImageView
+        <ImageView
             android:id="@+id/ActivityIcon"
             android:layout_width="100dp"
             android:layout_height="match_parent"
-            android:src="@drawable/settings"/>-->
+            android:src="@drawable/settings"/>
 
 
         <TextView
             android:id="@+id/txtActivityName"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="left|center"
-            android:text="Activity Name"
-            android:layout_marginLeft="30dp"/>
+            android:gravity="center"
+            android:text="Activity Name"/>
 
         <TextView
             android:id="@+id/activityID"
-            android:layout_width="match_parent"
+            android:layout_width="167dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="200dp"
             android:gravity="center"
-            android:text="0"/>
+            android:text="0" />
     </RelativeLayout>
 </RelativeLayout>

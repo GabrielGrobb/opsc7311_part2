@@ -69,11 +69,19 @@ class Schedule : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
         for (activity in activityList) {
             if (activity.startDate >= CurrentDateTextView.text.toString()) {
                 // Match found, perform desired actions with the activity
-                val imageResource = resources.getIdentifier("home_icon", "drawable", packageName)
+
+
                 val customView = custom_activity_icon(this)
 
                 customView.setActID(activity.actID)
                 customView.setActName(activity.title)
+
+                // Set the bitmap image
+                //customView.setIcon(imageResource)
+                activity.actImage?.let { bitmap ->
+                    customView.setIcon(bitmap)
+                }
+
                 // customView.setIcon(imageResource)
                 displayView.addView(customView)
             }
@@ -147,8 +155,6 @@ class Schedule : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
         val month = calendar.get(Calendar.MONTH)
         val day = calendar.get(Calendar.DAY_OF_MONTH)
         val txtEndDate: TextInputEditText = findViewById(R.id.txtEndDate)
-        // Finding the TextView we want to update
-        var CurrentDateTextView = findViewById<TextView>(R.id.CurrentDate)
         val displayView = findViewById<LinearLayout>(R.id.layout)
         val datePickerDialog = DatePickerDialog(
             this,
@@ -167,56 +173,56 @@ class Schedule : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
         // Set a custom date range
         val startDate = ToolBox.CategoryManager.getCurrentDateString()// Set your start date as a Calendar instance
         // Set a listener to disable specific dates
-            datePickerDialog.datePicker.init(year, month, day) { datePicker, year, month, day ->
-                val selectedDate = Calendar.getInstance().apply {
-                    set(year, month, day)
+        datePickerDialog.datePicker.init(year, month, day) { datePicker, year, month, day ->
+            val selectedDate = Calendar.getInstance().apply {
+                set(year, month, day)
+            }
+            val endDate = Calendar.getInstance().apply {
+                set(Calendar.YEAR, selectedDate.get(Calendar.YEAR))
+                set(Calendar.MONTH, selectedDate.get(Calendar.MONTH))
+                set(Calendar.DAY_OF_MONTH, selectedDate.get(Calendar.DAY_OF_MONTH))
+                set(Calendar.HOUR_OF_DAY, 0)
+                set(Calendar.MINUTE, 0)
+                set(Calendar.SECOND, 0)
+                set(Calendar.MILLISECOND, 0)
+            }
+            val endDateMillis = endDate.timeInMillis // Convert startDate and endDate to Date objects
+            val startDateMillis = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(startDate)?.time ?: 0
+            // Convert startDateMillis and endDateMillis to Calendar instances
+            val startCalendar = Calendar.getInstance().apply {
+                timeInMillis = startDateMillis
+            }
+            val endCalendar = Calendar.getInstance().apply {
+                timeInMillis = endDateMillis
+            }
+            // Disable dates outside the specified range
+            if (selectedDate.before(startCalendar) || selectedDate.after(endCalendar)) {
+                // Disable the date by setting it to an invalid minimum date
+                datePicker.minDate = startCalendar.timeInMillis
+                // Set selected date to start date if it's before the start date or after the end date
+                if (selectedDate.before(startCalendar)) {
+                    selectedDate.timeInMillis = startCalendar.timeInMillis
+                } else if (selectedDate.after(endCalendar)) {
+                    selectedDate.timeInMillis = endCalendar.timeInMillis
                 }
-                val endDate = Calendar.getInstance().apply {
-                    set(Calendar.YEAR, selectedDate.get(Calendar.YEAR))
-                    set(Calendar.MONTH, selectedDate.get(Calendar.MONTH))
-                    set(Calendar.DAY_OF_MONTH, selectedDate.get(Calendar.DAY_OF_MONTH))
-                    set(Calendar.HOUR_OF_DAY, 0)
-                    set(Calendar.MINUTE, 0)
-                    set(Calendar.SECOND, 0)
-                    set(Calendar.MILLISECOND, 0)
-                }
-                val endDateMillis = endDate.timeInMillis // Convert startDate and endDate to Date objects
-                val startDateMillis = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(startDate)?.time ?: 0
-                // Convert startDateMillis and endDateMillis to Calendar instances
-                val startCalendar = Calendar.getInstance().apply {
-                    timeInMillis = startDateMillis
-                }
-                val endCalendar = Calendar.getInstance().apply {
-                    timeInMillis = endDateMillis
-                }
-                // Disable dates outside the specified range
-                if (selectedDate.before(startCalendar) || selectedDate.after(endCalendar)) {
-                    // Disable the date by setting it to an invalid minimum date
-                    datePicker.minDate = startCalendar.timeInMillis
-                    // Set selected date to start date if it's before the start date or after the end date
-                    if (selectedDate.before(startCalendar)) {
-                        selectedDate.timeInMillis = startCalendar.timeInMillis
-                    } else if (selectedDate.after(endCalendar)) {
-                        selectedDate.timeInMillis = endCalendar.timeInMillis
-                    }
-                    // Formatting date
-                    val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-                    val selectedDateString = sdf.format(selectedDate.time)
-                    txtEndDate.setText(selectedDateString)
-                }
-                displayView.removeAllViews()
-                for (activity in activityList) {
-                    if (activity.endDate <= txtEndDate.text.toString()) {
-                        val imageResource =
-                            resources.getIdentifier("home_icon", "drawable", packageName)
-                        val customView = custom_activity_icon(this)
+                // Formatting date
+                val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                val selectedDateString = sdf.format(selectedDate.time)
+                txtEndDate.setText(selectedDateString)
+            }
+            displayView.removeAllViews()
+            for (activity in activityList) {
+                if (activity.endDate <= txtEndDate.text.toString()) {
+                    val imageResource =
+                        resources.getIdentifier("home_icon", "drawable", packageName)
+                    val customView = custom_activity_icon(this)
 
-                        customView.setActID(activity.actID)
-                        customView.setActName(activity.title)
-                        displayView.addView(customView)
-                    }
+                    customView.setActID(activity.actID)
+                    customView.setActName(activity.title)
+                    displayView.addView(customView)
                 }
             }
-            datePickerDialog.show()
         }
+        datePickerDialog.show()
     }
+}
