@@ -26,7 +26,8 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
     private lateinit var progressionBar: View
     //private lateinit var maxTimeTextView: TextView
     private val maxProgress = 100
-    private var currentProgress = 0
+    //val currentActivity = ToolBox.ActivityManager.getActivityObjectByID(intent.getIntExtra("activityID", -1))
+
     //private var maxTime = Duration.ofHours(24)
     private var maxTime: Duration = Duration.ZERO
     private var timerStarted = false
@@ -39,6 +40,8 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
         super.onCreate(savedInstanceState)
         binding = ActivityCaptureTaskBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        var currentProgress = 0//currentActivity.currentTimeSpent
 
         //Setting the Current Date
         var CurrentDateTextView = findViewById<TextView>(R.id.CurrentDate)
@@ -82,6 +85,11 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
 
         progressBar = findViewById(R.id.progressBar)
 
+        val btnRecord = findViewById<ImageButton>(R.id.btnStop)
+        btnRecord.setOnClickListener{
+            recordTimerToActivity()
+        }
+
         val maxTimeTextView = findViewById<TextView>(R.id.txtDuration)
         maxTimeTextView.text = activityObject.duration.toMinutes().toString()
 
@@ -124,8 +132,10 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
     fun recordTimerToActivity(){
         //Get the current activity
         val currentActivity = ToolBox.ActivityManager.getActivityObjectByID(intent.getIntExtra("activityID", -1))
-        timer.purge()
+        timer
     }
+
+    //............................................................................................//
 
     private fun startStopTapped()
     {
@@ -173,10 +183,10 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
     //............................................................................................//
 
     private fun updateProgressBar() {
-        //var actTime = maxTimeTextView.text.toString().toDouble()
-        //val actTimeMinutes = maxTime.toMinutes().toDouble() // Convert maxTime to minutes
+        //val currentActivity = ToolBox.ActivityManager.getActivityObjectByID(intent.getIntExtra("activityID", -1))
         val maxTimeInMinutes = maxTime.toHours()
-        currentProgress = (((time/60) / maxTimeInMinutes) * maxProgress).toInt()
+        val currentProgress = (((time/60) / maxTimeInMinutes) * maxProgress).toInt()
+        //val progressPercentage = (currentActivity.currentTimeSpent.toMillis().toFloat() / maxTime.toMillis().toFloat()) * 100
         progressBar.progress = currentProgress
     }
 

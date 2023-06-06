@@ -96,12 +96,33 @@
                 android:textSize="20dp"
                 android:textStyle="bold" />
 
-            <Spinner
-                android:id="@+id/spinnerSchedule"
-                android:layout_width="158dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_EndDate"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:hint="@string/end_date"
+                android:textColorHint="@color/black"
+                app:boxBackgroundColor="@color/default_background"
+                app:boxCornerRadiusBottomEnd="20dp"
+                app:boxCornerRadiusBottomStart="20dp"
+                app:boxCornerRadiusTopEnd="20dp"
+                app:boxCornerRadiusTopStart="20dp"
+                app:endIconDrawable="@drawable/calendar"
+                app:endIconMode="custom"
+                app:hintTextColor="@color/black">
 
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/txtEndDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:textColor="@color/txt_color"
+                    android:textStyle="italic"
+                    android:enabled="false"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
 
