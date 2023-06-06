@@ -79,7 +79,7 @@ class Category : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
                         val imageResource = resources.getIdentifier("home_icon", "drawable", packageName)
                         val customView = custom_activity_icon(this)
 
-                        //customView.setActID(activity.actID)
+                        customView.setActID(activity.actID)
                         customView.setActName(activity.title)
                         // customView.setIcon(imageResource)
                         displayView.addView(customView)
