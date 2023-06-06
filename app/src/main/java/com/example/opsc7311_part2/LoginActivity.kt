@@ -23,38 +23,20 @@ class LoginActivity : AppCompatActivity() {
             val passText = findViewById<TextInputEditText>(R.id.txtPassword)
             val pas = passText.text.toString()
 
+            //Getting the stored values
+            val currentSettings = ToolBox.AccountManager.getSettingsObject()
+            val storedUsername = currentSettings.username
+            val storedPassword = currentSettings.password
 
-            // Creating of the User() class.
-            var user = User()
-
-            // calling the method getUser() within User().
-            var myMap = user.getUser()
-
-            // A boolean to check if the user exists.
-            var bool = logUser(myMap, name, pas)
-
-            if(bool)
+            if(name==storedUsername&&pas==storedPassword)
             {
-                // (intent) Allows you to navigate from one activity to another.
                 val intent = Intent(this,HomePageTest::class.java)
                 startActivity(intent)
             }
             else{
                 Toast.makeText(this,"username and password is wrong", Toast.LENGTH_LONG).show()
-
             }
-        }
-    }
 
-    fun logUser(myMap:Map<String, String>, name: String, pas:String):Boolean
-    {
-        for (keys in myMap)
-        {
-            if (keys.key == name && keys.value == pas)
-            {
-                return true
-            }
         }
-        return false
     }
 }
