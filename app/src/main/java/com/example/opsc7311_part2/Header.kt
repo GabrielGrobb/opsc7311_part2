@@ -8,7 +8,6 @@ import android.widget.TextView
 
 //To display current logged in Username on the Header
 
-
 class Header : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
