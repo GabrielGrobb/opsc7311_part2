@@ -306,6 +306,16 @@
                 android:textColor="@color/txt_color"
                 android:textStyle="bold" />
 
+            <Button
+                android:id="@+id/updateSettings"
+                android:layout_width="360dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/custom_button1"
+                android:text="@string/update_settings"
+                android:textAllCaps="false"
+                android:textColor="#FFFBF6" />
+
         </LinearLayout>
         </ScrollView>
     </LinearLayout>

@@ -61,6 +61,7 @@
     <string name="profile_icon">Profile Icon</string>
     <string name="min_hrs">Minimum hrs/day</string>
     <string name="max_hrs">Maximum hrs/day</string>
+    <string name="update_settings">Update Settings</string>
     <string-array name="min_time_array">
         <item>1</item>
         <item>2</item>

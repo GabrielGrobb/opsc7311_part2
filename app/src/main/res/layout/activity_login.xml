@@ -138,7 +138,7 @@
             android:text="@string/donthaveacc"
             android:gravity="center"
             android:textStyle="italic"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black" />
 
     </LinearLayout>
 

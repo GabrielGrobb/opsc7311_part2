@@ -4,6 +4,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.widget.DatePicker
 import android.widget.ImageView
+import android.widget.Spinner
 import android.widget.TextView
 import java.io.Serializable
 import java.text.SimpleDateFormat
@@ -12,6 +13,7 @@ import java.util.*
 
 class ToolBox
 {
+    //------------------Data Classes and Objects
     data class ActivityDataClass(
         val actID:Int,
         val title: String,
@@ -31,16 +33,54 @@ class ToolBox
         val activities: MutableList<ActivityDataClass>
         )
 
-    /*data class ActivityDataClass(
-        val actTitle: String,
-        val actClient: String,
-        val actLocation:String,
-        val actCategory : CategoryDataClass,
-        val actDuration : Double,
-        val actStartDate: String,
-        val actEndDate: String
-    )*/
+    data class AccountSettings(
+        var userImage: String,
+        var minHours: Int,
+        var maxHours: Int,
+        var email: String,
+        var username: String,
+        var firstName: String,
+        var surname: String,
+        var password: String
+    )
+    {
+        fun updateSettings(
+            userImage: String,
+            minHours: Int,
+            maxHours: Int,
+            email: String,
+            username: String,
+            firstName: String,
+            surname: String,
+            password: String
+        ) {
+            this.userImage = userImage
+            this.minHours = minHours
+            this.maxHours = maxHours
+            this.email = email
+            this.username = username
+            this.firstName = firstName
+            this.surname = surname
+            this.password = password
+        }
+    }
 
+    object AccountManager{
+        private val currentSettings = AccountSettings(
+            "@drawable/default_profile",
+            1,
+            1,
+            "default@default.com",
+            "default",
+            "default",
+            "default",
+            "default")
+
+        fun getSettingsObject() : AccountSettings{
+            return currentSettings;
+        }
+
+    }
 
     object ActivityManager{
         private val activityList = mutableListOf<ActivityDataClass>()
@@ -70,9 +110,7 @@ class ToolBox
             return categoryList
         }
 
-        /*fun getActivityList(): List<ActivityDataClass>{
-            return activityList
-        }*/
+        //--------General Utility Functions
 
         //Returns the current Date as a String
         fun getCurrentDateString(): String{
@@ -81,6 +119,20 @@ class ToolBox
             val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
             val formattedDate = dateFormat.format(TimeCalendar.time)
             return formattedDate
+        }
+
+        //Takes in a spinner and an int and returns the index of the int in the spinner if it exists
+        fun getSpinnerIndexForValue(spinner: Spinner, value: String): Int{
+            val adapter = spinner.adapter
+
+            for (index in 0 until adapter.count) {
+                val item = adapter.getItem(index)
+                if (item.equals(value)) {
+                    return index
+                }
+            }
+
+            return -1 // Return -1 if the desired value is not found
         }
     }
 }

@@ -14,7 +14,6 @@ import com.google.android.material.navigation.NavigationView
 import android.widget.ImageView
 import android.widget.Toast
 import android.app.AlertDialog
-import android.content.DialogInterface
 import androidx.core.content.ContextCompat
 import android.Manifest
 import android.content.pm.PackageManager
@@ -33,19 +32,140 @@ import android.os.Build
 import android.os.Environment
 import java.text.SimpleDateFormat
 import java.util.*
-import android.app.Activity
+import android.widget.Button
+import com.google.android.material.textfield.TextInputEditText
 
 
 class AccountSettings : AppCompatActivity(), View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
     private lateinit var binding: ActivityAccountSettingsBinding
-
-
-
     private val CAMERA_PERMISSION_REQUEST_CODE = 100
     private val STORAGE_PERMISSION_REQUEST_CODE = 101
     private var profilePicture: Bitmap? = null
     private lateinit var imageView: ImageView
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+
+        super.onCreate(savedInstanceState)
+        binding = ActivityAccountSettingsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        //Getting a reference to the views to Update Account settings
+        val minHours = findViewById<Spinner>(R.id.min_time)
+        val maxHours = findViewById<Spinner>(R.id.max_time)
+        //Creating the items for the spinner
+        val minHoursItems = arrayOf(1,2,3,4,5,6,7,8)
+        val maxHoursItems = arrayOf(1,2,4,5,6,7,8,9,10,11,12)
+        //Creating the Adapters for the spinners
+        val minHoursAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, minHoursItems)
+        val maxHoursAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, maxHoursItems)
+        //Setting the adapters for the spinners
+        minHours.adapter = minHoursAdapter
+        maxHours.adapter = maxHoursAdapter
+
+        val email = findViewById<TextInputEditText>(R.id.txtEmail)
+        val username = findViewById<TextInputEditText>(R.id.txtUsername)
+        val firstName = findViewById<TextInputEditText>(R.id.txtFirstname)
+        val surname = findViewById<TextInputEditText>(R.id.txtSurname)
+        val password = findViewById<TextInputEditText>(R.id.txtPassword)
+        val updateButton = findViewById<Button>(R.id.updateSettings)
+
+        //Retrieves the current settings object from toolbox to be updated
+        var currentSettings = ToolBox.AccountManager.getSettingsObject()
+
+        setSupportActionBar(binding.navToolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+
+        var toggleOnOff = ActionBarDrawerToggle(
+            this,
+            binding.drawerLayout, binding.navToolbar,
+            R.string.navigation_drawer_open,
+            R.string.navigation_drawer_close
+        )
+
+        binding.drawerLayout.addDrawerListener(toggleOnOff)
+        toggleOnOff.syncState()
+
+        binding.navView.bringToFront()
+        binding.navView.setNavigationItemSelectedListener(this)
+
+        val minSpinner: Spinner = findViewById(R.id.min_time)
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.min_time_array,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            // Specify the layout to use when the list of choices appears
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            // Apply the adapter to the spinner
+            minSpinner.adapter = adapter
+        }
+
+        val maxSpinner: Spinner = findViewById(R.id.max_time)
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.max_time_array,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            // Specify the layout to use when the list of choices appears
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            // Apply the adapter to the spinner
+            maxSpinner.adapter = adapter
+        }
+
+        //To Make Profile Picture Clickable
+
+        val profilePicture: ImageView = findViewById(R.id.profilePicture)
+        val profilePhotoUri = getProfilePhotoUri()
+        if (profilePhotoUri != null) {
+            profilePicture.setImageURI(profilePhotoUri)
+        }
+        profilePicture.setOnClickListener {
+
+            showOptionDialog()
+            showToast("You Need To Allow Access To Your Camera")
+        }
+        //Setting the different views to the user's account settings
+        fun updateAccountSettings(){
+            //Finding the index of the desired min and max hours in the spinner to set the view
+            val desiredMin = ToolBox.CategoryManager.getSpinnerIndexForValue(minHours, currentSettings.minHours.toString())
+            val desiredMax = ToolBox.CategoryManager.getSpinnerIndexForValue(maxHours, currentSettings.maxHours.toString())
+            //Setting the spinners
+            minHours.setSelection(desiredMin)
+            maxHours.setSelection(desiredMax)
+            email.setText(currentSettings.email)
+            username.setText(currentSettings.username)
+            firstName.setText(currentSettings.firstName)
+            surname.setText(currentSettings.surname)
+            password.setText(currentSettings.password)
+            println(currentSettings.minHours)
+        }
+
+        //Setting the account settings to visually match the users desired settings
+        updateAccountSettings()
+
+        //Code to handle user updating settings
+        updateButton.setOnClickListener{
+            //Setting all of the values of the currentSettings object with data user has entered
+            currentSettings.updateSettings(
+                "default",
+                //Getting the currently selected item from the spinner, casting to string then int
+                minHours.selectedItem.toString().toInt(),
+                maxHours.selectedItem.toString().toInt(),
+                email.text.toString(),
+                username.text.toString(),
+                firstName.text.toString(),
+                surname.text.toString(),
+                password.text.toString()
+            )
+            updateAccountSettings()
+        }
+
+
+
+    }
 
     private val cameraLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -314,71 +434,7 @@ class AccountSettings : AppCompatActivity(), View.OnClickListener, NavigationVie
                 //............................................................................................//
 
 
-                override fun onCreate(savedInstanceState: Bundle?) {
 
-                    super.onCreate(savedInstanceState)
-                    binding = ActivityAccountSettingsBinding.inflate(layoutInflater)
-                    setContentView(binding.root)
-
-                    setSupportActionBar(binding.navToolbar)
-                    supportActionBar?.setDisplayHomeAsUpEnabled(true)
-                    supportActionBar?.setDisplayShowHomeEnabled(true)
-
-                    var toggleOnOff = ActionBarDrawerToggle(
-                        this,
-                        binding.drawerLayout, binding.navToolbar,
-                        R.string.navigation_drawer_open,
-                        R.string.navigation_drawer_close
-                    )
-
-                    binding.drawerLayout.addDrawerListener(toggleOnOff)
-                    toggleOnOff.syncState()
-
-                    binding.navView.bringToFront()
-                    binding.navView.setNavigationItemSelectedListener(this)
-
-                    val minSpinner: Spinner = findViewById(R.id.min_time)
-                    // Create an ArrayAdapter using the string array and a default spinner layout
-                    ArrayAdapter.createFromResource(
-                        this,
-                        R.array.min_time_array,
-                        android.R.layout.simple_spinner_item
-                    ).also { adapter ->
-                        // Specify the layout to use when the list of choices appears
-                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                        // Apply the adapter to the spinner
-                        minSpinner.adapter = adapter
-                    }
-
-                    val maxSpinner: Spinner = findViewById(R.id.max_time)
-                    // Create an ArrayAdapter using the string array and a default spinner layout
-                    ArrayAdapter.createFromResource(
-                        this,
-                        R.array.max_time_array,
-                        android.R.layout.simple_spinner_item
-                    ).also { adapter ->
-                        // Specify the layout to use when the list of choices appears
-                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                        // Apply the adapter to the spinner
-                        maxSpinner.adapter = adapter
-                    }
-
-                    //To Make Profile Picture Clickable
-
-                    val profilePicture: ImageView = findViewById(R.id.profilePicture)
-                        val profilePhotoUri = getProfilePhotoUri()
-                        if (profilePhotoUri != null) {
-                            profilePicture.setImageURI(profilePhotoUri)
-                        }
-                        profilePicture.setOnClickListener {
-
-                            showOptionDialog()
-                              showToast("You Need To Allow Access To Your Camera")
-                        }
-
-
-
-                }
 
 
 
