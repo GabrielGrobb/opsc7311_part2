@@ -173,9 +173,7 @@
                 android:layout_marginLeft="12dp"
                 android:layout_marginTop="20dp"
                 android:text="@string/TotalHoursWorked"
-                android:textSize="20dp">
-
-            </TextView>
+                android:textSize="20dp"/>
 
             <TextView
                 android:id="@+id/totalCategoryHours"
@@ -185,6 +183,8 @@
                 android:layout_marginTop="20dp"
                 android:text="0"
                 android:textSize="20dp"/>
+
+
 
         </LinearLayout>
 

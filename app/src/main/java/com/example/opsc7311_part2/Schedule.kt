@@ -60,8 +60,6 @@ class Schedule : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
         completedTasks = findViewById(R.id.txtCompletedTasks)
         spinnerSchedule = findViewById(R.id.spinnerSchedule)
 
-        /// Setting a variable to the linearlayout
-
 
         val activityList = ToolBox.ActivityManager.getActivityList()
 
@@ -71,7 +69,6 @@ class Schedule : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
 
         for (activity in activityList)
         {
-
             if(activity.startDate == CurrentDateTextView.text.toString())
             {
                 // Match found, perform desired actions with the activity
@@ -82,12 +79,8 @@ class Schedule : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
                 customView.setActName(activity.title)
                 // customView.setIcon(imageResource)
                 displayView.addView(customView)
-
             }
-
-
         }
-
     }
 
     //............................................................................................//

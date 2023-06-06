@@ -24,11 +24,14 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
     private var time = 0.0
     private lateinit var progressBar: ProgressBar
     private lateinit var progressionBar: View
-    private lateinit var maxTimeTextView: TextView
+    //private lateinit var maxTimeTextView: TextView
     private val maxProgress = 100
     private var currentProgress = 0
-    private var maxTime = Duration.ofHours(24)
+    //private var maxTime = Duration.ofHours(24)
+    private var maxTime: Duration = Duration.ZERO
     private var timerStarted = false
+
+
     //............................................................................................//
 
     override fun onCreate(savedInstanceState: Bundle?)
@@ -73,14 +76,17 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
 
         timerText = findViewById(R.id.txtTimerCounter)
         stopStartButton = findViewById(R.id.btnPlay)
-        //stopStartButton.setOnClickListener{startStopTapped()}
+        stopStartButton.setOnClickListener{startStopTapped()}
 
         timer = Timer()
 
         progressBar = findViewById(R.id.progressBar)
 
-        maxTimeTextView = findViewById(R.id.txtDuration)
-        maxTimeTextView.text = "Max Time: "+ToolBox.CategoryManager.formatDuration(activityObject.duration)
+        val maxTimeTextView = findViewById<TextView>(R.id.txtDuration)
+        maxTimeTextView.text = activityObject.duration.toMinutes().toString()
+
+        val maxTimeHours = maxTimeTextView.text.toString().toDouble() // Convert the input to a Double or use a default value if conversion fails
+        maxTime = Duration.ofHours(maxTimeHours.toLong()) // Create a Duration object using the converted hours
 
 
 
@@ -88,7 +94,7 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
 
     //............................................................................................//
 
-    /*private fun startStopTapped()
+    private fun startStopTapped()
     {
         if (!timerStarted)
         {
@@ -102,7 +108,7 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
             setButtonUI(R.drawable.baseline_play_circle_24)
             timerTask.cancel()
         }
-    }*/
+    }
 
     //............................................................................................//
 
@@ -112,7 +118,7 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
 
     //............................................................................................//
 
-   /* private fun startTimer()
+    private fun startTimer()
     {
         timerTask = object : TimerTask()
         {
@@ -129,14 +135,17 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
         // Sped up the timer counter to see if the progress bar progresses.
         // remember to change period: 1000
         timer.scheduleAtFixedRate(timerTask, 0, 10)
-    }*/
+    }
 
     //............................................................................................//
 
-    /*private fun updateProgressBar() {
-        currentProgress = (((time/60) / maxTime) * maxProgress).toInt()
+    private fun updateProgressBar() {
+        //var actTime = maxTimeTextView.text.toString().toDouble()
+        //val actTimeMinutes = maxTime.toMinutes().toDouble() // Convert maxTime to minutes
+        val maxTimeInMinutes = maxTime.toHours()
+        currentProgress = (((time/60) / maxTimeInMinutes) * maxProgress).toInt()
         progressBar.progress = currentProgress
-    }*/
+    }
 
     private fun getTimerText(): String {
         val rounded = time.toInt()

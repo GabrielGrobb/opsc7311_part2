@@ -38,7 +38,7 @@ dependencies {
     implementation 'androidx.activity:activity-ktx:1.3.1'
     /*Added in for Camera*/
 
-
+    implementation 'com.jakewharton.threetenabp:threetenabp:1.3.1'
     implementation 'com.getbase:floatingactionbutton:1.10.1'
     implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.core:core-ktx:1.10.0'
