@@ -181,5 +181,20 @@ class ToolBox
             return -1 // Return -1 if the desired value is not found
         }
 
+        //Takes in an activity object and returns a percentage value as an integer related to how far through the max length the activity is
+        fun calcPercentageTimeSpent(activity: ActivityDataClass): Int {
+            val totalTime = activity.duration.toMillis() // Total duration in milliseconds
+            val currentTimeSpent = activity.currentTimeSpent.toMillis() // Current time spent in milliseconds
+
+            if (totalTime > 0) {
+                val percentage = (currentTimeSpent.toFloat() / totalTime.toFloat()) * 100
+                return percentage.toInt()
+            }
+
+            // Return 0 if the total time is zero (to avoid division by zero)
+            return 0
+        }
+
+
     }
 }
