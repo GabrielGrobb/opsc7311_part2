@@ -35,6 +35,7 @@ class Schedule : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
         super.onCreate(savedInstanceState)
         binding = ActivityScheduleBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         //Finding the TextView we want to update
         var CurrentDateTextView = findViewById<TextView>(R.id.CurrentDate)
         //Setting the value of the text view to the Calendar's current date
@@ -72,19 +73,19 @@ class Schedule : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
         for (activity in activityList)
         {
 
-            /*if(activity.startDate == )
+            if(activity.startDate == CurrentDateTextView.text.toString())
             {
+                // Match found, perform desired actions with the activity
+                val imageResource = resources.getIdentifier("home_icon", "drawable", packageName)
+                val customView = custom_activity_icon(this)
 
+                customView.setActID(activity.actID)
+                customView.setActName(activity.title)
+                // customView.setIcon(imageResource)
+                displayView.addView(customView)
 
-            }*/
-            // Match found, perform desired actions with the activity
-            val imageResource = resources.getIdentifier("home_icon", "drawable", packageName)
-            val customView = custom_activity_icon(this)
+            }
 
-            customView.setActID(activity.actID)
-            customView.setActName(activity.title)
-            // customView.setIcon(imageResource)
-            displayView.addView(customView)
 
         }
 

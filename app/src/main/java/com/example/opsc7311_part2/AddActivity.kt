@@ -83,7 +83,7 @@ class AddActivity : AppCompatActivity() {
             val actDuration = 0 // Replace with the actual duration value
             val actStartDate = showDatePickerDialog(R.id.txtStartDate)
             //val actEndDate = "" // Replace with the actual end date value*/
-            val actStartDate = showDatePickerDialog(txtStartDate)
+            val actStartDate = findViewById<TextInputEditText>(R.id.txtStartDate).text
             val selectedCategory = spCategory.selectedItem.toString()
 
             val category = categoryList.find { it.name == selectedCategory }
@@ -97,7 +97,7 @@ class AddActivity : AppCompatActivity() {
                     selectedCategory,
                     categoryId,
                     txtDuration.text.toString().toInt(),
-                    actStartDate,
+                    actStartDate.toString(),
                     //actEndDate
                 )
                 //ToolBox.ActivityManager.addActivity(newActivity)

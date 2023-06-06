@@ -22,7 +22,7 @@ class ToolBox
         val category: String,
         val categoryId: Int, // ID of the category
         val duration: Int,
-        val startDate: Unit,
+        val startDate: String,
         //val endDate: Date
     )
 
