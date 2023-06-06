@@ -15,7 +15,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
-        app:headerLayout="@layout/header"
+        app:headerLayout="@layout/activity_header"
         app:menu="@menu/main_menu" />
 
     <LinearLayout

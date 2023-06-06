@@ -228,22 +228,6 @@ class AccountSettings : AppCompatActivity(), View.OnClickListener, NavigationVie
         }
     }
 
-    /*private fun requestStoragePermission() {
-        if (ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                STORAGE_PERMISSION_REQUEST_CODE
-            )
-        } else {
-            profilePicture?.let { saveProfilePhoto(profilePicture) }
-        }
-    }*/
-
     private fun openCamera() {
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         cameraLauncher.launch(intent)
@@ -254,58 +238,12 @@ class AccountSettings : AppCompatActivity(), View.OnClickListener, NavigationVie
     }
 
 
-    /*override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
-        if (requestCode == CAMERA_PERMISSION_REQUEST_CODE) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                openCamera()
-            } else {
-                showToast("Camera permission denied!")
-            }
-        } else if (requestCode == STORAGE_PERMISSION_REQUEST_CODE) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                saveProfilePhoto(profilePicture?.bitmap)
-            } else {
-                showToast("Storage permission denied!")
-            }
-        }
-    }*/
-
-
-    /*override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-
-        if (requestCode == CAMERA_PERMISSION_REQUEST_CODE) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                openCamera()
-            } else {
-                showToast("Camera permission denied!")
-            }
-        } else if (requestCode == STORAGE_PERMISSION_REQUEST_CODE) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                saveProfilePhoto(photoBitmap)
-            } else {
-                showToast("Storage permission denied!")
-            }
-        }
-    }*/
 
     // Get the Uri of the profile photo from storage
     private fun getProfilePhotoUri(): Uri? {
         // Retrieve the profile photo Uri from storage if available
         // Return the Uri or null if not available
-        // Implement this method according to how you save the profile photo
-        // e.g., using SharedPreferences or a local file
-        // Example:
         val sharedPreferences = getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
         val profilePhotoUriString = sharedPreferences.getString("profilePhotoUri", null)
         return profilePhotoUriString?.let { Uri.parse(it) }
@@ -338,6 +276,31 @@ class AccountSettings : AppCompatActivity(), View.OnClickListener, NavigationVie
         val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
         return "ProfilePhoto_$timeStamp.jpg"
     }
+
+
+    //--------------------------------------------------------------------------------------------//
+    /*For devices with API level 29 (Android Q) and above, the image is saved using the MediaStore
+    API.
+    The image is stored in the Pictures directory of the primary external storage.
+    The saveImageToMediaStoreQ() function is responsible for saving the image to the MediaStore.
+
+    For devices with API level below 29, the image is saved to the public Pictures directory in the
+    external storage. The saveImageToMediaStore() function is responsible for saving the
+    image in this case.
+
+    Here are the default storage locations for both cases:
+
+    For API level 29 and above:
+
+    Directory: Environment.DIRECTORY_PICTURES
+    Location: Primary external storage (usually the user's public Pictures directory)
+    For API level below 29:
+
+    Directory: Environment.DIRECTORY_PICTURES
+    Location: Public Pictures directory in the external storage*/
+
+    //--------------------------------------------------------------------------------------------//
+
 
     // Save the profile photo to MediaStore for API levels >= 29 (Android Q)
     private fun saveImageToMediaStoreQ(
@@ -373,6 +336,7 @@ class AccountSettings : AppCompatActivity(), View.OnClickListener, NavigationVie
 
         return null
     }
+
 
     // Save the profile photo to MediaStore for API levels < 29
     private fun saveImageToMediaStore(
