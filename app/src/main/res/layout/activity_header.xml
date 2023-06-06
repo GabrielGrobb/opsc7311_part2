@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:fontFamily="sans-serif-black"
-
+        android:text="josh"
         android:textSize="18dp" />
 
 

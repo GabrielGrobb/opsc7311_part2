@@ -133,12 +133,13 @@
             android:textColor="#FFFBF6" />
 
         <TextView
+            android:id="@+id/registerText"
             android:layout_width="match_parent"
             android:layout_height="46dp"
-            android:text="@string/donthaveacc"
             android:gravity="center"
-            android:textStyle="italic"
-            android:textColor="@color/black" />
+            android:text="@string/donthaveacc"
+            android:textColor="@color/black"
+            android:textStyle="italic" />
 
     </LinearLayout>
 
