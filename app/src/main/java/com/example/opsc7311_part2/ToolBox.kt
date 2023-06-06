@@ -30,16 +30,20 @@ class ToolBox
         val activities: MutableList<ActivityDataClass>
         )
 
-    /*data class ActivityDataClass(
-        val actTitle: String,
-        val actClient: String,
-        val actLocation:String,
-        val actCategory : CategoryDataClass,
-        val actDuration : Double,
-        val actStartDate: String,
-        val actEndDate: String
-    )*/
+    data class AccountSettings(
+        var userImage: ImageView,
+        var minHours: Int,
+        var maxHours: Int,
+        var email: String,
+        var username: String,
+        var firstName: String,
+        var surname: String,
+        var password: String
+    )
 
+    object AccountManager{
+
+    }
 
     object ActivityManager{
         private val activityList = mutableListOf<ActivityDataClass>()
