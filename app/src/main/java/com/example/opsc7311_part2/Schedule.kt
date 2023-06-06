@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -28,6 +29,7 @@ class Schedule : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
     private lateinit var spinnerSchedule: Spinner
     private lateinit var dateToday: TextView
     private lateinit var dateTomorrow: TextView
+    private lateinit var layoutSchedule: LinearLayout
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
@@ -58,6 +60,33 @@ class Schedule : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
         completedTasks = findViewById(R.id.txtCompletedTasks)
         spinnerSchedule = findViewById(R.id.spinnerSchedule)
 
+        /// Setting a variable to the linearlayout
+
+
+        val activityList = ToolBox.ActivityManager.getActivityList()
+
+        val displayView = findViewById<LinearLayout>(R.id.layout)
+
+        //val addedActivityIdentifiers = HashSet<String>()
+
+        for (activity in activityList)
+        {
+
+            /*if(activity.startDate == )
+            {
+
+
+            }*/
+            // Match found, perform desired actions with the activity
+            val imageResource = resources.getIdentifier("home_icon", "drawable", packageName)
+            val customView = custom_activity_icon(this)
+
+            customView.setActID(activity.actID)
+            customView.setActName(activity.title)
+            // customView.setIcon(imageResource)
+            displayView.addView(customView)
+
+        }
 
     }
 

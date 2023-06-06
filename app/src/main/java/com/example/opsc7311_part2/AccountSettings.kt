@@ -14,7 +14,6 @@ import com.google.android.material.navigation.NavigationView
 import android.widget.ImageView
 import android.widget.Toast
 import android.app.AlertDialog
-import android.content.DialogInterface
 import androidx.core.content.ContextCompat
 import android.Manifest
 import android.content.pm.PackageManager
@@ -33,17 +32,12 @@ import android.os.Build
 import android.os.Environment
 import java.text.SimpleDateFormat
 import java.util.*
-import android.app.Activity
 import android.widget.Button
 import com.google.android.material.textfield.TextInputEditText
-import org.w3c.dom.Text
 
 
 class AccountSettings : AppCompatActivity(), View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
     private lateinit var binding: ActivityAccountSettingsBinding
-
-
-
     private val CAMERA_PERMISSION_REQUEST_CODE = 100
     private val STORAGE_PERMISSION_REQUEST_CODE = 101
     private var profilePicture: Bitmap? = null
@@ -58,6 +52,16 @@ class AccountSettings : AppCompatActivity(), View.OnClickListener, NavigationVie
         //Getting a reference to the views to Update Account settings
         val minHours = findViewById<Spinner>(R.id.min_time)
         val maxHours = findViewById<Spinner>(R.id.max_time)
+        //Creating the items for the spinner
+        val minHoursItems = arrayOf(1,2,3,4,5,6,7,8)
+        val maxHoursItems = arrayOf(1,2,4,5,6,7,8,9,10,11,12)
+        //Creating the Adapters for the spinners
+        val minHoursAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, minHoursItems)
+        val maxHoursAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, maxHoursItems)
+        //Setting the adapters for the spinners
+        minHours.adapter = minHoursAdapter
+        maxHours.adapter = maxHoursAdapter
+
         val email = findViewById<TextInputEditText>(R.id.txtEmail)
         val username = findViewById<TextInputEditText>(R.id.txtUsername)
         val firstName = findViewById<TextInputEditText>(R.id.txtFirstname)
@@ -65,22 +69,8 @@ class AccountSettings : AppCompatActivity(), View.OnClickListener, NavigationVie
         val password = findViewById<TextInputEditText>(R.id.txtPassword)
         val updateButton = findViewById<Button>(R.id.updateSettings)
 
-
         //Retrieves the current settings object from toolbox to be updated
         var currentSettings = ToolBox.AccountManager.getSettingsObject()
-
-        //Setting the different views to the user's account settings
-        fun updateAccountSettings(){
-            minHours.setSelection(1)
-            email.setText(currentSettings.email)
-            username.setText(currentSettings.username)
-            firstName.setText(currentSettings.firstName)
-            surname.setText(currentSettings.surname)
-            password.setText(currentSettings.password)
-        }
-
-        //Setting the account settings to visually match the users desired settings
-        updateAccountSettings()
 
         setSupportActionBar(binding.navToolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -137,6 +127,24 @@ class AccountSettings : AppCompatActivity(), View.OnClickListener, NavigationVie
             showOptionDialog()
             showToast("You Need To Allow Access To Your Camera")
         }
+        //Setting the different views to the user's account settings
+        fun updateAccountSettings(){
+            //Finding the index of the desired min and max hours in the spinner to set the view
+            val desiredMin = ToolBox.CategoryManager.getSpinnerIndexForValue(minHours, currentSettings.minHours.toString())
+            val desiredMax = ToolBox.CategoryManager.getSpinnerIndexForValue(maxHours, currentSettings.maxHours.toString())
+            //Setting the spinners
+            minHours.setSelection(desiredMin)
+            maxHours.setSelection(desiredMax)
+            email.setText(currentSettings.email)
+            username.setText(currentSettings.username)
+            firstName.setText(currentSettings.firstName)
+            surname.setText(currentSettings.surname)
+            password.setText(currentSettings.password)
+            println(currentSettings.minHours)
+        }
+
+        //Setting the account settings to visually match the users desired settings
+        updateAccountSettings()
 
         //Code to handle user updating settings
         updateButton.setOnClickListener{
@@ -154,6 +162,7 @@ class AccountSettings : AppCompatActivity(), View.OnClickListener, NavigationVie
             )
             updateAccountSettings()
         }
+
 
 
     }

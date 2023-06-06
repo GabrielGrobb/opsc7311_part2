@@ -23,6 +23,10 @@ class Category : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
         binding = ActivityCategoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        //----------------------------------------------------------------------------------------//
+
+
+        /// This is for the navigation burger menu
         setSupportActionBar(binding.navToolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
@@ -38,17 +42,7 @@ class Category : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
         binding.navView.bringToFront()
         binding.navView.setNavigationItemSelectedListener(this)
 
-      /*val categoryNameTextView = findViewById<TextView>(R.id.CategoryName)
-        val categoryIconImageView = findViewById<ImageView>(R.id.iconPicture)
-
-       *//* val catName = intent.getStringExtra("categoryName")
-        val imgResource = intent.getIntExtra("imageIcon", 0)
-
-        val categoryNameTextView = findViewById<TextView>(R.id.CategoryName)
-        val categoryIconImageView = findViewById<ImageView>(R.id.iconPicture)
-
-        categoryNameTextView.text = catName
-        categoryIconImageView.setImageResource(imgResource)*/
+        //----------------------------------------------------------------------------------------//
 
         val catID = intent.getIntExtra("categoryID", 1) // Default value if category ID is not provided
 
@@ -64,31 +58,39 @@ class Category : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
         categoryIdentification.text = catID.toString()
 
         val categoryList = ToolBox.CategoryManager.getCategoryList()
-        //val activityList = ToolBox.ActivityManager.getActivityList()
         val displayView = findViewById<LinearLayout>(R.id.ActivityView)
+
+        /// Creating a HashSet for the activities.
+        val addedActivities = HashSet<Int>()
 
         for (category in categoryList)
         {
-            /*category.name = catName.toString()
-            category.catID = catID*/
-
             val activities = category.activities
 
             for (activity in activities)
             {
-                if (activity.categoryId == catID && activity.category == catName)
-                {
-                        // Match found, perform desired actions with the activity
+                if (activity.categoryId == catID && activity.category == catName) {
+
+                    val currentActivityId = activity.actID
+
+                    /// Preventing duplication of an activity in the linearlayout
+                    if (!addedActivities.contains(currentActivityId)) {
+
                         val imageResource = resources.getIdentifier("home_icon", "drawable", packageName)
                         val customView = custom_activity_icon(this)
 
+                        //customView.setActID(activity.actID)
                         customView.setActName(activity.title)
                         // customView.setIcon(imageResource)
                         displayView.addView(customView)
+
+                        // Adding its ID to the HashSet
+                        addedActivities.add(currentActivityId)
+
+                    }
                 }
             }
         }
-
     }
 
     //............................................................................................//

@@ -12,6 +12,7 @@ import android.widget.*
 class custom_activity_icon @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : LinearLayout(context, attrs) {
 
+    private var activityID:Int = 0;
     private var activityName: String = ""
     //private var imageResource: Int = 0
 
@@ -25,6 +26,7 @@ class custom_activity_icon @JvmOverloads constructor(
 
             val intent = Intent(context, CaptureTask::class.java)
             intent.putExtra("activityName", activityName)
+            intent.putExtra("activityID", activityID)
             //intent.putExtra("imageIcon",imageResource)
             context.startActivity(intent)
 
@@ -50,6 +52,13 @@ class custom_activity_icon @JvmOverloads constructor(
         catName.text = name
         activityName = name
 
+    }
+
+    fun setActID(ID: Int) {
+        //categoryID = ID+1 // Increment the counter by 1
+        val actID = findViewById<TextView>(R.id.activityID)
+        actID.text = ID.toString()
+        activityID = ID
     }
 
 }

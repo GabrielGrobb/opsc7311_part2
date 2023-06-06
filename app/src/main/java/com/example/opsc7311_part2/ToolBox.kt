@@ -15,13 +15,14 @@ class ToolBox
 {
     //------------------Data Classes and Objects
     data class ActivityDataClass(
+        val actID:Int,
         val title: String,
         val client: String,
         val location: String,
         val category: String,
         val categoryId: Int, // ID of the category
         val duration: Int,
-        //val startDate: Date,
+        val startDate: Unit,
         //val endDate: Date
     )
 
@@ -121,8 +122,17 @@ class ToolBox
         }
 
         //Takes in a spinner and an int and returns the index of the int in the spinner if it exists
-        fun getSpinnerIndexForValue(spinner: Spinner, value: Int): Int{
-            return 0
+        fun getSpinnerIndexForValue(spinner: Spinner, value: String): Int{
+            val adapter = spinner.adapter
+
+            for (index in 0 until adapter.count) {
+                val item = adapter.getItem(index)
+                if (item.equals(value)) {
+                    return index
+                }
+            }
+
+            return -1 // Return -1 if the desired value is not found
         }
     }
 }
