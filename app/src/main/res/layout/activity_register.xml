@@ -234,7 +234,7 @@
             android:layout_gravity="center">
 
             <Button
-                android:id="@+id/btnLogin"
+                android:id="@+id/btnSubmit"
                 android:layout_width="150dp"
                 android:layout_height="48dp"
                 android:layout_marginTop="10dp"
