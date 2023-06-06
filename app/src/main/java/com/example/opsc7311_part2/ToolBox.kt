@@ -13,13 +13,14 @@ import java.util.*
 class ToolBox
 {
     data class ActivityDataClass(
+        val actID:Int,
         val title: String,
         val client: String,
         val location: String,
         val category: String,
         val categoryId: Int, // ID of the category
         val duration: Int,
-        //val startDate: Date,
+        val startDate: Unit,
         //val endDate: Date
     )
 
