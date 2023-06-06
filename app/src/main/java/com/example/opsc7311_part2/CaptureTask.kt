@@ -88,11 +88,44 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
         val maxTimeHours = maxTimeTextView.text.toString().toDouble() // Convert the input to a Double or use a default value if conversion fails
         maxTime = Duration.ofHours(maxTimeHours.toLong()) // Create a Duration object using the converted hours
 
+        //Setting MaxTime view
+        maxTimeTextView.text = "Max Time: "+activityObject.duration.toHours()
 
+        //Date formatting spinner stuff
+        val spinner: Spinner = findViewById(R.id.dropDownTimeFormat)
 
+        //Handling logic for changing how the time is displayed
+        val displayDuration = activityObject.duration
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                val selectedItem = parent.getItemAtPosition(position)
+                when(selectedItem){
+                    "Hrs" ->{
+                        val hours = displayDuration.toHours()
+                        val timeString = java.lang.StringBuilder()
+                        timeString.append("Max Time: " + hours + " hour")
+                        if(hours>1){timeString.append("s")}
+                        maxTimeTextView.text = timeString
+                    }
+                    "Min" ->{
+                        val minutes = displayDuration.toMinutes()
+                        val timeString = "Max Time: " + minutes + " minutes"
+                        maxTimeTextView.text = timeString
+                    }
+                }
+            }
+            override fun onNothingSelected(parent: AdapterView<*>) {
+            }
+        }
     }
 
     //............................................................................................//
+
+    fun recordTimerToActivity(){
+        //Get the current activity
+        val currentActivity = ToolBox.ActivityManager.getActivityObjectByID(intent.getIntExtra("activityID", -1))
+        timer.purge()
+    }
 
     private fun startStopTapped()
     {
