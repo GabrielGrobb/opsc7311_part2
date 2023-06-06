@@ -4,6 +4,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.widget.DatePicker
 import android.widget.ImageView
+import android.widget.Spinner
 import android.widget.TextView
 import java.io.Serializable
 import java.text.SimpleDateFormat
@@ -12,6 +13,7 @@ import java.util.*
 
 class ToolBox
 {
+    //------------------Data Classes and Objects
     data class ActivityDataClass(
         val title: String,
         val client: String,
@@ -31,7 +33,7 @@ class ToolBox
         )
 
     data class AccountSettings(
-        var userImage: ImageView,
+        var userImage: String,
         var minHours: Int,
         var maxHours: Int,
         var email: String,
@@ -40,8 +42,42 @@ class ToolBox
         var surname: String,
         var password: String
     )
+    {
+        fun updateSettings(
+            userImage: String,
+            minHours: Int,
+            maxHours: Int,
+            email: String,
+            username: String,
+            firstName: String,
+            surname: String,
+            password: String
+        ) {
+            this.userImage = userImage
+            this.minHours = minHours
+            this.maxHours = maxHours
+            this.email = email
+            this.username = username
+            this.firstName = firstName
+            this.surname = surname
+            this.password = password
+        }
+    }
 
     object AccountManager{
+        private val currentSettings = AccountSettings(
+            "@drawable/default_profile",
+            1,
+            1,
+            "default@default.com",
+            "default",
+            "default",
+            "default",
+            "default")
+
+        fun getSettingsObject() : AccountSettings{
+            return currentSettings;
+        }
 
     }
 
@@ -73,9 +109,7 @@ class ToolBox
             return categoryList
         }
 
-        /*fun getActivityList(): List<ActivityDataClass>{
-            return activityList
-        }*/
+        //--------General Utility Functions
 
         //Returns the current Date as a String
         fun getCurrentDateString(): String{
@@ -84,6 +118,11 @@ class ToolBox
             val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
             val formattedDate = dateFormat.format(TimeCalendar.time)
             return formattedDate
+        }
+
+        //Takes in a spinner and an int and returns the index of the int in the spinner if it exists
+        fun getSpinnerIndexForValue(spinner: Spinner, value: Int): Int{
+            return 0
         }
     }
 }
