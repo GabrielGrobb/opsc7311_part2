@@ -94,11 +94,15 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
                 when(selectedItem){
                     "Hrs" ->{
                         val hours = displayDuration.toHours()
-                        maxTimeTextView.text = "Max Time: " + hours
+                        val timeString = java.lang.StringBuilder()
+                        timeString.append("Max Time: " + hours + " hour")
+                        if(hours>1){timeString.append("s")}
+                        maxTimeTextView.text = timeString
                     }
                     "Min" ->{
                         val minutes = displayDuration.toMinutes()
-                        maxTimeTextView.text = "Max Time: " + minutes
+                        val timeString = "Max Time: " + minutes + " minutes"
+                        maxTimeTextView.text = timeString
                     }
                 }
             }
