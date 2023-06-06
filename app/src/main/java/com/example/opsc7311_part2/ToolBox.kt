@@ -169,44 +169,5 @@ class ToolBox
             return -1 // Return -1 if the desired value is not found
         }
 
-        //Takes in a Duration object and returns a formatted string representing the duration
-        fun formatDuration(duration: Duration): String {
-            val totalSeconds = duration.seconds
-
-            val hours = totalSeconds / 3600
-            val minutes = (totalSeconds % 3600) / 60
-            val seconds = totalSeconds % 60
-
-            val formattedDuration = StringBuilder()
-
-            if (hours > 0) {
-                formattedDuration.append("$hours Hour")
-                if (hours > 1) {
-                    formattedDuration.append("s")
-                }
-            }
-
-            if (minutes > 0) {
-                if (formattedDuration.isNotEmpty()) {
-                    formattedDuration.append(" ")
-                }
-                formattedDuration.append("$minutes Minute")
-                if (minutes > 1) {
-                    formattedDuration.append("s")
-                }
-            }
-
-            if (seconds > 0) {
-                if (formattedDuration.isNotEmpty()) {
-                    formattedDuration.append(" ")
-                }
-                formattedDuration.append("$seconds Second")
-                if (seconds > 1) {
-                    formattedDuration.append("s")
-                }
-            }
-
-            return formattedDuration.toString()
-        }
     }
 }

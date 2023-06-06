@@ -79,9 +79,32 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
 
         progressBar = findViewById(R.id.progressBar)
 
+        //Setting MaxTime view
         maxTimeTextView = findViewById(R.id.txtDuration)
-        maxTimeTextView.text = "Max Time: "+ToolBox.CategoryManager.formatDuration(activityObject.duration)
+        maxTimeTextView.text = "Max Time: "+activityObject.duration.toHours()
 
+        //Date formatting spinner stuff
+        val spinner: Spinner = findViewById(R.id.dropDownTimeFormat)
+
+        //Handling logic for changing how the time is displayed
+        val displayDuration = activityObject.duration
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                val selectedItem = parent.getItemAtPosition(position)
+                when(selectedItem){
+                    "Hrs" ->{
+                        val hours = displayDuration.toHours()
+                        maxTimeTextView.text = "Max Time: " + hours
+                    }
+                    "Min" ->{
+                        val minutes = displayDuration.toMinutes()
+                        maxTimeTextView.text = "Max Time: " + minutes
+                    }
+                }
+            }
+            override fun onNothingSelected(parent: AdapterView<*>) {
+            }
+        }
 
 
     }
@@ -158,6 +181,7 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
 
     //............................................................................................//
 
+    //Function to populate the dropdown spinner that changes the way the duration of the activity is
     private fun populateDropDowns()
     {
         val spinner: Spinner = findViewById(R.id.dropDownTimeFormat)
