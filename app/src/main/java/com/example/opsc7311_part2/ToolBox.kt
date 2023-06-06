@@ -105,6 +105,18 @@ class ToolBox
         fun getActivityList(): List<ActivityDataClass> {
             return activityList
         }
+        fun findMaxEndDate(activityList: List<ActivityDataClass>): String? {
+            var maxEndDate: String? = null
+
+            for (activity in activityList) {
+                if (maxEndDate == null || activity.endDate > maxEndDate) {
+                    maxEndDate = activity.endDate
+                }
+            }
+
+            return maxEndDate
+        }
+
     }
 
     object CategoryManager {
@@ -208,5 +220,6 @@ class ToolBox
 
             return formattedDuration.toString()
         }
+
     }
 }
