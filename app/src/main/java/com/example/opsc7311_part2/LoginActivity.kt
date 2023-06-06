@@ -4,8 +4,8 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
-import com.example.opsc7311_part2.databinding.ActivityCaptureTaskBinding
 import com.google.android.material.textfield.TextInputEditText
 import java.util.Locale.Category
 
@@ -15,6 +15,12 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
 
         val btnSubmit = findViewById<Button>(R.id.btnLogin)
+
+        val registerText = findViewById<TextView>(R.id.registerText)
+        registerText.setOnClickListener{
+            val intent = Intent(this,RegisterActivity::class.java)
+            startActivity(intent)
+        }
 
         btnSubmit.setOnClickListener(){
             val editText = findViewById<TextInputEditText>(R.id.txtUsername)
@@ -36,7 +42,8 @@ class LoginActivity : AppCompatActivity() {
             else{
                 Toast.makeText(this,"username and password is wrong", Toast.LENGTH_LONG).show()
             }
-
+            println(currentSettings.username)
+            println(currentSettings.password)
         }
     }
 }
