@@ -36,6 +36,8 @@ import android.widget.Button
 import com.google.android.material.textfield.TextInputEditText
 
 
+
+
 class AccountSettings : AppCompatActivity(), View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
     private lateinit var binding: ActivityAccountSettingsBinding
     private val CAMERA_PERMISSION_REQUEST_CODE = 100
@@ -44,6 +46,7 @@ class AccountSettings : AppCompatActivity(), View.OnClickListener, NavigationVie
     private lateinit var imageView: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
 
         super.onCreate(savedInstanceState)
         binding = ActivityAccountSettingsBinding.inflate(layoutInflater)
@@ -164,7 +167,6 @@ class AccountSettings : AppCompatActivity(), View.OnClickListener, NavigationVie
         }
 
 
-
     }
 
     private val cameraLauncher =
@@ -216,7 +218,7 @@ class AccountSettings : AppCompatActivity(), View.OnClickListener, NavigationVie
     }
 
 
-    private fun requestStoragePermission() {
+    /*private fun requestStoragePermission() {
         if (ContextCompat.checkSelfPermission(
                 this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -235,7 +237,7 @@ class AccountSettings : AppCompatActivity(), View.OnClickListener, NavigationVie
                 showToast("No profile picture selected!")
             }
         }
-    }
+    }*/
 
     private fun openCamera() {
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)

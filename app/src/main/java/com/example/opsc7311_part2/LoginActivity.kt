@@ -1,5 +1,6 @@
 package com.example.opsc7311_part2
 
+import android.app.TaskStackBuilder
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -38,8 +39,7 @@ class LoginActivity : AppCompatActivity() {
             {
                 val intent = Intent(this,HomePageTest::class.java)
                 startActivity(intent)
-            }
-            else{
+            }else{
                 Toast.makeText(this,"username and password is wrong", Toast.LENGTH_LONG).show()
             }
         }
