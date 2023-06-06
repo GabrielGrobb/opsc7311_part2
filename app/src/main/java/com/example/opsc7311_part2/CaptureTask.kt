@@ -11,12 +11,12 @@ import androidx.core.view.GravityCompat
 import com.example.opsc7311_part2.databinding.ActivityCaptureTaskBinding
 import com.google.android.material.navigation.NavigationView
 import org.w3c.dom.Text
+import java.time.Duration
 import java.util.*
 
 class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.OnNavigationItemSelectedListener
 {
     private lateinit var binding: ActivityCaptureTaskBinding
-
     private lateinit var timerText: TextView
     private lateinit var stopStartButton: ImageButton
     private lateinit var timer: Timer
@@ -27,7 +27,7 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
     private lateinit var maxTimeTextView: TextView
     private val maxProgress = 100
     private var currentProgress = 0
-    private var maxTime = 240.0
+    private var maxTime = Duration.ofHours(24)
     private var timerStarted = false
     //............................................................................................//
 
@@ -60,14 +60,14 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
 
         timerText = findViewById(R.id.txtTimerCounter)
         stopStartButton = findViewById(R.id.btnPlay)
-        stopStartButton.setOnClickListener{startStopTapped()}
+        //stopStartButton.setOnClickListener{startStopTapped()}
 
         timer = Timer()
 
         progressBar = findViewById(R.id.progressBar)
 
         maxTimeTextView = findViewById(R.id.txtDuration)
-        maxTimeTextView.text = getString(R.string.max_time, maxTime)
+        //maxTimeTextView.text = getString(R.string.max_time, maxTime)
 
         val actName = intent.getStringExtra("activityName")
         //val imgResource = intent.getIntExtra("imageIcon", 0)
@@ -82,7 +82,7 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
 
     //............................................................................................//
 
-    private fun startStopTapped()
+    /*private fun startStopTapped()
     {
         if (!timerStarted)
         {
@@ -96,7 +96,7 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
             setButtonUI(R.drawable.baseline_play_circle_24)
             timerTask.cancel()
         }
-    }
+    }*/
 
     //............................................................................................//
 
@@ -106,7 +106,7 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
 
     //............................................................................................//
 
-    private fun startTimer()
+   /* private fun startTimer()
     {
         timerTask = object : TimerTask()
         {
@@ -123,14 +123,14 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
         // Sped up the timer counter to see if the progress bar progresses.
         // remember to change period: 1000
         timer.scheduleAtFixedRate(timerTask, 0, 10)
-    }
+    }*/
 
     //............................................................................................//
 
-    private fun updateProgressBar() {
+    /*private fun updateProgressBar() {
         currentProgress = (((time/60) / maxTime) * maxProgress).toInt()
         progressBar.progress = currentProgress
-    }
+    }*/
 
     private fun getTimerText(): String {
         val rounded = time.toInt()

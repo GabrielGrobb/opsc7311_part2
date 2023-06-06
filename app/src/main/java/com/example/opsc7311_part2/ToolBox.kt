@@ -100,6 +100,27 @@ class ToolBox
         private val categoryList = mutableListOf<CategoryDataClass>()
         //private val activityList = mutableListOf<ActivityDataClass>()
 
+        //Takes in a category object and returns a duration representing the total amount of
+        //Time spent on that category
+        fun calcCategoryTime(cat: CategoryDataClass): Duration {
+            var totalDuration = Duration.ZERO
+            for (activity in cat.activities) {
+                totalDuration = totalDuration.plus(activity.currentTimeSpent)
+            }
+            return totalDuration
+        }
+
+        //Takes in a category id and returns the category object from the list if it exists
+        fun getCategoryByID(id: Int): CategoryDataClass{
+            for(category in categoryList){
+                if(category.catID==id){
+                    return category
+                }
+            }
+            //Not smart enough to fix will crash app sorry gents
+            return categoryList[-1]
+        }
+
         fun addCategory(category: CategoryDataClass) {
             categoryList.add(category)
         }

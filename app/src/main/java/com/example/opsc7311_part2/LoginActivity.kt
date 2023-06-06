@@ -42,8 +42,6 @@ class LoginActivity : AppCompatActivity() {
             else{
                 Toast.makeText(this,"username and password is wrong", Toast.LENGTH_LONG).show()
             }
-            println(currentSettings.username)
-            println(currentSettings.password)
         }
     }
 }

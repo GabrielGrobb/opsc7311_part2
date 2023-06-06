@@ -25,7 +25,6 @@ class Category : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
 
         //----------------------------------------------------------------------------------------//
 
-
         /// This is for the navigation burger menu
         setSupportActionBar(binding.navToolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -56,6 +55,10 @@ class Category : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
         categoryNameTextView.text = catName
         categoryIconImageView.setImageResource(imgResource)
         categoryIdentification.text = catID.toString()
+
+        val totalCategoryHours = findViewById<TextView>(R.id.totalCategoryHours)
+        val categoryObject = ToolBox.CategoryManager.getCategoryByID(catID)
+        totalCategoryHours.text = ToolBox.CategoryManager.calcCategoryTime(categoryObject).toString()
 
         val categoryList = ToolBox.CategoryManager.getCategoryList()
         val displayView = findViewById<LinearLayout>(R.id.ActivityView)

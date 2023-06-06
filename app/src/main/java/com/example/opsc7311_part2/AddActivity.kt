@@ -94,7 +94,7 @@ class AddActivity : AppCompatActivity() {
                     txtLocation.text.toString(),
                     selectedCategory,
                     categoryId,
-                    txtDuration.text.toString(),
+                    Duration.ofHours(txtDuration.text.toString().toLong()),
                     Duration.ZERO,
                     actStartDate.toString(),
                     actEndDate.toString()
