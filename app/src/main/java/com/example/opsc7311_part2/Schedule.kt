@@ -12,13 +12,13 @@ import androidx.core.view.GravityCompat
 import com.example.opsc7311_part2.databinding.ActivityScheduleBinding
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import java.util.Calendar
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 
-class Schedule : AppCompatActivity(), View.OnClickListener, NavigationView.OnNavigationItemSelectedListener
-{
+class Schedule : AppCompatActivity(), View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
     private lateinit var binding: ActivityScheduleBinding
     private lateinit var menuButton: ImageView
     private lateinit var schedulePageTitle: TextView
@@ -28,8 +28,7 @@ class Schedule : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
     private lateinit var dateToday: TextView
     private lateinit var dateTomorrow: TextView
     private lateinit var layoutSchedule: LinearLayout
-    override fun onCreate(savedInstanceState: Bundle?)
-    {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityScheduleBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -44,10 +43,12 @@ class Schedule : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
-        var toggleOnOff = ActionBarDrawerToggle(this,
+        var toggleOnOff = ActionBarDrawerToggle(
+            this,
             binding.drawerLayout, binding.navToolbar,
             R.string.navigation_drawer_open,
-            R.string.navigation_drawer_close)
+            R.string.navigation_drawer_close
+        )
 
         binding.drawerLayout.addDrawerListener(toggleOnOff)
         toggleOnOff.syncState()
@@ -65,10 +66,8 @@ class Schedule : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
 
         //val addedActivityIdentifiers = HashSet<String>()
 
-        for (activity in activityList)
-        {
-            if(activity.startDate == CurrentDateTextView.text.toString())
-            {
+        for (activity in activityList) {
+            if (activity.startDate >= CurrentDateTextView.text.toString()) {
                 // Match found, perform desired actions with the activity
                 val imageResource = resources.getIdentifier("home_icon", "drawable", packageName)
                 val customView = custom_activity_icon(this)
@@ -79,15 +78,19 @@ class Schedule : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
                 displayView.addView(customView)
             }
         }
+        val tilEndDate: TextInputLayout = findViewById(R.id.til_EndDate)
+        val txtEndDate: TextInputEditText = findViewById(R.id.txtEndDate)
+
+        tilEndDate.setEndIconOnClickListener() {
+            showDatePickerDialog(txtEndDate)
+        }
     }
 
     //............................................................................................//
 
-    override fun onNavigationItemSelected(item: MenuItem): Boolean
-    {
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
 
-        when(item.itemId)
-        {
+        when (item.itemId) {
             R.id.nav_home -> {
                 val intent = Intent(applicationContext, HomePageTest::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -121,15 +124,11 @@ class Schedule : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
 
     //............................................................................................//
 
-    override fun onBackPressed()
-    {
+    override fun onBackPressed() {
         //if the drawer is open, close it
-        if(binding.drawerLayout.isDrawerOpen(GravityCompat.START))
-        {
+        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
             binding.drawerLayout.closeDrawer(GravityCompat.START)
-        }
-        else
-        {
+        } else {
             //otherwise, let the super class handle it
             super.onBackPressed()
         }
@@ -137,8 +136,7 @@ class Schedule : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
 
     //............................................................................................//
 
-    override fun onClick(v: View?)
-    {
+    override fun onClick(v: View?) {
         /*TODO("Not yet implemented")*/
     }
 
@@ -156,7 +154,8 @@ class Schedule : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
             this,
             { _, selectedYear, selectedMonth, selectedDay ->
                 // Update the text field with the selected date
-                val formattedDate = String.format("%d-%02d-%02d", selectedYear, selectedMonth + 1, selectedDay)
+                val formattedDate =
+                    String.format("%d-%02d-%02d", selectedYear, selectedMonth + 1, selectedDay)
                 textField.setText(formattedDate)
             },
             year,
@@ -167,61 +166,57 @@ class Schedule : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
         val activityList = ToolBox.ActivityManager.getActivityList()
         // Set a custom date range
         val startDate = ToolBox.CategoryManager.getCurrentDateString()// Set your start date as a Calendar instance
-        val endDate = ToolBox.ActivityManager.findMaxEndDate(activityList).toString()// Set your end date as a Calendar instance
         // Set a listener to disable specific dates
-        datePickerDialog.datePicker.init(year, month, day) { datePicker, year, month, day ->
-            val selectedDate = Calendar.getInstance()
-            selectedDate.set(year, month, day)
+            datePickerDialog.datePicker.init(year, month, day) { datePicker, year, month, day ->
+                val selectedDate = Calendar.getInstance().apply {
+                    set(year, month, day)
+                }
+                val endDate = Calendar.getInstance().apply {
+                    set(Calendar.YEAR, selectedDate.get(Calendar.YEAR))
+                    set(Calendar.MONTH, selectedDate.get(Calendar.MONTH))
+                    set(Calendar.DAY_OF_MONTH, selectedDate.get(Calendar.DAY_OF_MONTH))
+                    set(Calendar.HOUR_OF_DAY, 0)
+                    set(Calendar.MINUTE, 0)
+                    set(Calendar.SECOND, 0)
+                    set(Calendar.MILLISECOND, 0)
+                }
+                val endDateMillis = endDate.timeInMillis // Convert startDate and endDate to Date objects
+                val startDateMillis = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(startDate)?.time ?: 0
+                // Convert startDateMillis and endDateMillis to Calendar instances
+                val startCalendar = Calendar.getInstance().apply {
+                    timeInMillis = startDateMillis
+                }
+                val endCalendar = Calendar.getInstance().apply {
+                    timeInMillis = endDateMillis
+                }
+                // Disable dates outside the specified range
+                if (selectedDate.before(startCalendar) || selectedDate.after(endCalendar)) {
+                    // Disable the date by setting it to an invalid minimum date
+                    datePicker.minDate = startCalendar.timeInMillis
+                    // Set selected date to start date if it's before the start date or after the end date
+                    if (selectedDate.before(startCalendar)) {
+                        selectedDate.timeInMillis = startCalendar.timeInMillis
+                    } else if (selectedDate.after(endCalendar)) {
+                        selectedDate.timeInMillis = endCalendar.timeInMillis
+                    }
+                    // Formatting date
+                    val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                    val selectedDateString = sdf.format(selectedDate.time)
+                    txtEndDate.setText(selectedDateString)
+                }
+                displayView.removeAllViews()
+                for (activity in activityList) {
+                    if (activity.endDate <= txtEndDate.text.toString()) {
+                        val imageResource =
+                            resources.getIdentifier("home_icon", "drawable", packageName)
+                        val customView = custom_activity_icon(this)
 
-            // Convert startDate and endDate to Date objects
-            val startDateMillis = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(startDate).time
-            val endDateMillis = if (endDate != "null") {
-                SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(endDate)?.time ?: 0
-            } else {
-                "null"
-            }
-            // Convert startDateMillis and endDateMillis to Calendar instances
-            val startCalendar = Calendar.getInstance().apply {
-                timeInMillis = startDateMillis
-            }
-            val endCalendar = Calendar.getInstance().apply {
-                if (endDateMillis != "null") {
-                    timeInMillis = endDateMillis as Long
+                        customView.setActID(activity.actID)
+                        customView.setActName(activity.title)
+                        displayView.addView(customView)
+                    }
                 }
             }
-            if (endDate == "null") {
-                txtEndDate.setText(startDate)
-            } else {
-                txtEndDate.setText(endDate)
-            }
-            // Disable dates outside the specified range
-            if (selectedDate.before(startCalendar) || selectedDate.after(endCalendar)) {
-                // Disable the date by setting it to an invalid minimum date
-                datePicker.minDate = startCalendar.timeInMillis
-                // Set selected date to start date if it's before the start date or after the end date
-                if (selectedDate.before(startCalendar)) {
-                    selectedDate.timeInMillis = startCalendar.timeInMillis
-                } else if (selectedDate.after(endCalendar)) {
-                    selectedDate.timeInMillis = endCalendar.timeInMillis
-                }
-                // Formatting date
-                val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-                val selectedDateString = sdf.format(selectedDate.time)
-                txtEndDate.setText(selectedDateString)
-            }
-
-            for (activity in activityList) {
-                if (activity.startDate > CurrentDateTextView.text.toString() && activity.endDate < txtEndDate.toString()) {
-                    val imageResource = resources.getIdentifier("home_icon", "drawable", packageName)
-                    val customView = custom_activity_icon(this)
-
-                    customView.setActID(activity.actID)
-                    customView.setActName(activity.title)
-                    displayView.addView(customView)
-                }
-            }
+            datePickerDialog.show()
         }
-        datePickerDialog.show()
     }
-
-}
