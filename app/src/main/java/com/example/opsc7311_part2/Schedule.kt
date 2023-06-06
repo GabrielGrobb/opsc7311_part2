@@ -21,7 +21,6 @@ import java.util.Locale
 class Schedule : AppCompatActivity(), View.OnClickListener, NavigationView.OnNavigationItemSelectedListener
 {
     private lateinit var binding: ActivityScheduleBinding
-
     private lateinit var menuButton: ImageView
     private lateinit var schedulePageTitle: TextView
     private lateinit var currentDate: TextView

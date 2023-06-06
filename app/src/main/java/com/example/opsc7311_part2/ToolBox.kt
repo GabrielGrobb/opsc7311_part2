@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.TextView
 import java.io.Serializable
+import java.sql.Time
 import java.text.SimpleDateFormat
 import java.time.Duration
 import java.util.*
@@ -21,9 +22,10 @@ class ToolBox
         val location: String,
         val category: String,
         val categoryId: Int, // ID of the category
-        val duration: Int,
+        val duration: Duration,
+        val currentTimeSpent: Duration,
         val startDate: String,
-        //val endDate: Date
+        val endDate: String
     )
 
     data class CategoryDataClass(

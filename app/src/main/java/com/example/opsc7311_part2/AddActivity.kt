@@ -17,6 +17,7 @@ import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.EditText
 import android.widget.Spinner
+import java.time.Duration
 import java.util.Date
 
 class AddActivity : AppCompatActivity() {
@@ -35,7 +36,6 @@ class AddActivity : AppCompatActivity() {
         }
 
         //Adding an Activity
-
 
         //Views
        // val txtTitle: TextInputEditText = findViewById(R.id.txtTitle)
@@ -56,7 +56,6 @@ class AddActivity : AppCompatActivity() {
         //val txtEndDate: TextInputEditText = findViewById(R.id.txtEndDate)
         val imgActivityIcon: ImageView = findViewById(R.id.ActivityIcon)
 
-
         val txtTitle: TextInputEditText = findViewById(R.id.txtTitle)
         val txtClient: TextInputEditText = findViewById(R.id.txtClient)
         val txtLocation: TextInputEditText = findViewById(R.id.txtLocation)
@@ -76,13 +75,12 @@ class AddActivity : AppCompatActivity() {
             // Increment the categoryCounter
             activityCounter++
 
-            /*val actTitle = txtTitle.text.toString()
+            val actTitle = txtTitle.text.toString()
             val actClient = txtClient.text.toString()
             val actLocation = txtLocation.text.toString()
-            val actCategoryName = txtCategory.text.toString()
-            val actDuration = 0 // Replace with the actual duration value
-            val actStartDate = showDatePickerDialog(R.id.txtStartDate)
-            //val actEndDate = "" // Replace with the actual end date value*/
+            val actCategoryName = txtCategory.selectedItem.toString()
+            val actDuration = txtDuration.text
+            val actEndDate = findViewById<TextInputEditText>(R.id.txtEndDate).text
             val actStartDate = findViewById<TextInputEditText>(R.id.txtStartDate).text
             val selectedCategory = spCategory.selectedItem.toString()
 
@@ -96,9 +94,10 @@ class AddActivity : AppCompatActivity() {
                     txtLocation.text.toString(),
                     selectedCategory,
                     categoryId,
-                    txtDuration.text.toString().toInt(),
+                    txtDuration.text.toString(),
+                    Duration.ZERO,
                     actStartDate.toString(),
-                    //actEndDate
+                    actEndDate.toString()
                 )
                 //ToolBox.ActivityManager.addActivity(newActivity)
             ToolBox.ActivityManager.addActivity(newActivity)
@@ -116,10 +115,6 @@ class AddActivity : AppCompatActivity() {
         fun performActionOnClick() {
 
         }
-
-
-
-
 
         //
 
