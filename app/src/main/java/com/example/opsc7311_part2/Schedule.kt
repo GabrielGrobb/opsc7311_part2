@@ -1,18 +1,17 @@
 package com.example.opsc7311_part2
 
+import android.app.DatePickerDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.Spinner
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import com.example.opsc7311_part2.databinding.ActivityScheduleBinding
 import com.google.android.material.navigation.NavigationView
+import com.google.android.material.textfield.TextInputEditText
 import java.util.Calendar
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -58,7 +57,6 @@ class Schedule : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
 
         currentDate = findViewById(R.id.CurrentDate)
         completedTasks = findViewById(R.id.txtCompletedTasks)
-        spinnerSchedule = findViewById(R.id.spinnerSchedule)
 
 
         val activityList = ToolBox.ActivityManager.getActivityList()
@@ -145,4 +143,85 @@ class Schedule : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
     }
 
     //............................................................................................//
+    private fun showDatePickerDialog(textField: EditText) {
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+        val txtEndDate: TextInputEditText = findViewById(R.id.txtEndDate)
+        // Finding the TextView we want to update
+        var CurrentDateTextView = findViewById<TextView>(R.id.CurrentDate)
+        val displayView = findViewById<LinearLayout>(R.id.layout)
+        val datePickerDialog = DatePickerDialog(
+            this,
+            { _, selectedYear, selectedMonth, selectedDay ->
+                // Update the text field with the selected date
+                val formattedDate = String.format("%d-%02d-%02d", selectedYear, selectedMonth + 1, selectedDay)
+                textField.setText(formattedDate)
+            },
+            year,
+            month,
+            day
+        )
+        //getting activity list
+        val activityList = ToolBox.ActivityManager.getActivityList()
+        // Set a custom date range
+        val startDate = ToolBox.CategoryManager.getCurrentDateString()// Set your start date as a Calendar instance
+        val endDate = ToolBox.ActivityManager.findMaxEndDate(activityList).toString()// Set your end date as a Calendar instance
+        // Set a listener to disable specific dates
+        datePickerDialog.datePicker.init(year, month, day) { datePicker, year, month, day ->
+            val selectedDate = Calendar.getInstance()
+            selectedDate.set(year, month, day)
+
+            // Convert startDate and endDate to Date objects
+            val startDateMillis = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(startDate).time
+            val endDateMillis = if (endDate != "null") {
+                SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(endDate)?.time ?: 0
+            } else {
+                "null"
+            }
+            // Convert startDateMillis and endDateMillis to Calendar instances
+            val startCalendar = Calendar.getInstance().apply {
+                timeInMillis = startDateMillis
+            }
+            val endCalendar = Calendar.getInstance().apply {
+                if (endDateMillis != "null") {
+                    timeInMillis = endDateMillis as Long
+                }
+            }
+            if (endDate == "null") {
+                txtEndDate.setText(startDate)
+            } else {
+                txtEndDate.setText(endDate)
+            }
+            // Disable dates outside the specified range
+            if (selectedDate.before(startCalendar) || selectedDate.after(endCalendar)) {
+                // Disable the date by setting it to an invalid minimum date
+                datePicker.minDate = startCalendar.timeInMillis
+                // Set selected date to start date if it's before the start date or after the end date
+                if (selectedDate.before(startCalendar)) {
+                    selectedDate.timeInMillis = startCalendar.timeInMillis
+                } else if (selectedDate.after(endCalendar)) {
+                    selectedDate.timeInMillis = endCalendar.timeInMillis
+                }
+                // Formatting date
+                val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                val selectedDateString = sdf.format(selectedDate.time)
+                txtEndDate.setText(selectedDateString)
+            }
+
+            for (activity in activityList) {
+                if (activity.startDate > CurrentDateTextView.text.toString() && activity.endDate < txtEndDate.toString()) {
+                    val imageResource = resources.getIdentifier("home_icon", "drawable", packageName)
+                    val customView = custom_activity_icon(this)
+
+                    customView.setActID(activity.actID)
+                    customView.setActName(activity.title)
+                    displayView.addView(customView)
+                }
+            }
+        }
+        datePickerDialog.show()
+    }
+
 }
