@@ -73,7 +73,9 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
 
         timerText = findViewById(R.id.txtTimerCounter)
         stopStartButton = findViewById(R.id.btnPlay)
-        //stopStartButton.setOnClickListener{startStopTapped()}
+        stopStartButton.setOnClickListener{startStopTapped()}
+
+
 
         timer = Timer()
 
@@ -113,9 +115,16 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
 
     }
 
-    //............................................................................................//
+    fun recordTimerToActivity(){
+        //Get the current activity
+        val currentActivity = ToolBox.ActivityManager.getActivityObjectByID(intent.getIntExtra("activityID", -1))
+        timer.purge()
+    }
 
-    /*private fun startStopTapped()
+    //.......................Timer Code...........................................................//
+
+
+    private fun startStopTapped()
     {
         if (!timerStarted)
         {
@@ -129,7 +138,7 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
             setButtonUI(R.drawable.baseline_play_circle_24)
             timerTask.cancel()
         }
-    }*/
+    }
 
     //............................................................................................//
 
@@ -139,7 +148,7 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
 
     //............................................................................................//
 
-   /* private fun startTimer()
+    private fun startTimer()
     {
         timerTask = object : TimerTask()
         {
@@ -148,15 +157,15 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
                 runOnUiThread {
                     time++
                     timerText.text = getTimerText()
-                    updateProgressBar()
+                    //updateProgressBar()
                 }
             }
         }
 
         // Sped up the timer counter to see if the progress bar progresses.
         // remember to change period: 1000
-        timer.scheduleAtFixedRate(timerTask, 0, 10)
-    }*/
+        timer.scheduleAtFixedRate(timerTask, 0, 1000)
+    }
 
     //............................................................................................//
 
