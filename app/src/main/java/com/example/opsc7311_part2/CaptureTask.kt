@@ -41,6 +41,19 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
         var CurrentDateTextView = findViewById<TextView>(R.id.CurrentDate)
         CurrentDateTextView.text = ToolBox.CategoryManager.getCurrentDateString()
 
+        val actName = intent.getStringExtra("activityName")
+        val actID = intent.getIntExtra("activityID", -1)
+        //val imgResource = intent.getIntExtra("imageIcon", 0)
+
+        val activityNameTextView = findViewById<TextView>(R.id.txtActivityName)
+        //val categoryIconImageView = findViewById<ImageView>(R.id.iconPicture)
+
+        activityNameTextView.text = actName
+        //categoryIconImageView.setImageResource(imgResource)
+
+        //Getting the current Activity object we are working with
+        val activityObject = ToolBox.ActivityManager.getActivityObjectByID(actID)
+
         setSupportActionBar(binding.navToolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
@@ -67,16 +80,9 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
         progressBar = findViewById(R.id.progressBar)
 
         maxTimeTextView = findViewById(R.id.txtDuration)
-        //maxTimeTextView.text = getString(R.string.max_time, maxTime)
+        maxTimeTextView.text = "Max Time: "+ToolBox.CategoryManager.formatDuration(activityObject.duration)
 
-        val actName = intent.getStringExtra("activityName")
-        //val imgResource = intent.getIntExtra("imageIcon", 0)
 
-        val activityNameTextView = findViewById<TextView>(R.id.txtActivityName)
-        //val categoryIconImageView = findViewById<ImageView>(R.id.iconPicture)
-
-        activityNameTextView.text = actName
-        //categoryIconImageView.setImageResource(imgResource)
 
     }
 

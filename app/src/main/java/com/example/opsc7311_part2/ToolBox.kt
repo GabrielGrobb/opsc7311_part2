@@ -91,6 +91,17 @@ class ToolBox
             activityList.add(activity)
         }
 
+        //Takes in an activityid and returns an activity object from the list if it exists
+        fun getActivityObjectByID(id: Int): ActivityDataClass{
+            for(activity in activityList){
+                if(activity.actID==id){
+                    return activity
+                }
+            }
+            //Again gonna break the code, love you gents <3
+            return activityList[-1]
+        }
+
         fun getActivityList(): List<ActivityDataClass> {
             return activityList
         }
@@ -156,6 +167,46 @@ class ToolBox
             }
 
             return -1 // Return -1 if the desired value is not found
+        }
+
+        //Takes in a Duration object and returns a formatted string representing the duration
+        fun formatDuration(duration: Duration): String {
+            val totalSeconds = duration.seconds
+
+            val hours = totalSeconds / 3600
+            val minutes = (totalSeconds % 3600) / 60
+            val seconds = totalSeconds % 60
+
+            val formattedDuration = StringBuilder()
+
+            if (hours > 0) {
+                formattedDuration.append("$hours Hour")
+                if (hours > 1) {
+                    formattedDuration.append("s")
+                }
+            }
+
+            if (minutes > 0) {
+                if (formattedDuration.isNotEmpty()) {
+                    formattedDuration.append(" ")
+                }
+                formattedDuration.append("$minutes Minute")
+                if (minutes > 1) {
+                    formattedDuration.append("s")
+                }
+            }
+
+            if (seconds > 0) {
+                if (formattedDuration.isNotEmpty()) {
+                    formattedDuration.append(" ")
+                }
+                formattedDuration.append("$seconds Second")
+                if (seconds > 1) {
+                    formattedDuration.append("s")
+                }
+            }
+
+            return formattedDuration.toString()
         }
     }
 }
