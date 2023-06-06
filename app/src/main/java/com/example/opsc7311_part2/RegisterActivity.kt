@@ -15,36 +15,32 @@ class RegisterActivity : AppCompatActivity() {
         var currentSettings = ToolBox.AccountManager.getSettingsObject()
         var submitButton = findViewById<Button>(R.id.btnSubmit)
 
-        var email = findViewById<TextInputEditText>(R.id.txtEmail)
-        var username = findViewById<TextInputEditText>(R.id.txtUsername)
-        var firstname = findViewById<TextInputEditText>(R.id.txtFirstname)
-        var surname = findViewById<TextInputEditText>(R.id.txtSurname)
+        var email = findViewById<TextInputEditText>(R.id.txtEmail).text
+        var username = findViewById<TextInputEditText>(R.id.txtUsername).text
+        var firstname = findViewById<TextInputEditText>(R.id.txtFirstname).text
+        var surname = findViewById<TextInputEditText>(R.id.txtSurname).text
         var password = findViewById<TextInputEditText>(R.id.txtPassword).text
         var confirmPassword = findViewById<TextInputEditText>(R.id.txtConfirmPassword).text
 
         submitButton.setOnClickListener{
-        println(password)
-        println(confirmPassword)
-        println(password?.equals(confirmPassword))
-
-        /*if(password.text!=confirmPassword.text){
+        if(password?.toString().equals(confirmPassword.toString())){
+            currentSettings.updateSettings(
+                "default",
+                1,
+                1,
+                email.toString(),
+                username.toString(),
+                firstname.toString(),
+                surname.toString(),
+                password.toString()
+            )
+            val intent = Intent(this,LoginActivity::class.java)
+            startActivity(intent)
+            }
+            else{
                 val toast = Toast.makeText(this, "Password and Confirm Password Mismatch", Toast.LENGTH_SHORT)
                 toast.show()
             }
-            else{
-                currentSettings.updateSettings(
-                    "default",
-                    1,
-                    1,
-                    email.toString(),
-                    username.toString(),
-                    firstname.toString(),
-                    surname.toString(),
-                    password.toString()
-                )
-                val intent = Intent(this,HomePageTest::class.java)
-                startActivity(intent)
-            }*/
         }
 
     }
