@@ -35,15 +35,13 @@ import java.util.*
 import android.widget.Button
 import com.google.android.material.textfield.TextInputEditText
 
-
-
-
 class AccountSettings : AppCompatActivity(), View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
     private lateinit var binding: ActivityAccountSettingsBinding
     private val CAMERA_PERMISSION_REQUEST_CODE = 100
     private val STORAGE_PERMISSION_REQUEST_CODE = 101
     private var profilePicture: Bitmap? = null
     private lateinit var imageView: ImageView
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -129,6 +127,7 @@ class AccountSettings : AppCompatActivity(), View.OnClickListener, NavigationVie
 
             showOptionDialog()
             showToast("You Need To Allow Access To Your Camera")
+
         }
         //Setting the different views to the user's account settings
         fun updateAccountSettings(){

@@ -14,3 +14,5 @@ fun openIntent(context: Context, category: String, activityToOpen: Class<*>)
     // start the activity
     context.startActivity(intent)
 }
+
+//.........................................EndOfFile..............................................//

@@ -29,68 +29,80 @@ class Schedule : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
     private lateinit var dateTomorrow: TextView
     private lateinit var layoutSchedule: LinearLayout
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityScheduleBinding.inflate(layoutInflater)
-        setContentView(binding.root)
 
-        //Finding the TextView we want to update
-        var CurrentDateTextView = findViewById<TextView>(R.id.CurrentDate)
-        //Setting the value of the text view to the Calendar's current date
-        CurrentDateTextView.text = ToolBox.CategoryManager.getCurrentDateString()
+        lateinit var txtEndDate: TextInputEditText
+        try{
 
+            super.onCreate(savedInstanceState)
+            binding = ActivityScheduleBinding.inflate(layoutInflater)
+            setContentView(binding.root)
 
-        setSupportActionBar(binding.navToolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setDisplayShowHomeEnabled(true)
-
-        var toggleOnOff = ActionBarDrawerToggle(
-            this,
-            binding.drawerLayout, binding.navToolbar,
-            R.string.navigation_drawer_open,
-            R.string.navigation_drawer_close
-        )
-
-        binding.drawerLayout.addDrawerListener(toggleOnOff)
-        toggleOnOff.syncState()
-
-        binding.navView.bringToFront()
-        binding.navView.setNavigationItemSelectedListener(this)
-
-        currentDate = findViewById(R.id.CurrentDate)
-        completedTasks = findViewById(R.id.txtCompletedTasks)
+            //Finding the TextView we want to update
+            var CurrentDateTextView = findViewById<TextView>(R.id.CurrentDate)
+            //Setting the value of the text view to the Calendar's current date
+            CurrentDateTextView.text = ToolBox.CategoryManager.getCurrentDateString()
 
 
-        val activityList = ToolBox.ActivityManager.getActivityList()
+            setSupportActionBar(binding.navToolbar)
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+            supportActionBar?.setDisplayShowHomeEnabled(true)
 
-        val displayView = findViewById<LinearLayout>(R.id.layout)
+            var toggleOnOff = ActionBarDrawerToggle(
+                this,
+                binding.drawerLayout, binding.navToolbar,
+                R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close
+            )
 
-        //val addedActivityIdentifiers = HashSet<String>()
+            binding.drawerLayout.addDrawerListener(toggleOnOff)
+            toggleOnOff.syncState()
 
-        for (activity in activityList) {
-            if (activity.startDate >= CurrentDateTextView.text.toString()) {
-                // Match found, perform desired actions with the activity
+            binding.navView.bringToFront()
+            binding.navView.setNavigationItemSelectedListener(this)
+
+            currentDate = findViewById(R.id.CurrentDate)
+            completedTasks = findViewById(R.id.txtCompletedTasks)
 
 
-                val customView = custom_activity_icon(this)
+            val activityList = ToolBox.ActivityManager.getActivityList()
 
-                customView.setActID(activity.actID)
-                customView.setActName(activity.title)
+            val displayView = findViewById<LinearLayout>(R.id.layout)
 
-                // Set the bitmap image
-                //customView.setIcon(imageResource)
-                activity.actImage?.let { bitmap ->
-                    customView.setIcon(bitmap)
+            //val addedActivityIdentifiers = HashSet<String>()
+
+            for (activity in activityList) {
+                if (activity.startDate >= CurrentDateTextView.text.toString()) {
+                    // Match found, perform desired actions with the activity
+
+
+                    val customView = custom_activity_icon(this)
+
+                    customView.setActID(activity.actID)
+                    customView.setActName(activity.title)
+
+                    // Set the bitmap image
+                    //customView.setIcon(imageResource)
+                    activity.actImage?.let { bitmap ->
+                        customView.setIcon(bitmap)
+                    }
+
+                    // customView.setIcon(imageResource)
+                    displayView.addView(customView)
+                }
+            }
+            val tilEndDate: TextInputLayout = findViewById(R.id.til_EndDate)
+                tilEndDate.setEndIconOnClickListener() {
+                        try{
+                        showDatePickerDialog(txtEndDate)
+                        }catch(e: Exception){
+                        e.printStackTrace()
+
+                        }
                 }
 
-                // customView.setIcon(imageResource)
-                displayView.addView(customView)
-            }
-        }
-        val tilEndDate: TextInputLayout = findViewById(R.id.til_EndDate)
-        val txtEndDate: TextInputEditText = findViewById(R.id.txtEndDate)
 
-        tilEndDate.setEndIconOnClickListener() {
-            showDatePickerDialog(txtEndDate)
+        }catch(e: Exception){
+            e.printStackTrace()
         }
     }
 
@@ -150,6 +162,7 @@ class Schedule : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
 
     //............................................................................................//
     private fun showDatePickerDialog(textField: EditText) {
+        try{
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH)
@@ -173,59 +186,66 @@ class Schedule : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
         // Set a custom date range
         val startDate = ToolBox.CategoryManager.getCurrentDateString()// Set your start date as a Calendar instance
         // Set a listener to disable specific dates
-        datePickerDialog.datePicker.init(year, month, day) { datePicker, year, month, day ->
-            val selectedDate = Calendar.getInstance().apply {
-                set(year, month, day)
-            }
-            val endDate = Calendar.getInstance().apply {
-                set(Calendar.YEAR, selectedDate.get(Calendar.YEAR))
-                set(Calendar.MONTH, selectedDate.get(Calendar.MONTH))
-                set(Calendar.DAY_OF_MONTH, selectedDate.get(Calendar.DAY_OF_MONTH))
-                set(Calendar.HOUR_OF_DAY, 0)
-                set(Calendar.MINUTE, 0)
-                set(Calendar.SECOND, 0)
-                set(Calendar.MILLISECOND, 0)
-            }
-            val endDateMillis = endDate.timeInMillis // Convert startDate and endDate to Date objects
-            val startDateMillis = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(startDate)?.time ?: 0
-            // Convert startDateMillis and endDateMillis to Calendar instances
-            val startCalendar = Calendar.getInstance().apply {
-                timeInMillis = startDateMillis
-            }
-            val endCalendar = Calendar.getInstance().apply {
-                timeInMillis = endDateMillis
-            }
-            // Disable dates outside the specified range
-            if (selectedDate.before(startCalendar) || selectedDate.after(endCalendar)) {
-                // Disable the date by setting it to an invalid minimum date
-                datePicker.minDate = startCalendar.timeInMillis
-                // Set selected date to start date if it's before the start date or after the end date
-                if (selectedDate.before(startCalendar)) {
-                    selectedDate.timeInMillis = startCalendar.timeInMillis
-                } else if (selectedDate.after(endCalendar)) {
-                    selectedDate.timeInMillis = endCalendar.timeInMillis
+            datePickerDialog.datePicker.init(year, month, day) { datePicker, year, month, day ->
+                val selectedDate = Calendar.getInstance().apply {
+                    set(year, month, day)
                 }
-                // Formatting date
-                val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-                val selectedDateString = sdf.format(selectedDate.time)
-                txtEndDate.setText(selectedDateString)
-            }
-            displayView.removeAllViews()
-            for (activity in activityList) {
-                if (activity.endDate <= txtEndDate.text.toString()) {
-                    val customView = custom_activity_icon(this)
-                    customView.setActID(activity.actID)
-                    customView.setActName(activity.title)
-                    // Set the bitmap image
-                    //customView.setIcon(imageResource)
-                    activity.actImage?.let { bitmap ->
-                        customView.setIcon(bitmap)
+                val endDate = Calendar.getInstance().apply {
+                    set(Calendar.YEAR, selectedDate.get(Calendar.YEAR))
+                    set(Calendar.MONTH, selectedDate.get(Calendar.MONTH))
+                    set(Calendar.DAY_OF_MONTH, selectedDate.get(Calendar.DAY_OF_MONTH))
+                    set(Calendar.HOUR_OF_DAY, 0)
+                    set(Calendar.MINUTE, 0)
+                    set(Calendar.SECOND, 0)
+                    set(Calendar.MILLISECOND, 0)
+                }
+                val endDateMillis = endDate.timeInMillis // Convert startDate and endDate to Date objects
+                val startDateMillis = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(startDate)?.time ?: 0
+                // Convert startDateMillis and endDateMillis to Calendar instances
+                val startCalendar = Calendar.getInstance().apply {
+                    timeInMillis = startDateMillis
+                }
+                val endCalendar = Calendar.getInstance().apply {
+                    timeInMillis = endDateMillis
+                }
+                // Disable dates outside the specified range
+                if (selectedDate.before(startCalendar) || selectedDate.after(endCalendar)) {
+                    // Disable the date by setting it to an invalid minimum date
+                    datePicker.minDate = startCalendar.timeInMillis
+                    // Set selected date to start date if it's before the start date or after the end date
+                    if (selectedDate.before(startCalendar)) {
+                        selectedDate.timeInMillis = startCalendar.timeInMillis
+                    } else if (selectedDate.after(endCalendar)) {
+                        selectedDate.timeInMillis = endCalendar.timeInMillis
                     }
-                    // customView.setIcon(imageResource)
-                    displayView.addView(customView)
+                    // Formatting date
+                    val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                    val selectedDateString = sdf.format(selectedDate.time)
+                    txtEndDate.setText(selectedDateString)
+                }
+                displayView.removeAllViews()
+                for (activity in activityList) {
+                    if (activity.endDate <= txtEndDate.text.toString()) {
+                        val customView = custom_activity_icon(this)
+                        customView.setActID(activity.actID)
+                        customView.setActName(activity.title)
+                        // Set the bitmap image
+                        //customView.setIcon(imageResource)
+                        activity.actImage?.let { bitmap ->
+                            customView.setIcon(bitmap)
+                        }
+                        // customView.setIcon(imageResource)
+                        displayView.addView(customView)
+                    }
                 }
             }
+                datePickerDialog.show()
+        } catch (e: Exception){
+
         }
-        datePickerDialog.show()
+
     }
 }
+
+
+//.........................................EndOfFile..............................................//

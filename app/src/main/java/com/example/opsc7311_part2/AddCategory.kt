@@ -8,7 +8,6 @@ import android.icu.util.Calendar
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import com.example.opsc7311_part2.R.id.datePickerButton
 import com.example.opsc7311_part2.databinding.ActivityAddCategoryBinding
 import android.graphics.Color
 import android.view.LayoutInflater
@@ -16,60 +15,61 @@ import android.view.ViewGroup
 import android.widget.*
 import com.example.opsc7311_part2.R
 import org.w3c.dom.Text
-import com.example.opsc7311_part2.R.id.datePickerButton
 import android.widget.*
+
+
 
 
 
 class AddCategory : AppCompatActivity() {
 
-                private lateinit var binding: ActivityAddCategoryBinding
-                private var categoryCounter = ToolBox.CategoryManager.getCategoryList().size
-                //private var catCounter=1;
-                override fun onCreate(savedInstanceState: Bundle?)
-                {
-                    super.onCreate(savedInstanceState)
-                    binding = ActivityAddCategoryBinding.inflate(layoutInflater)
-                    setContentView(binding.root)
+    private lateinit var binding: ActivityAddCategoryBinding
+    private var categoryCounter = ToolBox.CategoryManager.getCategoryList().size
+    //private var catCounter=1;
+    override fun onCreate(savedInstanceState: Bundle?)
+    {
+        super.onCreate(savedInstanceState)
+        binding = ActivityAddCategoryBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
 
-                    //-----Color Picker-----//
-                    val colorPicker: TextView = findViewById(R.id.ColorPicker)
-                    binding.ColorPicker.setOnClickListener {
+        //-----Color Picker-----//
+        val colorPicker: TextView = findViewById(R.id.ColorPicker)
+        binding.ColorPicker.setOnClickListener {
                         showColorPickerDialog()
-                    }
-                    //-----Color Picker-----//
+        }
+        //-----Color Picker-----//
 
-                    binding.btnClose.setOnClickListener {
-                        finish()
-                    }
+        binding.btnClose.setOnClickListener {
+            finish()
+        }
 
-                    binding.btnAddCategory.setOnClickListener {
+        binding.btnAddCategory.setOnClickListener {
 
-                        // Increment the categoryCounter
-                        categoryCounter++
+            // Increment the categoryCounter
+            categoryCounter++
 
-                        val categoryName = findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.txtTitle).text.toString()
-                        val categoryIcon = findViewById<ImageView>(R.id.categoryImage)
-                        val activities = ToolBox.ActivityManager.getActivityList().toMutableList()
-                        //val categoryColor = findViewById<TextView>(R.id.txtTitle)
+            val categoryName = findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.txtTitle).text.toString()
+            val categoryIcon = findViewById<ImageView>(R.id.categoryImage)
+            val activities = ToolBox.ActivityManager.getActivityList().toMutableList()
+            //val categoryColor = findViewById<TextView>(R.id.txtTitle)
 
-                        val newCategory = ToolBox.CategoryDataClass(
-                            categoryCounter, // Increment the counter to generate a new unique ID
-                            categoryName,
-                            categoryIcon,
-                            activities
-                            //categoryColor
-                        )
-                        ToolBox.CategoryManager.addCategory(newCategory)
+            val newCategory = ToolBox.CategoryDataClass(
+                categoryCounter, // Increment the counter to generate a new unique ID
+                categoryName,
+                categoryIcon,
+                activities
+                //categoryColor
+            )
+            ToolBox.CategoryManager.addCategory(newCategory)
 
-                        // Return to the HomePage
-                        val intent = Intent(this, HomePageTest::class.java)
-                        startActivity(intent)
+        }
+        // Return to the HomePage
+        val intent = Intent(this, HomePageTest::class.java)
+        startActivity(intent)
 
-
-                    }
-                }
+    }
+    //............................................................................................//
 
                 private fun showColorPickerDialog() {
                     val colorPickerDialog = AlertDialog.Builder(this)
@@ -106,5 +106,7 @@ class AddCategory : AppCompatActivity() {
 
 
     }
+
+//.........................................EndOfFile..............................................//
 
 

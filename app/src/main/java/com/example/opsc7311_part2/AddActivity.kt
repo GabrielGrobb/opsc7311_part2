@@ -44,10 +44,11 @@ import java.util.concurrent.TimeUnit
 class AddActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddActivityBinding
-
     private var activityCounter = ToolBox.ActivityManager.getActivityList().size
     private val CAMERA_PERMISSION_REQUEST_CODE = 100
     private val STORAGE_PERMISSION_REQUEST_CODE = 101
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,7 +64,7 @@ class AddActivity : AppCompatActivity() {
         //Views
 
         val ActivityIcon: ImageView = findViewById(R.id.ActivityIcon)
-       // val txtTitle: TextInputEditText = findViewById(R.id.txtTitle)
+        // val txtTitle: TextInputEditText = findViewById(R.id.txtTitle)
         //val txtClient: TextInputEditText = findViewById(R.id.txtClient)
 
         val tilLocation: TextInputLayout = findViewById(R.id.til_Location)
@@ -226,17 +227,21 @@ class AddActivity : AppCompatActivity() {
         }
     }
 
+    //............................................................................................//
     private fun openCamera() {
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         cameraLauncher.launch(intent)
     }
+    //............................................................................................//
 
-
-
+    //............................................................................................//
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
+    //............................................................................................//
 
+
+    //............................................................................................//
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -251,13 +256,18 @@ class AddActivity : AppCompatActivity() {
             }
         }
     }
+    //............................................................................................//
 
+    //............................................................................................//
     private fun getActivityIcon(): Uri? {
         val sharedPreferences = getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
         val profilePhotoUriString = sharedPreferences.getString("profilePhotoUri", null)
         return profilePhotoUriString?.let { Uri.parse(it) }
     }
+    //............................................................................................//
 
+
+    //............................................................................................//
     private fun saveActivityIcon(bitmap: Bitmap) {
         val fileName = generateFileName()
         val contentResolver: ContentResolver = applicationContext.contentResolver
@@ -279,12 +289,18 @@ class AddActivity : AppCompatActivity() {
             showToast("Failed to save activity icon!")
         }
     }
+    //............................................................................................//
 
+
+    //............................................................................................//
     private fun generateFileName(): String {
         val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
         return "ProfilePhoto_$timeStamp.jpg"
     }
+    //............................................................................................//
 
+
+    //............................................................................................//
     private fun saveImageToMediaStoreQ(
         contentResolver: ContentResolver,
         photo: Bitmap,
@@ -318,8 +334,10 @@ class AddActivity : AppCompatActivity() {
 
         return null
     }
+    //............................................................................................//
 
 
+    //............................................................................................//
     // Save the profile photo to MediaStore for API levels < 29
     private fun saveImageToMediaStore(
         contentResolver: ContentResolver,
@@ -349,7 +367,10 @@ class AddActivity : AppCompatActivity() {
 
         return null
     }
+    //............................................................................................//
 
+
+    //............................................................................................//
     // Convert a Bitmap to a Uri
     private fun bitmapToUri(bitmap: Bitmap): Uri {
         val cachePath = File(applicationContext.cacheDir, "images")
@@ -366,7 +387,10 @@ class AddActivity : AppCompatActivity() {
 
         return Uri.fromFile(file)
     }
+    //............................................................................................//
 
+
+    //............................................................................................//
     private fun showDatePickerDialog(textField: EditText) {
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
@@ -388,3 +412,6 @@ class AddActivity : AppCompatActivity() {
         datePickerDialog.show()
     }
 }
+//............................................................................................//
+
+//.........................................EndOfFile..............................................//

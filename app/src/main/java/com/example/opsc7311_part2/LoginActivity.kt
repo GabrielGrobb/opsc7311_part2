@@ -24,24 +24,30 @@ class LoginActivity : AppCompatActivity() {
         }
 
         btnSubmit.setOnClickListener(){
-            val editText = findViewById<TextInputEditText>(R.id.txtUsername)
-            val name = editText.text.toString()
+            //If anything breaks in the code within the try method the error message will show
+            try {
+                val editText = findViewById<TextInputEditText>(R.id.txtUsername)
+                val name = editText.text.toString()
 
-            val passText = findViewById<TextInputEditText>(R.id.txtPassword)
-            val pas = passText.text.toString()
+                val passText = findViewById<TextInputEditText>(R.id.txtPassword)
+                val pas = passText.text.toString()
 
-            //Getting the stored values
-            val currentSettings = ToolBox.AccountManager.getSettingsObject()
-            val storedUsername = currentSettings.username
-            val storedPassword = currentSettings.password
+                //Getting the stored values
+                val currentSettings = ToolBox.AccountManager.getSettingsObject()
+                val storedUsername = currentSettings.username
+                val storedPassword = currentSettings.password
 
-            if(name==storedUsername&&pas==storedPassword)
-            {
-                val intent = Intent(this,HomePageTest::class.java)
-                startActivity(intent)
-            }else{
-                Toast.makeText(this,"username and password is wrong", Toast.LENGTH_LONG).show()
+                if (name == storedUsername && pas == storedPassword) {
+                    val intent = Intent(this, HomePageTest::class.java)
+                    startActivity(intent)
+                } else {
+                    Toast.makeText(this, "Username or Password is incorrect", Toast.LENGTH_LONG).show()
+                }
+            }catch (e: Exception){
+                Toast.makeText(this, "An error has occurred within the code $:{e.message})", Toast.LENGTH_LONG).show()
             }
         }
     }
 }
+
+//.........................................EndOfFile..............................................//
