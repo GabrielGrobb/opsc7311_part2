@@ -236,7 +236,8 @@
                         android:layout_height="wrap_content"
                         android:gravity="start"
                         android:textColor="@color/txt_color"
-                        android:textStyle="italic" />
+                        android:textStyle="italic"
+                        android:inputType="number"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 

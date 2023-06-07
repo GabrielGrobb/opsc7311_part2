@@ -18,7 +18,7 @@ class Validation {
 
     //Double validation to only allow whole numbers and decimals
     fun validationLong(string: String): Boolean {
-        val pattern = Regex("^[0-9]+$")
+        val pattern = Regex("^\\d+$")
         return pattern.matches(string)
     }
     // Date validation to check if end date is after start date
@@ -31,7 +31,10 @@ class Validation {
         try {
             val start = dateFormat.parse(startDate)
             val end = dateFormat.parse(endDate)
-            return end.after(start)
+            if(end > start){
+                return true
+            }
+            return false
         } catch (e: Exception) {
             e.printStackTrace()
         }

@@ -234,10 +234,10 @@ class Category : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
         //getting selected dates or disabled if none selected
         var selectedEndDate = txtEndDate.text.toString()
         var selectedStartDate = txtStartDate.text.toString()
-
+        val totalCategoryHours = findViewById<TextView>(R.id.totalCategoryHours)
         val catName = intent.getStringExtra("categoryName")
         val imgResource = intent.getIntExtra("imageIcon", 0)
-
+        var totalHoursWorked = 0
         val categoryNameTextView = findViewById<TextView>(R.id.CategoryName)
         //val categoryIconImageView = findViewById<ImageView>(R.id.iconPicture)
         val categoryIdentification = findViewById<TextView>(R.id.categoryId)
@@ -260,7 +260,8 @@ class Category : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
 
                         /// Preventing duplication of an activity in the linearlayout
                         if (!addedActivities.contains(currentActivityId)) {
-
+                            //calculating total hours worked between the dates
+                            totalHoursWorked += activity.currentTimeSpent.toHours().toInt()
                             //val imageResource = resources.getIdentifier("home_icon", "drawable", packageName)
                             val customView = custom_activity_icon(this)
 
@@ -281,7 +282,9 @@ class Category : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
                         }
                     }
                 }
+
             }
+            totalCategoryHours.text = totalHoursWorked.toString()
         }
 
     }
