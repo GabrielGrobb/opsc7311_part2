@@ -12,6 +12,7 @@ import java.io.Serializable
 import java.sql.Time
 import java.text.SimpleDateFormat
 import java.time.Duration
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 class ToolBox
@@ -202,6 +203,28 @@ class ToolBox
             return 0
         }
 
+
+        fun parseDateString(dateString: String): Date {
+            val format = SimpleDateFormat("yyyy-MM-dd")
+            return format.parse(dateString)
+        }
+
+        //Takes in two dates and calculates the amount of time spent working between said dates
+        fun calcTimeWorkedBetweenDates(date1: Date, date2: Date): Duration {
+            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+
+            val workingList = mutableListOf<ActivityDataClass>()
+            for(activity in ToolBox.ActivityManager.getActivityList()){
+                if(parseDateString(activity.startDate)>=date1){
+                    workingList.add(activity)
+                }
+            }
+            var totalTime = Duration.ZERO
+            for(activity in workingList){
+                totalTime+=activity.savedTimeSpent
+            }
+            return totalTime
+        }
 
     }
 }
