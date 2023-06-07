@@ -16,7 +16,7 @@ import android.widget.*
 import com.example.opsc7311_part2.R
 import org.w3c.dom.Text
 import android.widget.*
-
+import java.time.Duration
 
 
 class AddCategory : AppCompatActivity() {
@@ -50,12 +50,13 @@ class AddCategory : AppCompatActivity() {
                         val categoryName = findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.txtTitle).text.toString()
                         val categoryIcon = findViewById<ImageView>(R.id.categoryImage)
                         val activities = ToolBox.ActivityManager.getActivityList().toMutableList()
-                        //val categoryColor = findViewById<TextView>(R.id.txtTitle)
+                        val activityDuration = ToolBox.CategoryManager.getCategoryList()
 
                         val newCategory = ToolBox.CategoryDataClass(
                             categoryCounter, // Increment the counter to generate a new unique ID
                             categoryName,
                             categoryIcon,
+                            Duration.ZERO,
                             activities
                             //categoryColor
                         )

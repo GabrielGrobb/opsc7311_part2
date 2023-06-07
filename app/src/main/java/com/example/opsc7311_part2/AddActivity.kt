@@ -156,6 +156,8 @@ class AddActivity : AppCompatActivity() {
                         selectedCategory,
                         categoryId,
                         Duration.ofHours(txtDuration.text.toString().toLong()),
+                        ProgressionBar(),
+                        Duration.ZERO,
                         Duration.ZERO,
                         actStartDate.toString(),
                         actEndDate.toString(),
