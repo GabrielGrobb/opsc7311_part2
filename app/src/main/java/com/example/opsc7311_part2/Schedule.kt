@@ -213,12 +213,15 @@ class Schedule : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
             displayView.removeAllViews()
             for (activity in activityList) {
                 if (activity.endDate <= txtEndDate.text.toString()) {
-                    val imageResource =
-                        resources.getIdentifier("home_icon", "drawable", packageName)
                     val customView = custom_activity_icon(this)
-
                     customView.setActID(activity.actID)
                     customView.setActName(activity.title)
+                    // Set the bitmap image
+                    //customView.setIcon(imageResource)
+                    activity.actImage?.let { bitmap ->
+                        customView.setIcon(bitmap)
+                    }
+                    // customView.setIcon(imageResource)
                     displayView.addView(customView)
                 }
             }

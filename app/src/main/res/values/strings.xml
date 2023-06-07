@@ -41,6 +41,7 @@
     <string name="category_header">Category</string>
     <string name="TotalHoursWorked">Total Hours Worked:</string>
     <string name="tv_Order">Order Now</string>
+    <string name="filterActivities">Filter Activities</string>
 
     -- Capture Task Page
     <string name="activity">Activity</string>
