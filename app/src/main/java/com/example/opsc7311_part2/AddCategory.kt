@@ -1,21 +1,18 @@
 package com.example.opsc7311_part2
 
 import android.app.AlertDialog
-import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
-import android.icu.util.Calendar
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import android.view.View
-import com.example.opsc7311_part2.databinding.ActivityAddCategoryBinding
 import android.graphics.Color
+import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
-import android.widget.*
-import com.example.opsc7311_part2.R
-import org.w3c.dom.Text
-import android.widget.*
+import android.widget.ArrayAdapter
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import com.example.opsc7311_part2.databinding.ActivityAddCategoryBinding
 import java.time.Duration
 
 
@@ -23,7 +20,11 @@ class AddCategory : AppCompatActivity() {
 
                 private lateinit var binding: ActivityAddCategoryBinding
                 private var categoryCounter = ToolBox.CategoryManager.getCategoryList().size
-                //private var catCounter=1;
+
+                private var selectedColor: Int = 0
+
+
+    //private var catCounter=1;
                 override fun onCreate(savedInstanceState: Bundle?)
                 {
                     super.onCreate(savedInstanceState)
@@ -52,13 +53,14 @@ class AddCategory : AppCompatActivity() {
                         val activities = ToolBox.ActivityManager.getActivityList().toMutableList()
                         val activityDuration = ToolBox.CategoryManager.getCategoryList()
 
+
                         val newCategory = ToolBox.CategoryDataClass(
                             categoryCounter, // Increment the counter to generate a new unique ID
                             categoryName,
                             categoryIcon,
                             Duration.ZERO,
-                            activities
-                            //categoryColor
+                            activities,
+                            selectedColor
                         )
                         ToolBox.CategoryManager.addCategory(newCategory)
 
@@ -82,7 +84,7 @@ class AddCategory : AppCompatActivity() {
                     val colorAdapter = ColorAdapter(this, colors)
 
                     colorPickerDialog.setAdapter(colorAdapter) { _, which ->
-                        val selectedColor = colors[which]
+                        selectedColor = colors[which]
                         // Set the selected color to the colorPicker TextView
                         binding.chosenColor.setBackgroundColor(selectedColor)
                     }
@@ -100,10 +102,6 @@ class AddCategory : AppCompatActivity() {
                         return colorView
                     }
                 }
-
-
-
-
     }
 
 
