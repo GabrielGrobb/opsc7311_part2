@@ -110,11 +110,6 @@ class AddActivity : AppCompatActivity() {
                 val selectedCategory = spCategory.selectedItem.toString()
                 val category = categoryList.find { it.name == selectedCategory }
                 val categoryId = category?.catID ?: -1 // Default value if category not found
-                if(categoryId == -1){
-                    txtCategoryError.text = "A Category must first be added in the homepage!"
-                    txtCategoryError.visibility = View.VISIBLE
-                    allInputsValid += 1;
-                }
                 //validating activity Title
                 isValid = Validation().validateStringsWithNumbers(actTitle)
                 if (!isValid){
@@ -136,13 +131,6 @@ class AddActivity : AppCompatActivity() {
                     txtLocation.visibility = View.VISIBLE
                     allInputsValid +=1
                 }
-                //validating activity duration
-                isValid = Validation().validationLong(actDuration)
-                if(!isValid){
-                    txtDurationError.text = "Duration must be a whole number!"
-                    txtDurationError.visibility = View.VISIBLE
-                    allInputsValid +=1
-                }
                 //validating end date
                 isValid = Validation().isEndDateAfterStartDate(actStartDate,actEndDate)
                 if(!isValid){
@@ -151,7 +139,7 @@ class AddActivity : AppCompatActivity() {
                     allInputsValid+=1
                 }
                 //ensuring all inputs are valid
-                if(allInputsValid == 6){
+                if(allInputsValid == 0){
                     //setting all error text views back to invisible
                     txtTitleError.visibility = View.INVISIBLE
                     txtClientError.visibility = View.INVISIBLE
@@ -168,6 +156,8 @@ class AddActivity : AppCompatActivity() {
                         selectedCategory,
                         categoryId,
                         Duration.ofHours(txtDuration.text.toString().toLong()),
+                        ProgressionBar(),
+                        Duration.ZERO,
                         Duration.ZERO,
                         actStartDate.toString(),
                         actEndDate.toString(),

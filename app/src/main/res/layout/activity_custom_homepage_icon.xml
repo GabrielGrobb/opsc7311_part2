@@ -17,20 +17,12 @@
         android:layout_marginTop="20dp"
         android:clickable="true">
 
-        <ImageView
-            android:id="@+id/categoryIcon"
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
-            android:src="@drawable/settings"/>
-
-
         <TextView
             android:id="@+id/categoryName"
             android:layout_width="150dp"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="Category Name"
-            android:layout_toRightOf="@id/categoryIcon"/>
+            android:text="Category Name" />
 
         <TextView
             android:id="@+id/categoryID"

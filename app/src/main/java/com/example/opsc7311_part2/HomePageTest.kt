@@ -55,29 +55,10 @@ class HomePageTest : AppCompatActivity(), View.OnClickListener, NavigationView.O
 
             customView.setCatID(category.catID)
             customView.setCatName(category.name)
-            customView.setIcon(imageResource)
+            customView.setCatBackground(category.catColor)
             displayView.addView(customView)
 
-            /*val selectedCategory = categoryList[1] // Assuming you have a list of categories
-            val intent = Intent(this, Category::class.java)
-            intent.putExtra("category", selectedCategory)
-            startActivity(intent)*/
         }
-
-
-
-        /*val categoryList = ToolBox.CategoryManager.getCategoryList()
-        val displayView = findViewById<LinearLayout>(R.id.AddNewCategory)
-        val imageResource = resources.getIdentifier("home_icon", "drawable", packageName)
-        val customView = custom_homepage_icon(this)
-
-        customView.setCatName("College")
-        customView.setIcon(imageResource)
-        displayView.addView(customView)
-
-
-
-        ToolBox.categoryName = "College"*/
     }
     //............................................................................................//
 

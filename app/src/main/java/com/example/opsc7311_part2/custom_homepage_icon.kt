@@ -2,6 +2,7 @@ package com.example.opsc7311_part2
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.graphics.drawable.Icon
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -14,7 +15,7 @@ class custom_homepage_icon @JvmOverloads constructor(
 
             private var categoryID:Int = 0;
             private var categoryName: String = ""
-            private var imageResource: Int = 0
+            private var containerBackground: Int =0
 
         init {
             LayoutInflater.from(context).inflate(R.layout.activity_custom_homepage_icon, this, true)
@@ -26,7 +27,6 @@ class custom_homepage_icon @JvmOverloads constructor(
 
                 val intent = Intent(context, Category::class.java)
                 intent.putExtra("categoryName", categoryName)
-                intent.putExtra("imageIcon",imageResource)
                 intent.putExtra("categoryID", categoryID)
                 context.startActivity(intent)
 
@@ -36,15 +36,12 @@ class custom_homepage_icon @JvmOverloads constructor(
         // Perform any initialization or customization here
         // You can access and modify the views within the custom component layout
 
-        fun setIcon(imgResource: Int)
+        /*fun setIcon(imgResource: Int)
         {
             val img = findViewById<ImageView>(R.id.categoryIcon)
-
             img.setImageResource(imgResource)
-
             imageResource = imgResource
-
-        }
+        }*/
 
         fun setCatName(name: String)
         {
@@ -54,13 +51,18 @@ class custom_homepage_icon @JvmOverloads constructor(
 
         }
 
-    fun setCatID(ID: Int) {
-        //categoryID = ID+1 // Increment the counter by 1
-        val catID = findViewById<TextView>(R.id.categoryID)
-        catID.text = ID.toString()
-        categoryID = ID
-    }
+        fun setCatBackground(background: Int) {
+            val catBackground = findViewById<RelativeLayout>(R.id.relContainer)
+            catBackground.setBackgroundColor(background)
+            containerBackground = background
+        }
 
+        fun setCatID(ID: Int) {
+            //categoryID = ID+1 // Increment the counter by 1
+            val catID = findViewById<TextView>(R.id.categoryID)
+            catID.text = ID.toString()
+            categoryID = ID
+        }
 }
 
 //.........................................EndOfFile..............................................//
