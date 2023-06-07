@@ -166,7 +166,6 @@ class AccountSettings : AppCompatActivity(), View.OnClickListener, NavigationVie
             updateAccountSettings()
         }
 
-
     }
 
     private val cameraLauncher =
@@ -217,28 +216,6 @@ class AccountSettings : AppCompatActivity(), View.OnClickListener, NavigationVie
         }
     }
 
-
-    /*private fun requestStoragePermission() {
-        if (ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                STORAGE_PERMISSION_REQUEST_CODE
-            )
-        } else {
-            // Check if the profilePicture variable is already initialized
-            if (profilePicture != null) {
-                saveProfilePhoto(profilePicture!!)
-            } else {
-                showToast("No profile picture selected!")
-            }
-        }
-    }*/
-
     private fun openCamera() {
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         cameraLauncher.launch(intent)
@@ -247,9 +224,6 @@ class AccountSettings : AppCompatActivity(), View.OnClickListener, NavigationVie
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
-
-
-
 
     // Get the Uri of the profile photo from storage
     private fun getProfilePhotoUri(): Uri? {
@@ -312,7 +286,6 @@ class AccountSettings : AppCompatActivity(), View.OnClickListener, NavigationVie
 
     //--------------------------------------------------------------------------------------------//
 
-
     // Save the profile photo to MediaStore for API levels >= 29 (Android Q)
     private fun saveImageToMediaStoreQ(
         contentResolver: ContentResolver,
@@ -348,7 +321,6 @@ class AccountSettings : AppCompatActivity(), View.OnClickListener, NavigationVie
         return null
     }
 
-
     // Save the profile photo to MediaStore for API levels < 29
     private fun saveImageToMediaStore(
         contentResolver: ContentResolver,
@@ -378,7 +350,6 @@ class AccountSettings : AppCompatActivity(), View.OnClickListener, NavigationVie
 
         return null
     }
-
 
                 // Convert a Bitmap to a Uri
                 private fun bitmapToUri(bitmap: Bitmap): Uri {
