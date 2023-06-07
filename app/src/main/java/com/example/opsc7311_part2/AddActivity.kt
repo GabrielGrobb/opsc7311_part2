@@ -19,6 +19,7 @@ import android.widget.Spinner
 import java.time.Duration
 import android.widget.Toast
 import android.Manifest
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.*
 import android.content.pm.PackageManager
@@ -114,6 +115,13 @@ class AddActivity : AppCompatActivity() {
                 isValid = Validation().validateStringsWithNumbers(actTitle)
                 if (!isValid){
                     txtTitleError.text = "The title can only contain letters and numbers!"
+                    txtTitleError.visibility = View.VISIBLE
+                    allInputsValid += 1
+                }
+                //ensuring activity title is unique
+                isValid = ToolBox.ActivityManager.findActivityByName(actTitle)
+                if(isValid == true){
+                    txtTitleError.text = "Another activity exists with the same name!"
                     txtTitleError.visibility = View.VISIBLE
                     allInputsValid += 1
                 }
