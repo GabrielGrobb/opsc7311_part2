@@ -63,22 +63,16 @@ class AddActivity : AppCompatActivity() {
         //Views
 
         val ActivityIcon: ImageView = findViewById(R.id.ActivityIcon)
-       // val txtTitle: TextInputEditText = findViewById(R.id.txtTitle)
-        //val txtClient: TextInputEditText = findViewById(R.id.txtClient)
 
         val tilLocation: TextInputLayout = findViewById(R.id.til_Location)
-        //val txtLocation: TextInputEditText = findViewById(R.id.txtLocation)
 
         val tilCategory: TextInputLayout = findViewById(R.id.til_Category)
         val txtCategory = findViewById<Spinner>(R.id.spCategory)
-       // val categoryAdapter = ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, getCategoryNames())
-        //txtCategory.setAdapter(categoryAdapter)
 
         val tilStartDate: TextInputLayout = findViewById(R.id.til_StartDate)
-        //val txtStartDate: TextInputEditText = findViewById(R.id.txtStartDate)
 
         val tilEndDate: TextInputLayout = findViewById(R.id.til_EndDate)
-        //val txtEndDate: TextInputEditText = findViewById(R.id.txtEndDate)
+
         val imgActivityIcon: ImageView = findViewById(R.id.ActivityIcon)
 
         val txtTitle: TextInputEditText = findViewById(R.id.txtTitle)
@@ -123,6 +117,8 @@ class AddActivity : AppCompatActivity() {
                     selectedCategory,
                     categoryId,
                     Duration.ofHours(txtDuration.text.toString().toLong()),
+                    ProgressionBar(),
+                    Duration.ZERO,
                     Duration.ZERO,
                     actStartDate.toString(),
                     actEndDate.toString(),
@@ -131,8 +127,6 @@ class AddActivity : AppCompatActivity() {
                 //ToolBox.ActivityManager.addActivity(newActivity)
             ToolBox.ActivityManager.addActivity(newActivity)
             category?.activities?.add(newActivity)
-            /*val category = categoryList.find { it.name == selectedCategory }
-            category?.activities?.add(newActivity)*/
 
                 // Return to the HomePage
                 val intent = Intent(this, HomePageTest::class.java)

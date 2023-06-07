@@ -12,13 +12,14 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.example.opsc7311_part2.R.id.datePickerButton
 import com.example.opsc7311_part2.databinding.ActivityAddCategoryBinding
+import java.time.Duration
 
 
 class AddCategory : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddCategoryBinding
     private var categoryCounter = ToolBox.CategoryManager.getCategoryList().size
-    //private var catCounter=1;
+
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
@@ -37,12 +38,13 @@ class AddCategory : AppCompatActivity() {
             val categoryName = findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.txtTitle).text.toString()
             val categoryIcon = findViewById<ImageView>(R.id.categoryImage)
             val activities = ToolBox.ActivityManager.getActivityList().toMutableList()
-            //val categoryColor = findViewById<TextView>(R.id.txtTitle)
+            val activityDuration = ToolBox.CategoryManager.getCategoryList()
 
             val newCategory = ToolBox.CategoryDataClass(
                 categoryCounter, // Increment the counter to generate a new unique ID
                 categoryName,
                 categoryIcon,
+                Duration.ZERO,
                 activities
                 //categoryColor
             )
@@ -55,8 +57,4 @@ class AddCategory : AppCompatActivity() {
         }
 
     }
-
-
-
-
 }
