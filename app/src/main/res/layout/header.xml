@@ -5,22 +5,4 @@
     android:layout_height="200dp"
     android:gravity="bottom">
 
-    <ImageView
-        android:id="@+id/ProfilePhoto"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:src="@drawable/default_profile"
-        android:layout_marginLeft="20dp"/>
-
-    <TextView
-        android:id="@+id/txtUsername"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:fontFamily="sans-serif-black"
-        android:text="Username.."
-        android:textSize="18dp" />
-
-
-
 </LinearLayout>

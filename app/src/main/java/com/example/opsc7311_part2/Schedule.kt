@@ -100,12 +100,6 @@ class Schedule : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
                 startActivity(intent)
             }
 
-            R.id.nav_achievements -> {
-                val intent = Intent(applicationContext, AchievementActivity::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                startActivity(intent)
-
-            }
 
             R.id.nav_account -> {
                 val intent = Intent(applicationContext, AccountSettings::class.java)

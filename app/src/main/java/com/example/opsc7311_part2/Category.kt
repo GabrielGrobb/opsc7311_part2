@@ -130,11 +130,24 @@ class Category : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
             showDatePickerDialog(txtEndDate)
         }
             btnFilterActivities.setOnClickListener(){
-                filterActivities(txtEndDate,txtStartDate)
+                //filterActivities(txtEndDate,txtStartDate)
+                var category = ToolBox.CategoryManager.getCategoryByID(intent.getIntExtra("categoryID", 1))
+                var date1 = ToolBox.CategoryManager.parseDateString(txtStartDate.text.toString())
+                var date2 = ToolBox.CategoryManager.parseDateString(txtEndDate.text.toString())
+                var activityList = ToolBox.CategoryManager.getActivitiesForCategoryBetweenDates(category, date1, date2)
+                var activityView = findViewById<LinearLayout>(R.id.ActivityView)
+                activityView.removeAllViews()
+                for(activity in activityList){
+                    val customView = custom_activity_icon(this)
+                    customView.setActID(activity.actID)
+                    customView.setActName(activity.title)
+                    displayView.addView(customView)
+                }
             }
     }
 
     //............................................................................................//
+
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean
     {
@@ -154,12 +167,6 @@ class Category : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
 
             }
 
-            R.id.nav_achievements -> {
-                val intent = Intent(applicationContext, AchievementActivity::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                startActivity(intent)
-
-            }
 
             R.id.nav_account -> {
                 val intent = Intent(applicationContext, AccountSettings::class.java)

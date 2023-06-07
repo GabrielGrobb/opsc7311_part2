@@ -33,15 +33,6 @@ class custom_homepage_icon @JvmOverloads constructor(
             }
 
         }
-        // Perform any initialization or customization here
-        // You can access and modify the views within the custom component layout
-
-        /*fun setIcon(imgResource: Int)
-        {
-            val img = findViewById<ImageView>(R.id.categoryIcon)
-            img.setImageResource(imgResource)
-            imageResource = imgResource
-        }*/
 
         fun setCatName(name: String)
         {

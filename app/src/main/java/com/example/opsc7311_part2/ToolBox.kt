@@ -12,6 +12,7 @@ import java.io.Serializable
 import java.sql.Time
 import java.text.SimpleDateFormat
 import java.time.Duration
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 class ToolBox
@@ -36,7 +37,6 @@ class ToolBox
     data class CategoryDataClass(
         var catID : Int,
         var name: String,
-        val icon: ImageView,
         var activityTimeSpent: Duration,
         val activities: MutableList<ActivityDataClass>,
         val catColor: Int
@@ -113,17 +113,10 @@ class ToolBox
             return activityList
         }
 
-        fun findMaxEndDate(activityList: List<ActivityDataClass>): String? {
-            var maxEndDate: String? = null
-
-            for (activity in activityList) {
-                if (maxEndDate == null || activity.endDate > maxEndDate) {
-                    maxEndDate = activity.endDate
-                }
-            }
-
-            return maxEndDate
+        fun findActivityByName(name: String): Boolean {
+            return activityList.any { it.title == name }
         }
+
     }
 
     object CategoryManager {
@@ -201,6 +194,33 @@ class ToolBox
             // Return 0 if the total time is zero (to avoid division by zero)
             return 0
         }
+
+
+        fun parseDateString(dateString: String): Date {
+            val format = SimpleDateFormat("yyyy-MM-dd")
+            return format.parse(dateString)
+        }
+
+        fun getActivitiesForCategoryBetweenDates(cat: CategoryDataClass, date1: Date, date2: Date): List<ActivityDataClass>{
+            val workingList = mutableListOf<ActivityDataClass>()
+            for(activity in cat.activities){
+                if(parseDateString(activity.startDate)>=date1&&parseDateString(activity.endDate)<=date2){
+                    workingList.add(activity)
+                }
+            }
+            return workingList
+        }
+
+        //Takes in two dates and calculates the amount of time spent working between said dates
+        fun sumTotalWorkingTime(workingList: List<ActivityDataClass>): Int {
+            var totalTime = 0
+            for(activity in workingList){
+                totalTime+=activity.savedTimeSpent.toHours().toInt()
+            }
+            return totalTime
+        }
+        //Hi ishmael if you are reading this your feet smell ps gabe lifts more than you
+
 
 
     }

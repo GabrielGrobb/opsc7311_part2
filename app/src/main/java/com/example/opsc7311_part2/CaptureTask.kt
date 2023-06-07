@@ -157,7 +157,6 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
 
             }
         }
-
     }
 
     //............................................................................................//
@@ -214,14 +213,6 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
         }
     }
 
-    /*private fun parseDuration(time: String): Duration {
-        val parts = time.split(":")
-        val hours = parts[0].toLong()
-        val minutes = parts[1].toLong()
-        val seconds = parts[2].toLong()
-        return Duration.ofHours(hours).plusMinutes(minutes).plusSeconds(seconds)
-    }*/
-
     //............................................................................................//
 
     private fun startStopTapped()
@@ -243,40 +234,6 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
     }
 
     //............................................................................................//
-
-   /* private fun resumeTimerAfterButtonClick() {
-        // Start the timer
-        //startTimer()
-
-        // Retrieve the stored time from shared preferences
-        val sharedPreferences = getSharedPreferences("TimerPrefs", Context.MODE_PRIVATE)
-        val storedTime = sharedPreferences.getLong("timerValue", 0L)
-
-        if (storedTime != 0L) {
-            val currentTime = System.currentTimeMillis()
-            val elapsedMillis = currentTime - storedTime
-            val elapsedDuration = Duration.ofMillis(elapsedMillis)
-
-            // Update the timer display with the elapsed time
-            val seconds = elapsedDuration.seconds % 60
-            val minutes = elapsedDuration.toMinutes() % 60
-            val hours = elapsedDuration.toHours()
-
-            val formattedTime = formatTime(seconds.toInt(), minutes.toInt(), hours.toInt())
-
-            // Update the timer display with the formatted time
-            val timerTextView = findViewById<TextView>(R.id.txtTimerCounter)
-            timerTextView.text = formattedTime
-
-            // Reset the timer value in shared preferences
-            val editor = sharedPreferences.edit()
-            editor.remove("timerValue")
-            editor.apply()
-        } else {
-            // Handle the case where the timer value is not yet stored or has been reset
-            // ...
-        }
-    }*/
 
     private fun setButtonUI(drawableResId: Int) {
         stopStartButton.setImageResource(drawableResId)
@@ -303,7 +260,7 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
 
         // Sped up the timer counter to see if the progress bar progresses.
         // remember to change period: 1000
-        timer.scheduleAtFixedRate(timerTask, 0, 10)
+        timer.scheduleAtFixedRate(timerTask, 0, 1000)
     }
 
     //............................................................................................//
