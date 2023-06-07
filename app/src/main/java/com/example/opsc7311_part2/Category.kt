@@ -237,7 +237,6 @@ class Category : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
         val totalCategoryHours = findViewById<TextView>(R.id.totalCategoryHours)
         val catName = intent.getStringExtra("categoryName")
         val imgResource = intent.getIntExtra("imageIcon", 0)
-        var totalHoursWorked = 0
         val categoryNameTextView = findViewById<TextView>(R.id.CategoryName)
         //val categoryIconImageView = findViewById<ImageView>(R.id.iconPicture)
         val categoryIdentification = findViewById<TextView>(R.id.categoryId)
@@ -245,48 +244,36 @@ class Category : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
         categoryNameTextView.text = catName
         //categoryIconImageView.setImageResource(imgResource)
         categoryIdentification.text = catID.toString()
-        if(selectedEndDate != "" && selectedStartDate != ""){
+        if(selectedEndDate != "" && selectedStartDate != "") {
             displayView.removeAllViews()
-            for (category in categoryList)
-            {
+            for (category in categoryList) {
                 val activities = category.activities
 
-                for (activity in activities)
-                {
+                for (activity in activities) {
                     if (activity.categoryId == catID && activity.category == catName && activity.startDate > selectedStartDate
-                        && activity.endDate < selectedEndDate) {
-
+                        && activity.endDate < selectedEndDate
+                    ) {
                         val currentActivityId = activity.actID
-
                         /// Preventing duplication of an activity in the linearlayout
                         if (!addedActivities.contains(currentActivityId)) {
-                            //calculating total hours worked between the dates
-                            totalHoursWorked += activity.currentTimeSpent.toHours().toInt()
                             //val imageResource = resources.getIdentifier("home_icon", "drawable", packageName)
                             val customView = custom_activity_icon(this)
-
                             // Set activity ID and name
                             customView.setActID(activity.actID)
                             customView.setActName(activity.title)
-
                             // Set the bitmap image
                             //customView.setIcon(imageResource)
                             activity.actImage?.let { bitmap ->
                                 customView.setIcon(bitmap)
                             }
-
                             displayView.addView(customView)
-
                             // Adding its ID to the HashSet
                             addedActivities.add(currentActivityId)
                         }
                     }
                 }
-
             }
-            totalCategoryHours.text = totalHoursWorked.toString()
         }
-
     }
 }
 
