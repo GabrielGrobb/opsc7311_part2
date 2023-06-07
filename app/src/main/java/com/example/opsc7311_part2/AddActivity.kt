@@ -29,9 +29,12 @@ import androidx.core.content.ContextCompat
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
+import android.opengl.Visibility
 import android.os.Build
 import android.os.Environment
+import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
+import org.w3c.dom.Text
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -44,11 +47,10 @@ import java.util.concurrent.TimeUnit
 class AddActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddActivityBinding
+
     private var activityCounter = ToolBox.ActivityManager.getActivityList().size
     private val CAMERA_PERMISSION_REQUEST_CODE = 100
     private val STORAGE_PERMISSION_REQUEST_CODE = 101
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,30 +60,16 @@ class AddActivity : AppCompatActivity() {
         binding.btnClose.setOnClickListener {
             finish()
         }
-
-        //Adding an Activity
-
         //Views
-
         val ActivityIcon: ImageView = findViewById(R.id.ActivityIcon)
-        // val txtTitle: TextInputEditText = findViewById(R.id.txtTitle)
-        //val txtClient: TextInputEditText = findViewById(R.id.txtClient)
-
         val tilLocation: TextInputLayout = findViewById(R.id.til_Location)
-        //val txtLocation: TextInputEditText = findViewById(R.id.txtLocation)
-
         val tilCategory: TextInputLayout = findViewById(R.id.til_Category)
         val txtCategory = findViewById<Spinner>(R.id.spCategory)
-       // val categoryAdapter = ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, getCategoryNames())
-        //txtCategory.setAdapter(categoryAdapter)
-
+        //calendars
         val tilStartDate: TextInputLayout = findViewById(R.id.til_StartDate)
-        //val txtStartDate: TextInputEditText = findViewById(R.id.txtStartDate)
-
         val tilEndDate: TextInputLayout = findViewById(R.id.til_EndDate)
-        //val txtEndDate: TextInputEditText = findViewById(R.id.txtEndDate)
         val imgActivityIcon: ImageView = findViewById(R.id.ActivityIcon)
-
+        //input text boxes
         val txtTitle: TextInputEditText = findViewById(R.id.txtTitle)
         val txtClient: TextInputEditText = findViewById(R.id.txtClient)
         val txtLocation: TextInputEditText = findViewById(R.id.txtLocation)
@@ -89,13 +77,20 @@ class AddActivity : AppCompatActivity() {
         val txtDuration: TextInputEditText = findViewById(R.id.txtDuration)
         val txtStartDate: TextInputEditText = findViewById(R.id.txtStartDate)
         val txtEndDate: TextInputEditText = findViewById(R.id.txtEndDate)
-
+        //label text vies
+        val txtTitleError: TextView = findViewById(R.id.txtTitleError)
+        val txtClientError: TextView = findViewById(R.id.txtClientError)
+        val txtLocationError: TextView = findViewById(R.id.txtLocationError)
+        val txtCategoryError : TextView = findViewById(R.id.txtCategoryError)
+        val txtDurationError : TextView = findViewById(R.id.txtDurationError)
+        val txtEndDateError : TextView = findViewById(R.id.txtEndDateError)
+        //adapter
         val categoryAdapter = ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, getCategoryNames())
         categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spCategory.adapter = categoryAdapter
-
+        //getting a list of all the categories
         val categoryList = ToolBox.CategoryManager.getCategoryList()
-
+        //adding activity
         binding.btnAddActivity.setOnClickListener {
 
             // Increment the categoryCounter
@@ -104,49 +99,92 @@ class AddActivity : AppCompatActivity() {
             val actTitle = txtTitle.text.toString()
             val actClient = txtClient.text.toString()
             val actLocation = txtLocation.text.toString()
-            val actCategoryName = txtCategory.selectedItem.toString()
-            val actDuration = txtDuration.text
-            val actEndDate = findViewById<TextInputEditText>(R.id.txtEndDate).text
-            val actStartDate = findViewById<TextInputEditText>(R.id.txtStartDate).text
-            val selectedCategory = spCategory.selectedItem.toString()
+            val actDuration = txtLocation.text.toString()
+            val actEndDate = findViewById<TextInputEditText>(R.id.txtEndDate).text.toString()
+            val actStartDate = findViewById<TextInputEditText>(R.id.txtStartDate).text.toString()
             val activityImg = findViewById<ImageView>(R.id.ActivityIcon)
             val bitmap: Bitmap? = (activityImg.drawable as? BitmapDrawable)?.bitmap
-
-
-            val category = categoryList.find { it.name == selectedCategory }
-            val categoryId = category?.catID ?: -1 // Default value if category not found
-
-                val newActivity = ToolBox.ActivityDataClass(
-                    activityCounter,
-                    txtTitle.text.toString(),
-                    txtClient.text.toString(),
-                    txtLocation.text.toString(),
-                    selectedCategory,
-                    categoryId,
-                    Duration.ofHours(txtDuration.text.toString().toLong()),
-                    Duration.ZERO,
-                    actStartDate.toString(),
-                    actEndDate.toString(),
-                    bitmap
-                )
-                //ToolBox.ActivityManager.addActivity(newActivity)
-            ToolBox.ActivityManager.addActivity(newActivity)
-            category?.activities?.add(newActivity)
-            /*val category = categoryList.find { it.name == selectedCategory }
-            category?.activities?.add(newActivity)*/
-
-                // Return to the HomePage
-                val intent = Intent(this, HomePageTest::class.java)
-                startActivity(intent)
+            var isValid = false
+            var allInputsValid = 0
+            if(spCategory.selectedItem != null){
+                val selectedCategory = spCategory.selectedItem.toString()
+                val category = categoryList.find { it.name == selectedCategory }
+                val categoryId = category?.catID ?: -1 // Default value if category not found
+                if(categoryId == -1){
+                    txtCategoryError.text = "A Category must first be added in the homepage!"
+                    txtCategoryError.visibility = View.VISIBLE
+                    allInputsValid += 1;
+                }
+                //validating activity Title
+                isValid = Validation().validateStringsWithNumbers(actTitle)
+                if (!isValid){
+                    txtTitleError.text = "The title can only contain letters and numbers!"
+                    txtTitleError.visibility = View.VISIBLE
+                    allInputsValid += 1
+                }
+                //validating activity Client
+                isValid = Validation().validateStringsNoNumbers(actClient)
+                if(!isValid){
+                    txtClientError.text = "The client can only contain letters!"
+                    txtClientError.visibility = View.VISIBLE
+                    allInputsValid += 1
+                }
+                //validating activity location
+                isValid = Validation().validateStringsWithNumbers(actLocation)
+                if(!isValid){
+                    txtLocationError.text = "The location can only contain letters and numbers!"
+                    txtLocation.visibility = View.VISIBLE
+                    allInputsValid +=1
+                }
+                //validating activity duration
+                isValid = Validation().validationLong(actDuration)
+                if(!isValid){
+                    txtDurationError.text = "Duration must be a whole number!"
+                    txtDurationError.visibility = View.VISIBLE
+                    allInputsValid +=1
+                }
+                //validating end date
+                isValid = Validation().isEndDateAfterStartDate(actStartDate,actEndDate)
+                if(!isValid){
+                    txtEndDateError.text = "The End date must be after the start date!"
+                    txtEndDateError.visibility = View.VISIBLE
+                    allInputsValid+=1
+                }
+                //ensuring all inputs are valid
+                if(allInputsValid == 6){
+                    //setting all error text views back to invisible
+                    txtTitleError.visibility = View.INVISIBLE
+                    txtClientError.visibility = View.INVISIBLE
+                    txtLocationError.visibility = View.INVISIBLE
+                    txtCategoryError.visibility = View.INVISIBLE
+                    txtDurationError.visibility = View.INVISIBLE
+                    txtEndDateError.visibility = View.INVISIBLE
+                    //Creating the activity object
+                    val newActivity = ToolBox.ActivityDataClass(
+                        activityCounter,
+                        txtTitle.text.toString(),
+                        txtClient.text.toString(),
+                        txtLocation.text.toString(),
+                        selectedCategory,
+                        categoryId,
+                        Duration.ofHours(txtDuration.text.toString().toLong()),
+                        Duration.ZERO,
+                        actStartDate.toString(),
+                        actEndDate.toString(),
+                        bitmap
+                    )
+                    //adding the activity object to the activity data class
+                    ToolBox.ActivityManager.addActivity(newActivity)
+                    category?.activities?.add(newActivity)
+                    // Return to the HomePage
+                    val intent = Intent(this, HomePageTest::class.java)
+                    startActivity(intent)
+                }
+            }else{
+                txtCategoryError.text = "A Category must first be added in the homepage!"
+                txtCategoryError.visibility = View.VISIBLE
+            }
         }
-
-        //Functions
-        //Allows the user to select an icon for a given activity from the list of icons
-        fun performActionOnClick() {
-
-        }
-
-        //
 
         //Listeners
         tilLocation.setEndIconOnClickListener(){
@@ -172,8 +210,6 @@ class AddActivity : AppCompatActivity() {
 
 
     }
-
-
 
     private fun getCategoryNames(): List<String> {
         val categoryList = ToolBox.CategoryManager.getCategoryList()
@@ -227,21 +263,17 @@ class AddActivity : AppCompatActivity() {
         }
     }
 
-    //............................................................................................//
     private fun openCamera() {
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         cameraLauncher.launch(intent)
     }
-    //............................................................................................//
 
-    //............................................................................................//
+
+
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
-    //............................................................................................//
 
-
-    //............................................................................................//
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -256,18 +288,13 @@ class AddActivity : AppCompatActivity() {
             }
         }
     }
-    //............................................................................................//
 
-    //............................................................................................//
     private fun getActivityIcon(): Uri? {
         val sharedPreferences = getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
         val profilePhotoUriString = sharedPreferences.getString("profilePhotoUri", null)
         return profilePhotoUriString?.let { Uri.parse(it) }
     }
-    //............................................................................................//
 
-
-    //............................................................................................//
     private fun saveActivityIcon(bitmap: Bitmap) {
         val fileName = generateFileName()
         val contentResolver: ContentResolver = applicationContext.contentResolver
@@ -289,18 +316,12 @@ class AddActivity : AppCompatActivity() {
             showToast("Failed to save activity icon!")
         }
     }
-    //............................................................................................//
 
-
-    //............................................................................................//
     private fun generateFileName(): String {
         val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
         return "ProfilePhoto_$timeStamp.jpg"
     }
-    //............................................................................................//
 
-
-    //............................................................................................//
     private fun saveImageToMediaStoreQ(
         contentResolver: ContentResolver,
         photo: Bitmap,
@@ -334,10 +355,8 @@ class AddActivity : AppCompatActivity() {
 
         return null
     }
-    //............................................................................................//
 
 
-    //............................................................................................//
     // Save the profile photo to MediaStore for API levels < 29
     private fun saveImageToMediaStore(
         contentResolver: ContentResolver,
@@ -367,10 +386,7 @@ class AddActivity : AppCompatActivity() {
 
         return null
     }
-    //............................................................................................//
 
-
-    //............................................................................................//
     // Convert a Bitmap to a Uri
     private fun bitmapToUri(bitmap: Bitmap): Uri {
         val cachePath = File(applicationContext.cacheDir, "images")
@@ -387,10 +403,7 @@ class AddActivity : AppCompatActivity() {
 
         return Uri.fromFile(file)
     }
-    //............................................................................................//
 
-
-    //............................................................................................//
     private fun showDatePickerDialog(textField: EditText) {
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
@@ -412,6 +425,3 @@ class AddActivity : AppCompatActivity() {
         datePickerDialog.show()
     }
 }
-//............................................................................................//
-
-//.........................................EndOfFile..............................................//

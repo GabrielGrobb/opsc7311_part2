@@ -59,10 +59,6 @@ class Category : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
         categoryIconImageView.setImageResource(imgResource)
         categoryIdentification.text = catID.toString()
 
-        val totalCategoryHours = findViewById<TextView>(R.id.totalCategoryHours)
-        val categoryObject = ToolBox.CategoryManager.getCategoryByID(catID)
-        totalCategoryHours.text = ToolBox.CategoryManager.calcCategoryTime(categoryObject).toString()
-
         val categoryList = ToolBox.CategoryManager.getCategoryList()
         val displayView = findViewById<LinearLayout>(R.id.ActivityView)
         //finding end date view
@@ -84,30 +80,40 @@ class Category : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
 
             for (activity in activities)
             {
-                if (activity.categoryId == catID && activity.category == catName) {
+                if (activity.categoryId == catID && activity.category == catName)
+                {
 
                     val currentActivityId = activity.actID
 
                     /// Preventing duplication of an activity in the linearlayout
-                    if (!addedActivities.contains(currentActivityId)) {
+                    if (!addedActivities.contains(currentActivityId))
+                    {
+                        val totalCategoryHours = findViewById<TextView>(R.id.totalCategoryHours)
 
-                        //val imageResource = resources.getIdentifier("home_icon", "drawable", packageName)
+                        val categoryObject = ToolBox.CategoryManager.getCategoryByID(category.catID)
+                        val categoryTime = ToolBox.CategoryManager.calcCategoryTime(categoryObject)
+
+                        val hours = categoryTime.toHours()
+                        val minutes = categoryTime.toMinutes() % 60
+                        val seconds = categoryTime.seconds % 60
+
+                        val formattedTime = String.format("%02d:%02d:%02d", hours, minutes, seconds)
+                        totalCategoryHours.text = formattedTime
+
+                        /// val imageResource = resources.getIdentifier("home_icon", "drawable", packageName)
                         val customView = custom_activity_icon(this)
 
-                        // Set activity ID and name
+                        /// Set activity ID and name
                         customView.setActID(activity.actID)
                         customView.setActName(activity.title)
 
-                        // Set the bitmap image
-                        //customView.setIcon(imageResource)
-                        activity.actImage?.let { bitmap ->
-                            customView.setIcon(bitmap)
-                        }
+                        /// Set the bitmap image
+                        activity.actImage?.let {bitmap -> customView.setIcon(bitmap)}
 
-
+                        /// Adding the views to the linearlayout.
                         displayView.addView(customView)
 
-                        // Adding its ID to the HashSet
+                        /// Adding its ID to the HashSet
                         addedActivities.add(currentActivityId)
 
                     }

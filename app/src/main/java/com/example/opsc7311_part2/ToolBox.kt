@@ -24,7 +24,9 @@ class ToolBox
         val category: String,
         val categoryId: Int, // ID of the category
         val duration: Duration,
-        val currentTimeSpent: Duration,
+        var progressionBar: ProgressionBar,
+        var currentTimeSpent: Duration,
+        var savedTimeSpent: Duration,
         val startDate: String,
         val endDate: String,
         val actImage: Bitmap?
@@ -34,6 +36,7 @@ class ToolBox
         var catID : Int,
         var name: String,
         val icon: ImageView,
+        var activityTimeSpent: Duration,
         val activities: MutableList<ActivityDataClass>
         )
 
