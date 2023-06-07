@@ -31,7 +31,7 @@
 
     </LinearLayout>
 
-    <LinearLayout
+    <!--<LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp">
@@ -54,7 +54,7 @@
             android:layout_marginTop="35dp" />
 
 
-    </LinearLayout>
+    </LinearLayout>-->
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_Title"
@@ -92,18 +92,12 @@
         android:layout_marginLeft="20dp"
         android:layout_marginTop="40dp">
 
-       <!-- <androidx.cardview.widget.CardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="8dp">-->
-
 
         <ImageView
             android:id="@+id/chosenColor"
             android:layout_width="71dp"
             android:layout_height="match_parent"
             app:srcCompat="?attr/selectableItemBackground" />
-        <!--</androidx.cardview.widget.CardView>-->
 
         <TextView
             android:id="@+id/ColorPicker"

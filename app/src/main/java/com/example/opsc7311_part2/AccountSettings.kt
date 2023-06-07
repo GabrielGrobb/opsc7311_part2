@@ -393,13 +393,6 @@ class AccountSettings : AppCompatActivity(), View.OnClickListener, NavigationVie
 
                         }
 
-                        R.id.nav_achievements -> {
-                            val intent = Intent(applicationContext, AchievementActivity::class.java)
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                            startActivity(intent)
-
-                        }
-
                         R.id.nav_logout -> {
                             val intent = Intent(applicationContext, LoginActivity::class.java)
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)

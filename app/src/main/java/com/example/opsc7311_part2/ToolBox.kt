@@ -36,7 +36,6 @@ class ToolBox
     data class CategoryDataClass(
         var catID : Int,
         var name: String,
-        val icon: ImageView,
         var activityTimeSpent: Duration,
         val activities: MutableList<ActivityDataClass>,
         val catColor: Int

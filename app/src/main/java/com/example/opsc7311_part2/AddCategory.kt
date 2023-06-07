@@ -49,15 +49,12 @@ class AddCategory : AppCompatActivity() {
                         categoryCounter++
 
                         val categoryName = findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.txtTitle).text.toString()
-                        val categoryIcon = findViewById<ImageView>(R.id.categoryImage)
                         val activities = ToolBox.ActivityManager.getActivityList().toMutableList()
-                        val activityDuration = ToolBox.CategoryManager.getCategoryList()
 
 
                         val newCategory = ToolBox.CategoryDataClass(
                             categoryCounter, // Increment the counter to generate a new unique ID
                             categoryName,
-                            categoryIcon,
                             Duration.ZERO,
                             activities,
                             selectedColor
@@ -103,5 +100,4 @@ class AddCategory : AppCompatActivity() {
                     }
                 }
     }
-
 
