@@ -209,22 +209,27 @@ class ToolBox
             return format.parse(dateString)
         }
 
-        //Takes in two dates and calculates the amount of time spent working between said dates
-        fun calcTimeWorkedBetweenDates(date1: Date, date2: Date): Duration {
-            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-
+        fun getActivitiesForCategoryBetweenDates(cat: CategoryDataClass, date1: Date, date2: Date): List<ActivityDataClass>{
             val workingList = mutableListOf<ActivityDataClass>()
-            for(activity in ToolBox.ActivityManager.getActivityList()){
-                if(parseDateString(activity.startDate)>=date1){
+            for(activity in cat.activities){
+                if(parseDateString(activity.startDate)>=date1&&parseDateString(activity.endDate)<=date2){
                     workingList.add(activity)
                 }
             }
-            var totalTime = Duration.ZERO
+            return workingList
+        }
+
+        //Takes in two dates and calculates the amount of time spent working between said dates
+        fun sumTotalWorkingTime(workingList: List<ActivityDataClass>): Int {
+            var totalTime = 0
             for(activity in workingList){
-                totalTime+=activity.savedTimeSpent
+                totalTime+=activity.savedTimeSpent.toHours().toInt()
             }
             return totalTime
         }
+        //Hi ishmael if you are reading this your feet smell ps gabe lifts more than you
+
+
 
     }
 }
