@@ -165,8 +165,6 @@ class AccountSettings : AppCompatActivity(), View.OnClickListener, NavigationVie
             )
             updateAccountSettings()
         }
-
-
     }
 
     private val cameraLauncher =

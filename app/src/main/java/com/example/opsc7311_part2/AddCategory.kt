@@ -10,7 +10,6 @@ import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import com.example.opsc7311_part2.R.id.datePickerButton
 import com.example.opsc7311_part2.databinding.ActivityAddCategoryBinding
 
 
@@ -38,7 +37,6 @@ class AddCategory : AppCompatActivity() {
             val categoryIcon = findViewById<ImageView>(R.id.categoryImage)
             val activities = ToolBox.ActivityManager.getActivityList().toMutableList()
             //val categoryColor = findViewById<TextView>(R.id.txtTitle)
-
             val newCategory = ToolBox.CategoryDataClass(
                 categoryCounter, // Increment the counter to generate a new unique ID
                 categoryName,
