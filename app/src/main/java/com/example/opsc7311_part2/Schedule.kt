@@ -118,7 +118,6 @@ class Schedule : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
                 startActivity(intent)
 
             }
-
             R.id.nav_logout -> {
                 val intent = Intent(applicationContext, LoginActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -129,7 +128,6 @@ class Schedule : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
         // return true marks the item as selected
         return true
     }
-
     //............................................................................................//
 
     override fun onBackPressed() {

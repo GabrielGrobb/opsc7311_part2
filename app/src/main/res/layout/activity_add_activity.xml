@@ -107,6 +107,14 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <TextView
+                    android:id="@+id/txtTitleError"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="invisible"
+                    android:text="@string/error_message"
+                    android:textColor="@color/error_color" />
+
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/til_Client"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
@@ -130,6 +138,14 @@
                         android:textColor="@color/txt_color"
                         android:textStyle="italic" />
                 </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/txtClientError"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="invisible"
+                    android:text="@string/error_message"
+                    android:textColor="@color/error_color" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/til_Location"
@@ -158,6 +174,14 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <TextView
+                    android:id="@+id/txtLocationError"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="invisible"
+                    android:text="@string/error_message"
+                    android:textColor="@color/error_color" />
+
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/til_Category"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
@@ -181,6 +205,13 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <TextView
+                    android:id="@+id/txtCategoryError"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="invisible"
+                    android:text="@string/error_message"
+                    android:textColor="@color/error_color" />
 
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -208,6 +239,14 @@
                         android:textStyle="italic" />
 
                 </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/txtDurationError"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="invisible"
+                    android:text="@string/error_message"
+                    android:textColor="@color/error_color" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/til_StartDate"
@@ -264,6 +303,14 @@
                         android:enabled="false"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/txtEndDateError"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="invisible"
+                    android:text="@string/error_message"
+                    android:textColor="@color/error_color" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
