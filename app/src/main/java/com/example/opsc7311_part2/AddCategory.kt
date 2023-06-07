@@ -8,7 +8,6 @@ import android.icu.util.Calendar
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import com.example.opsc7311_part2.R.id.datePickerButton
 import com.example.opsc7311_part2.databinding.ActivityAddCategoryBinding
 import android.graphics.Color
 import android.view.LayoutInflater
@@ -16,7 +15,6 @@ import android.view.ViewGroup
 import android.widget.*
 import com.example.opsc7311_part2.R
 import org.w3c.dom.Text
-import com.example.opsc7311_part2.R.id.datePickerButton
 import android.widget.*
 
 
