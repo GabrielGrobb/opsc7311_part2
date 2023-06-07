@@ -92,17 +92,28 @@
         android:layout_marginLeft="20dp"
         android:layout_marginTop="40dp">
 
-        <TextView
+       <!-- <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/color_picker"/>
+            app:cardCornerRadius="8dp">-->
+
+
+        <ImageView
+            android:id="@+id/chosenColor"
+            android:layout_width="71dp"
+            android:layout_height="match_parent"
+            app:srcCompat="?attr/selectableItemBackground" />
+        <!--</androidx.cardview.widget.CardView>-->
 
         <TextView
-            android:layout_width="140dp"
+            android:id="@+id/ColorPicker"
+            android:layout_width="266dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
             android:layout_marginTop="30dp"
-            android:text="@string/add_category_colour"
+            android:layout_marginBottom="30dp"
+            android:text="Click here to add a category color"
             android:textStyle="italic|bold">
 
         </TextView>
@@ -126,5 +137,7 @@
             android:textColor="#FFFBF6" />
 
     </LinearLayout>
+
+
 
 </LinearLayout>

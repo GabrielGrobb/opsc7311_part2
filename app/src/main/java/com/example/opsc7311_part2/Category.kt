@@ -1,18 +1,21 @@
 package com.example.opsc7311_part2
 
+import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import com.example.opsc7311_part2.databinding.ActivityCategoryBinding
 import com.google.android.material.navigation.NavigationView
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
+import java.util.*
+import kotlin.collections.HashSet
 
 class Category : AppCompatActivity(), View.OnClickListener, NavigationView.OnNavigationItemSelectedListener
 {
@@ -58,7 +61,16 @@ class Category : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
 
         val categoryList = ToolBox.CategoryManager.getCategoryList()
         val displayView = findViewById<LinearLayout>(R.id.ActivityView)
-
+        //finding end date view
+        val tilEndDate = findViewById<TextInputLayout>(R.id.til_EndDate)
+        //finding start date view
+        var tilStartDate = findViewById<TextInputLayout>(R.id.til_StartDate)
+        //finding textbox for end date
+        var txtEndDate = findViewById<TextInputEditText>(R.id.txtEndDate)
+        //finding textbox for start date
+        var txtStartDate = findViewById<TextInputEditText>(R.id.txtStartDate)
+        //finding btn view to filter activities
+        var btnFilterActivities = findViewById<Button>(R.id.btnFilterActivities)
         /// Creating a HashSet for the activities.
         val addedActivities = HashSet<Int>()
 
@@ -108,6 +120,17 @@ class Category : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
                 }
             }
         }
+
+        tilStartDate.setEndIconOnClickListener {
+            showDatePickerDialog(txtStartDate)
+        }
+
+        tilEndDate.setEndIconOnClickListener(){
+            showDatePickerDialog(txtEndDate)
+        }
+            btnFilterActivities.setOnClickListener(){
+                filterActivities(txtEndDate,txtStartDate)
+            }
     }
 
     //............................................................................................//
@@ -179,4 +202,86 @@ class Category : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
     }
 
     //............................................................................................//
+
+    private fun showDatePickerDialog(textField: EditText) {
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val datePickerDialog = DatePickerDialog(
+            this,
+            { _, selectedYear, selectedMonth, selectedDay ->
+                // Update the text field with the selected date
+                val formattedDate = String.format("%d-%02d-%02d", selectedYear, selectedMonth + 1, selectedDay)
+                textField.setText(formattedDate)
+            },
+            year,
+            month,
+            day
+        )
+
+        datePickerDialog.show()
+    }
+    //-----------------------------------------------------------------------------------------
+    private fun filterActivities(txtEndDate:EditText,txtStartDate: EditText){
+        /// Creating a HashSet for the activities.
+        val addedActivities = HashSet<Int>()
+        val categoryList = ToolBox.CategoryManager.getCategoryList()
+        val displayView = findViewById<LinearLayout>(R.id.ActivityView)
+        val catID = intent.getIntExtra("categoryID", 1) // Default value if category ID is not provided
+        //getting selected dates or disabled if none selected
+        var selectedEndDate = txtEndDate.text.toString()
+        var selectedStartDate = txtStartDate.text.toString()
+
+        val catName = intent.getStringExtra("categoryName")
+        val imgResource = intent.getIntExtra("imageIcon", 0)
+
+        val categoryNameTextView = findViewById<TextView>(R.id.CategoryName)
+        val categoryIconImageView = findViewById<ImageView>(R.id.iconPicture)
+        val categoryIdentification = findViewById<TextView>(R.id.categoryId)
+
+        categoryNameTextView.text = catName
+        categoryIconImageView.setImageResource(imgResource)
+        categoryIdentification.text = catID.toString()
+        if(selectedEndDate != "" && selectedStartDate != ""){
+            displayView.removeAllViews()
+            for (category in categoryList)
+            {
+                val activities = category.activities
+
+                for (activity in activities)
+                {
+                    if (activity.categoryId == catID && activity.category == catName && activity.startDate > selectedStartDate
+                        && activity.endDate < selectedEndDate) {
+
+                        val currentActivityId = activity.actID
+
+                        /// Preventing duplication of an activity in the linearlayout
+                        if (!addedActivities.contains(currentActivityId)) {
+
+                            //val imageResource = resources.getIdentifier("home_icon", "drawable", packageName)
+                            val customView = custom_activity_icon(this)
+
+                            // Set activity ID and name
+                            customView.setActID(activity.actID)
+                            customView.setActName(activity.title)
+
+                            // Set the bitmap image
+                            //customView.setIcon(imageResource)
+                            activity.actImage?.let { bitmap ->
+                                customView.setIcon(bitmap)
+                            }
+
+                            displayView.addView(customView)
+
+                            // Adding its ID to the HashSet
+                            addedActivities.add(currentActivityId)
+                        }
+                    }
+                }
+            }
+        }
+
+    }
 }
