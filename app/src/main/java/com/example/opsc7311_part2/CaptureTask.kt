@@ -1,5 +1,7 @@
 package com.example.opsc7311_part2
 
+import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
@@ -25,11 +27,7 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
     private var time = 0.0
     private lateinit var progressBar: ProgressBar
     private lateinit var progressionBar: View
-    //private lateinit var maxTimeTextView: TextView
     private val maxProgress = 100
-    //val currentActivity = ToolBox.ActivityManager.getActivityObjectByID(intent.getIntExtra("activityID", -1))
-
-    //private var maxTime = Duration.ofHours(24)
     private var maxTime: Duration = Duration.ZERO
     private var timerStarted = false
 
@@ -44,6 +42,9 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
 
         var currentProgress = 0//currentActivity.currentTimeSpent
 
+        ///---------------------------------------------------------------------------------------//
+
+
         //Setting the Current Date
         var CurrentDateTextView = findViewById<TextView>(R.id.CurrentDate)
         CurrentDateTextView.text = ToolBox.CategoryManager.getCurrentDateString()
@@ -55,23 +56,14 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
         val activityImage = findViewById<ImageView>(R.id.imageView)
         activityImage.setImageBitmap(bitmap)
 
-        /*val imgResource = intent.getIntExtra("imageIcon", 0)
-        val activityImag = findViewById<ImageView>(R.id.imageView)
-        activityImag.setImageBitmap(imgResource)*/
-
         val activityNameTextView = findViewById<TextView>(R.id.txtActivityName)
-        //val categoryIconImageView = findViewById<ImageView>(R.id.iconPicture)
 
         activityNameTextView.text = actName
-        //categoryIconImageView.setImageResource(imgResource)
-
-
 
         //Getting the current Activity object we are working with
         val activityObject = ToolBox.ActivityManager.getActivityObjectByID(actID)
 
-
-
+        ///---------------------------------------------------------------------------------------//
         setSupportActionBar(binding.navToolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
@@ -93,6 +85,9 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
         stopStartButton = findViewById(R.id.btnPlay)
         stopStartButton.setOnClickListener{startStopTapped()}
 
+        ///---------------------------------------------------------------------------------------//
+
+
         timer = Timer()
 
         progressBar = findViewById(R.id.progressBar)
@@ -110,6 +105,9 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
 
         //Setting MaxTime view
         maxTimeTextView.text = "Max Time: "+activityObject.duration.toHours()
+
+        ///---------------------------------------------------------------------------------------//
+
 
         //Date formatting spinner stuff
         val spinner: Spinner = findViewById(R.id.dropDownTimeFormat)
@@ -137,15 +135,92 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
             override fun onNothingSelected(parent: AdapterView<*>) {
             }
         }
+
+
+
+        ///---------------------------------------------------------------------------------------//
+
+        val activityList = ToolBox.ActivityManager.getActivityList()
+
+        for (activity in activityList) {
+            if (activity.actID == actID && activity.title == actName) {
+                //val currentActivityId = activity.actID
+
+                    val timerValue = formatTime(
+                        activity.currentTimeSpent.seconds.toInt() % 60,
+                        activity.currentTimeSpent.toMinutes().toInt() % 60,
+                        activity.currentTimeSpent.toHours().toInt()
+                    )
+
+                    val timerTextView = findViewById<TextView>(R.id.txtTimerSaved)
+                    timerTextView.text = timerValue
+
+            }
+        }
+
     }
 
     //............................................................................................//
 
-    fun recordTimerToActivity(){
-        //Get the current activity
+    private fun recordTimerToActivity() {
+        // Get the current activity
         val currentActivity = ToolBox.ActivityManager.getActivityObjectByID(intent.getIntExtra("activityID", -1))
-        //timer
+
+        // Capture the current time as a string in the format "HH:mm:ss"
+        val capturedTime = getTimerText()
+
+        // Remove leading and trailing whitespace from the captured time string
+        val trimmedTime = capturedTime.trim()
+
+        // Split the trimmed time string into hours, minutes, and seconds
+        val timeParts = trimmedTime.split(" : ")
+        if (timeParts.size == 3) {
+            val hours = timeParts[0].toIntOrNull()
+            val minutes = timeParts[1].toIntOrNull()
+            val seconds = timeParts[2].toIntOrNull()
+
+            if (hours != null && minutes != null && seconds != null) {
+                // Convert the time parts to a Duration object
+                val updatedTimeSpent = Duration.ofSeconds(seconds.toLong())
+                    .plusMinutes(minutes.toLong())
+                    .plusHours(hours.toLong())
+
+                // Get the difference between the current and saved time
+                val timeDifference = updatedTimeSpent + currentActivity.savedTimeSpent
+
+                // Update the current activity's currentTimeSpent with the time difference
+                currentActivity.currentTimeSpent = timeDifference
+
+                // Get the category of the current activity
+                val category = ToolBox.CategoryManager.getCategoryByID(currentActivity.categoryId)
+
+                // Calculate the total activity time spent in the category
+                val totalActivityTimeSpent = category.activities.sumOf { it.currentTimeSpent.toMillis() }
+
+                // Update the activityTimeSpent in the CategoryDataClass
+                category.activityTimeSpent = Duration.ofMillis(totalActivityTimeSpent)
+
+                // Update the savedTimeSpent with the current updatedTimeSpent
+                currentActivity.savedTimeSpent = timeDifference
+
+                // ... Perform any additional actions or save the updated activity and category objects as needed
+
+                // Finish the current activity and return to the previous activity
+                finish()
+            }
+        } else {
+            // Error handling if the captured time string is not in the expected format
+            Toast.makeText(this, "Invalid time format: $capturedTime", Toast.LENGTH_SHORT).show()
+        }
     }
+
+    /*private fun parseDuration(time: String): Duration {
+        val parts = time.split(":")
+        val hours = parts[0].toLong()
+        val minutes = parts[1].toLong()
+        val seconds = parts[2].toLong()
+        return Duration.ofHours(hours).plusMinutes(minutes).plusSeconds(seconds)
+    }*/
 
     //............................................................................................//
 
@@ -162,11 +237,46 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
             timerStarted = false
             setButtonUI(R.drawable.baseline_play_circle_24)
             timerTask.cancel()
+
         }
 
     }
 
     //............................................................................................//
+
+   /* private fun resumeTimerAfterButtonClick() {
+        // Start the timer
+        //startTimer()
+
+        // Retrieve the stored time from shared preferences
+        val sharedPreferences = getSharedPreferences("TimerPrefs", Context.MODE_PRIVATE)
+        val storedTime = sharedPreferences.getLong("timerValue", 0L)
+
+        if (storedTime != 0L) {
+            val currentTime = System.currentTimeMillis()
+            val elapsedMillis = currentTime - storedTime
+            val elapsedDuration = Duration.ofMillis(elapsedMillis)
+
+            // Update the timer display with the elapsed time
+            val seconds = elapsedDuration.seconds % 60
+            val minutes = elapsedDuration.toMinutes() % 60
+            val hours = elapsedDuration.toHours()
+
+            val formattedTime = formatTime(seconds.toInt(), minutes.toInt(), hours.toInt())
+
+            // Update the timer display with the formatted time
+            val timerTextView = findViewById<TextView>(R.id.txtTimerCounter)
+            timerTextView.text = formattedTime
+
+            // Reset the timer value in shared preferences
+            val editor = sharedPreferences.edit()
+            editor.remove("timerValue")
+            editor.apply()
+        } else {
+            // Handle the case where the timer value is not yet stored or has been reset
+            // ...
+        }
+    }*/
 
     private fun setButtonUI(drawableResId: Int) {
         stopStartButton.setImageResource(drawableResId)
@@ -188,6 +298,9 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
             }
         }
 
+        // Initialize the timer
+        timer = Timer()
+
         // Sped up the timer counter to see if the progress bar progresses.
         // remember to change period: 1000
         timer.scheduleAtFixedRate(timerTask, 0, 10)
@@ -196,10 +309,8 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
     //............................................................................................//
 
     private fun updateProgressBar() {
-        //val currentActivity = ToolBox.ActivityManager.getActivityObjectByID(intent.getIntExtra("activityID", -1))
-        val maxTimeInMinutes = maxTime.toHours()
+        val maxTimeInMinutes = maxTime.toHours().toInt()
         val currentProgress = (((time/60) / maxTimeInMinutes) * maxProgress).toInt()
-        //val progressPercentage = (currentActivity.currentTimeSpent.toMillis().toFloat() / maxTime.toMillis().toFloat()) * 100
         progressBar.progress = currentProgress
     }
 

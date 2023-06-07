@@ -64,8 +64,6 @@ class Schedule : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
 
         val displayView = findViewById<LinearLayout>(R.id.layout)
 
-        //val addedActivityIdentifiers = HashSet<String>()
-
         for (activity in activityList) {
             if (activity.startDate >= CurrentDateTextView.text.toString()) {
                 // Match found, perform desired actions with the activity
@@ -76,13 +74,10 @@ class Schedule : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
                 customView.setActID(activity.actID)
                 customView.setActName(activity.title)
 
-                // Set the bitmap image
-                //customView.setIcon(imageResource)
                 activity.actImage?.let { bitmap ->
                     customView.setIcon(bitmap)
                 }
 
-                // customView.setIcon(imageResource)
                 displayView.addView(customView)
             }
         }

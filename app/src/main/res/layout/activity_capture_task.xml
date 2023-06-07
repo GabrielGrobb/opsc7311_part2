@@ -152,6 +152,17 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/txtTimerSaved"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="32dp"
+            android:text="00:00:00"
+            android:textColor="@color/black"
+            android:textSize="30dp" />
+
+        <TextView
             android:id="@+id/txtTimerCounter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
