@@ -3,6 +3,7 @@ package com.example.opsc7311_part2
 import android.graphics.Bitmap
 import android.os.Parcel
 import android.os.Parcelable
+import android.text.style.BackgroundColorSpan
 import android.widget.DatePicker
 import android.widget.ImageView
 import android.widget.Spinner
@@ -37,7 +38,8 @@ class ToolBox
         var name: String,
         val icon: ImageView,
         var activityTimeSpent: Duration,
-        val activities: MutableList<ActivityDataClass>
+        val activities: MutableList<ActivityDataClass>,
+        val catColor: Int
         )
 
     data class AccountSettings(

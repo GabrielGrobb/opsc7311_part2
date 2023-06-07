@@ -52,11 +52,11 @@ class Category : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
         val imgResource = intent.getIntExtra("imageIcon", 0)
 
         val categoryNameTextView = findViewById<TextView>(R.id.CategoryName)
-        val categoryIconImageView = findViewById<ImageView>(R.id.iconPicture)
+        //val categoryIconImageView = findViewById<ImageView>(R.id.iconPicture)
         val categoryIdentification = findViewById<TextView>(R.id.categoryId)
 
         categoryNameTextView.text = catName
-        categoryIconImageView.setImageResource(imgResource)
+        //categoryIconImageView.setImageResource(imgResource)
         categoryIdentification.text = catID.toString()
 
         val categoryList = ToolBox.CategoryManager.getCategoryList()
@@ -106,6 +106,7 @@ class Category : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
                         /// Set activity ID and name
                         customView.setActID(activity.actID)
                         customView.setActName(activity.title)
+
 
                         /// Set the bitmap image
                         activity.actImage?.let {bitmap -> customView.setIcon(bitmap)}
@@ -238,11 +239,11 @@ class Category : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
         val imgResource = intent.getIntExtra("imageIcon", 0)
 
         val categoryNameTextView = findViewById<TextView>(R.id.CategoryName)
-        val categoryIconImageView = findViewById<ImageView>(R.id.iconPicture)
+        //val categoryIconImageView = findViewById<ImageView>(R.id.iconPicture)
         val categoryIdentification = findViewById<TextView>(R.id.categoryId)
 
         categoryNameTextView.text = catName
-        categoryIconImageView.setImageResource(imgResource)
+        //categoryIconImageView.setImageResource(imgResource)
         categoryIdentification.text = catID.toString()
         if(selectedEndDate != "" && selectedStartDate != ""){
             displayView.removeAllViews()
