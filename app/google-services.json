@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "343995432937",
+    "project_id": "opsc7311-part2-d246a",
+    "storage_bucket": "opsc7311-part2-d246a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:343995432937:android:68450a8777e2f93aa79578",
+        "android_client_info": {
+          "package_name": "com.example.opsc7311_part2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "343995432937-s2in2tfon2feas4rj73fgjumheqcilu9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDEW7g1XUWIVimbzvXtbp7Xkwpy6j-KoyI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "343995432937-s2in2tfon2feas4rj73fgjumheqcilu9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
