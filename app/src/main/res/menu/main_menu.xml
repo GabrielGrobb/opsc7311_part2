@@ -10,14 +10,14 @@
             android:id="@+id/nav_schedule"
             android:title="Schedule"
             android:icon="@drawable/schedule_icon"/>
-        <!--<item
+        <item
             android:id="@+id/nav_achievements"
             android:title="Achievements"
-            android:icon="@drawable/achievements_icon"/>-->
-        <!--<item
+            android:icon="@drawable/achievements_icon"/>
+        <item
             android:id="@+id/nav_graph"
             android:title="Graph"
-            android:icon="@drawable/graph_icon"/>-->
+            android:icon="@drawable/graph_icon"/>
         <item
             android:id="@+id/nav_account"
             android:title="Account Settings"

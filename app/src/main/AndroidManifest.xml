@@ -3,10 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools">
     <!-- Camera Permission -->
     <uses-permission android:name="android.permission.CAMERA" />
+
     <uses-feature android:name="android.hardware.camera" />
+
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <!-- Camera Permission -->
 
     <application
         android:allowBackup="true"
@@ -17,7 +18,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Opsc7311_part2"
         tools:targetApi="31">
-
+        <activity
+            android:name=".Graph"
+            android:exported="false" />
+        <activity
+            android:name=".AchievementsPage"
+            android:exported="false" />
         <activity
             android:name=".Header"
             android:exported="false" />

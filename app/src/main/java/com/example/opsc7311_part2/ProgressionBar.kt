@@ -12,13 +12,13 @@ class ProgressionBar : AppCompatActivity() {
     private lateinit var progressBar: ProgressBar
     private lateinit var progressText: TextView
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    /*override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_achievements)
 
-        /* progressBar.max = 100
+        *//* progressBar.max = 100
         val currentProgress =
-        ObjectAnimator.ofInt(AchievementsProgressBar, "") */
+        ObjectAnimator.ofInt(AchievementsProgressBar, "") *//*
 
         progressBar = findViewById(R.id.AchievementsProgressBar)
         progressText = findViewById(R.id.achievementsProgressText)
@@ -33,5 +33,5 @@ class ProgressionBar : AppCompatActivity() {
         progressText.text = "$progress%"
 
 
-    }
+    }*/
 }

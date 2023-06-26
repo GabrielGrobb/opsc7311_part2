@@ -5,36 +5,31 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
-import com.example.opsc7311_part2.databinding.ActivityAccountSettingsBinding
-import com.example.opsc7311_part2.databinding.ActivityAchievementsBinding
+import com.example.opsc7311_part2.databinding.ActivityGraphBinding
 import com.google.android.material.navigation.NavigationView
 
-class AchievementActivity : AppCompatActivity(), View.OnClickListener, NavigationView.OnNavigationItemSelectedListener
-{
+class Graph : AppCompatActivity(), View.OnClickListener,
+    NavigationView.OnNavigationItemSelectedListener {
 
-    private lateinit var binding: ActivityAchievementsBinding
+    private lateinit var binding: ActivityGraphBinding
 
-    //............................................................................................//
-    override fun onCreate(savedInstanceState: Bundle?)
-    {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityAchievementsBinding.inflate(layoutInflater)
+        binding = ActivityGraphBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        //Setting the current Date
-        val CurrentDateTextView = findViewById<TextView>(R.id.CurrentDate)
-        CurrentDateTextView.text = ToolBox.CategoryManager.getCurrentDateString()
 
         setSupportActionBar(binding.navToolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
-        var toggleOnOff = ActionBarDrawerToggle(this,
+        var toggleOnOff = ActionBarDrawerToggle(
+            this,
             binding.drawerLayout, binding.navToolbar,
             R.string.navigation_drawer_open,
-            R.string.navigation_drawer_close)
+            R.string.navigation_drawer_close
+        )
 
         binding.drawerLayout.addDrawerListener(toggleOnOff)
         toggleOnOff.syncState()
@@ -42,15 +37,13 @@ class AchievementActivity : AppCompatActivity(), View.OnClickListener, Navigatio
         binding.navView.bringToFront()
         binding.navView.setNavigationItemSelectedListener(this)
 
-
     }
 
     //............................................................................................//
 
-    override fun onNavigationItemSelected(item: MenuItem): Boolean
-    {
-        when(item.itemId)
-        {
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+
+        when (item.itemId) {
             R.id.nav_home -> {
                 val intent = Intent(applicationContext, HomePageTest::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -64,12 +57,19 @@ class AchievementActivity : AppCompatActivity(), View.OnClickListener, Navigatio
 
             }
 
+            R.id.nav_achievements -> {
+                val intent = Intent(applicationContext, AchievementsPage::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
+
+            }
+
             R.id.nav_account -> {
                 val intent = Intent(applicationContext, AccountSettings::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)
-            }
 
+            }
             R.id.nav_logout -> {
                 val intent = Intent(applicationContext, LoginActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -80,18 +80,13 @@ class AchievementActivity : AppCompatActivity(), View.OnClickListener, Navigatio
         // return true marks the item as selected
         return true
     }
-
     //............................................................................................//
 
-    override fun onBackPressed()
-    {
+    override fun onBackPressed() {
         //if the drawer is open, close it
-        if(binding.drawerLayout.isDrawerOpen(GravityCompat.START))
-        {
+        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
             binding.drawerLayout.closeDrawer(GravityCompat.START)
-        }
-        else
-        {
+        } else {
             //otherwise, let the super class handle it
             super.onBackPressed()
         }
@@ -99,8 +94,7 @@ class AchievementActivity : AppCompatActivity(), View.OnClickListener, Navigatio
 
     //............................................................................................//
 
-    override fun onClick(v: View?)
-    {
+    override fun onClick(v: View?) {
         /*TODO("Not yet implemented")*/
     }
 

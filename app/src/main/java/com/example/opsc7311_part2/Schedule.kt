@@ -18,7 +18,8 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 
-class Schedule : AppCompatActivity(), View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
+class Schedule : AppCompatActivity(), View.OnClickListener,
+    NavigationView.OnNavigationItemSelectedListener {
     private lateinit var binding: ActivityScheduleBinding
     private lateinit var menuButton: ImageView
     private lateinit var schedulePageTitle: TextView
@@ -28,6 +29,7 @@ class Schedule : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
     private lateinit var dateToday: TextView
     private lateinit var dateTomorrow: TextView
     private lateinit var layoutSchedule: LinearLayout
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityScheduleBinding.inflate(layoutInflater)
@@ -100,6 +102,19 @@ class Schedule : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
                 startActivity(intent)
             }
 
+            R.id.nav_achievements -> {
+                val intent = Intent(applicationContext, AchievementsPage::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
+
+            }
+
+            R.id.nav_graph -> {
+                val intent = Intent(applicationContext, Graph::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
+
+            }
 
             R.id.nav_account -> {
                 val intent = Intent(applicationContext, AccountSettings::class.java)
@@ -158,7 +173,8 @@ class Schedule : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
         //getting activity list
         val activityList = ToolBox.ActivityManager.getActivityList()
         // Set a custom date range
-        val startDate = ToolBox.CategoryManager.getCurrentDateString()// Set your start date as a Calendar instance
+        val startDate =
+            ToolBox.CategoryManager.getCurrentDateString()// Set your start date as a Calendar instance
         // Set a listener to disable specific dates
         datePickerDialog.datePicker.init(year, month, day) { datePicker, year, month, day ->
             val selectedDate = Calendar.getInstance().apply {
@@ -173,8 +189,10 @@ class Schedule : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
                 set(Calendar.SECOND, 0)
                 set(Calendar.MILLISECOND, 0)
             }
-            val endDateMillis = endDate.timeInMillis // Convert startDate and endDate to Date objects
-            val startDateMillis = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(startDate)?.time ?: 0
+            val endDateMillis =
+                endDate.timeInMillis // Convert startDate and endDate to Date objects
+            val startDateMillis =
+                SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(startDate)?.time ?: 0
             // Convert startDateMillis and endDateMillis to Calendar instances
             val startCalendar = Calendar.getInstance().apply {
                 timeInMillis = startDateMillis
@@ -215,4 +233,5 @@ class Schedule : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
         }
         datePickerDialog.show()
     }
+    //............................................................................................//
 }
