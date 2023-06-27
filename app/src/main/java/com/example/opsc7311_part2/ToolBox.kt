@@ -1,11 +1,14 @@
 package com.example.opsc7311_part2
 
+import android.content.ContentValues.TAG
 import android.graphics.Bitmap
+import android.util.Log
 import android.widget.Spinner
 import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
 import java.time.Duration
 import java.util.*
+import kotlin.collections.HashMap
 
 
 class ToolBox
@@ -112,6 +115,74 @@ class ToolBox
 
     }
 
+    //Reworked most backend methods to use DB instead of runtime memory, kept logic the same
+    object DBManager {
+
+        //Instance of DB
+        val db = FirebaseFirestore.getInstance()
+
+        //Functions to generate maps for the POCOs
+        fun getActivityAttributes(activity: ActivityDataClass): HashMap<String, String> {
+            val attributeMap = HashMap<String, String>()
+
+            attributeMap["actID"] = activity.actID.toString()
+            attributeMap["title"] = activity.title
+            attributeMap["client"] = activity.client
+            attributeMap["location"] = activity.location
+            attributeMap["category"] = activity.category
+            attributeMap["categoryId"] = activity.categoryId.toString()
+            attributeMap["duration"] = activity.duration.toString()
+            attributeMap["progressionBar"] = activity.progressionBar.toString()
+            attributeMap["currentTimeSpent"] = activity.currentTimeSpent.toString()
+            attributeMap["savedTimeSpent"] = activity.savedTimeSpent.toString()
+            attributeMap["startDate"] = activity.startDate
+            attributeMap["endDate"] = activity.endDate
+            attributeMap["actImage"] = activity.actImage.toString()
+
+            return attributeMap
+        }
+
+        //Gets a list of all the activity documents in the activity collection and returns them as a list of activity objects
+        /*fun getActivityList(): List<ActivityDataClass>{
+            //Gets the list of all activities in the db
+            var activities = db.collection("users")
+                .get()
+                .addOnSuccessListener { result ->
+                    for (document in result) {
+                        Log.d(TAG, "${document.id} => ${document.data}")
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Log.w(TAG, "Error getting documents.", exception)
+                }
+            //Converts all the values from the db into
+
+        }*/
+
+        //Takes in an ActivityDataClass, converts it to a hashmap and adds it to the database
+        fun persistActivity(activity: ActivityDataClass){
+            //Get a reference to the collection
+            val collectionRef = db.collection("Activities")
+
+            db.collection("Activities").add(getActivityAttributes(activity)).addOnSuccessListener { documentReference ->
+                Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
+            }
+                .addOnFailureListener { e ->
+                    Log.w(TAG, "Error adding document", e)
+                }
+
+        }
+
+        /*fun calcCategoryTime(): Duration{
+            var totalDuration = Duration.ZERO
+            //Get the list of activities from the db here
+            for (activity in ) {
+                totalDuration = totalDuration.plus(activity.currentTimeSpent)
+            }
+            return totalDuration
+        }*/
+    }
+
     object CategoryManager {
         private val categoryList = mutableListOf<CategoryDataClass>()
         //private val activityList = mutableListOf<ActivityDataClass>()
@@ -214,8 +285,7 @@ class ToolBox
         }
         //Hi ishmael if you are reading this your feet smell ps gabe lifts more than you
 
-        //Instance of DB
-        var db = FirebaseFirestore.getInstance()
+
 
     }
 }

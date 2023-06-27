@@ -172,7 +172,10 @@ class AddActivity : AppCompatActivity() {
                         bitmap
                     )
                     //adding the activity object to the activity data class
+                    //Testing DB Integrations
+                    //ToolBox.DBManager.persistActivity(newActivity)
                     ToolBox.ActivityManager.addActivity(newActivity)
+
                     category?.activities?.add(newActivity)
                     // Return to the HomePage
                     val intent = Intent(this, HomePageTest::class.java)
