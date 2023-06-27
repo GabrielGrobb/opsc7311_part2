@@ -101,6 +101,20 @@ class HomePageTest : AppCompatActivity(), View.OnClickListener, NavigationView.O
 
             }
 
+            R.id.nav_achievements -> {
+                val intent = Intent(applicationContext, AchievementsPage::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
+
+            }
+
+            R.id.nav_graph -> {
+                val intent = Intent(applicationContext, Graph::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
+
+            }
+
             R.id.nav_account -> {
                 val intent = Intent(applicationContext, AccountSettings::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)

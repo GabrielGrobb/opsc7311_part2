@@ -1,19 +1,12 @@
 package com.example.opsc7311_part2
 
 import android.graphics.Bitmap
-import android.os.Parcel
-import android.os.Parcelable
-import android.text.style.BackgroundColorSpan
-import android.widget.DatePicker
-import android.widget.ImageView
 import android.widget.Spinner
-import android.widget.TextView
-import java.io.Serializable
-import java.sql.Time
+import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
 import java.time.Duration
-import java.time.format.DateTimeFormatter
 import java.util.*
+
 
 class ToolBox
 {
@@ -221,7 +214,8 @@ class ToolBox
         }
         //Hi ishmael if you are reading this your feet smell ps gabe lifts more than you
 
-
+        //Instance of DB
+        var db = FirebaseFirestore.getInstance()
 
     }
 }

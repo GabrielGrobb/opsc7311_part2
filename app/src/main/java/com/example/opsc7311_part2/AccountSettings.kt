@@ -35,13 +35,14 @@ import java.util.*
 import android.widget.Button
 import com.google.android.material.textfield.TextInputEditText
 
-class AccountSettings : AppCompatActivity(), View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
+
+class AccountSettings : AppCompatActivity(), View.OnClickListener,
+    NavigationView.OnNavigationItemSelectedListener {
     private lateinit var binding: ActivityAccountSettingsBinding
     private val CAMERA_PERMISSION_REQUEST_CODE = 100
     private val STORAGE_PERMISSION_REQUEST_CODE = 101
     private var profilePicture: Bitmap? = null
     private lateinit var imageView: ImageView
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -54,11 +55,13 @@ class AccountSettings : AppCompatActivity(), View.OnClickListener, NavigationVie
         val minHours = findViewById<Spinner>(R.id.min_time)
         val maxHours = findViewById<Spinner>(R.id.max_time)
         //Creating the items for the spinner
-        val minHoursItems = arrayOf(1,2,3,4,5,6,7,8)
-        val maxHoursItems = arrayOf(1,2,4,5,6,7,8,9,10,11,12)
+        val minHoursItems = arrayOf(1, 2, 3, 4, 5, 6, 7, 8)
+        val maxHoursItems = arrayOf(1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12)
         //Creating the Adapters for the spinners
-        val minHoursAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, minHoursItems)
-        val maxHoursAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, maxHoursItems)
+        val minHoursAdapter =
+            ArrayAdapter(this, android.R.layout.simple_spinner_item, minHoursItems)
+        val maxHoursAdapter =
+            ArrayAdapter(this, android.R.layout.simple_spinner_item, maxHoursItems)
         //Setting the adapters for the spinners
         minHours.adapter = minHoursAdapter
         maxHours.adapter = maxHoursAdapter
@@ -127,13 +130,18 @@ class AccountSettings : AppCompatActivity(), View.OnClickListener, NavigationVie
 
             showOptionDialog()
             showToast("You Need To Allow Access To Your Camera")
-
         }
         //Setting the different views to the user's account settings
-        fun updateAccountSettings(){
+        fun updateAccountSettings() {
             //Finding the index of the desired min and max hours in the spinner to set the view
-            val desiredMin = ToolBox.CategoryManager.getSpinnerIndexForValue(minHours, currentSettings.minHours.toString())
-            val desiredMax = ToolBox.CategoryManager.getSpinnerIndexForValue(maxHours, currentSettings.maxHours.toString())
+            val desiredMin = ToolBox.CategoryManager.getSpinnerIndexForValue(
+                minHours,
+                currentSettings.minHours.toString()
+            )
+            val desiredMax = ToolBox.CategoryManager.getSpinnerIndexForValue(
+                maxHours,
+                currentSettings.maxHours.toString()
+            )
             //Setting the spinners
             minHours.setSelection(desiredMin)
             maxHours.setSelection(desiredMax)
@@ -149,7 +157,7 @@ class AccountSettings : AppCompatActivity(), View.OnClickListener, NavigationVie
         updateAccountSettings()
 
         //Code to handle user updating settings
-        updateButton.setOnClickListener{
+        updateButton.setOnClickListener {
             //Setting all of the values of the currentSettings object with data user has entered
             currentSettings.updateSettings(
                 "default",
@@ -342,7 +350,10 @@ class AccountSettings : AppCompatActivity(), View.OnClickListener, NavigationVie
                 put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis())
             }
 
-            return contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+            return contentResolver.insert(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                contentValues
+            )
         } catch (e: IOException) {
             imageFile.delete()
         }
@@ -350,79 +361,89 @@ class AccountSettings : AppCompatActivity(), View.OnClickListener, NavigationVie
         return null
     }
 
-                // Convert a Bitmap to a Uri
-                private fun bitmapToUri(bitmap: Bitmap): Uri {
-                    val cachePath = File(applicationContext.cacheDir, "images")
-                    cachePath.mkdirs()
-                    val file = File(cachePath, "tempProfilePhoto.png")
+    // Convert a Bitmap to a Uri
+    private fun bitmapToUri(bitmap: Bitmap): Uri {
+        val cachePath = File(applicationContext.cacheDir, "images")
+        cachePath.mkdirs()
+        val file = File(cachePath, "tempProfilePhoto.png")
 
-                    try {
-                        val fileOutputStream = FileOutputStream(file)
-                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream)
-                        fileOutputStream.close()
-                    } catch (e: IOException) {
-                        e.printStackTrace()
-                    }
+        try {
+            val fileOutputStream = FileOutputStream(file)
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream)
+            fileOutputStream.close()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
 
-                    return Uri.fromFile(file)
-                }
+        return Uri.fromFile(file)
+    }
 
-                //............................................................................................//
-
-
+    //............................................................................................//
 
 
+    //............................................................................................//
 
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
 
-                //............................................................................................//
+        when (item.itemId) {
+            R.id.nav_home -> {
+                val intent = Intent(applicationContext, HomePageTest::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
+            }
 
-                override fun onNavigationItemSelected(item: MenuItem): Boolean {
-
-                    when (item.itemId) {
-                        R.id.nav_home -> {
-                            val intent = Intent(applicationContext, HomePageTest::class.java)
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                            startActivity(intent)
-                        }
-
-                        R.id.nav_schedule -> {
-                            val intent = Intent(applicationContext, Schedule::class.java)
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                            startActivity(intent)
-
-                        }
-
-                        R.id.nav_logout -> {
-                            val intent = Intent(applicationContext, LoginActivity::class.java)
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                            startActivity(intent)
-                        }
-                    }
-                    binding.drawerLayout.closeDrawer(GravityCompat.START)
-                    // return true marks the item as selected
-                    return true
-                }
-
-                //............................................................................................//
-
-                override fun onBackPressed() {
-                    //if the drawer is open, close it
-                    if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
-                        binding.drawerLayout.closeDrawer(GravityCompat.START)
-                    } else {
-                        //otherwise, let the super class handle it
-                        super.onBackPressed()
-                    }
-                }
-
-                //............................................................................................//
-
-                override fun onClick(v: View?) {
-                    /*TODO("Not yet implemented")*/
-                }
-
-                //............................................................................................//
+            R.id.nav_schedule -> {
+                val intent = Intent(applicationContext, Schedule::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
 
             }
+
+            R.id.nav_achievements -> {
+                val intent = Intent(applicationContext, AchievementsPage::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
+
+            }
+
+            R.id.nav_graph -> {
+                val intent = Intent(applicationContext, Graph::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
+
+            }
+
+            R.id.nav_logout -> {
+                val intent = Intent(applicationContext, LoginActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
+            }
+        }
+        binding.drawerLayout.closeDrawer(GravityCompat.START)
+        // return true marks the item as selected
+        return true
+    }
+
+    //............................................................................................//
+
+    override fun onBackPressed() {
+        //if the drawer is open, close it
+        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+        } else {
+            //otherwise, let the super class handle it
+            super.onBackPressed()
+        }
+    }
+
+    //............................................................................................//
+
+    override fun onClick(v: View?) {
+        /*TODO("Not yet implemented")*/
+    }
+
+    //............................................................................................//
+
+}
 
 //.........................................EndOfFile..............................................//
