@@ -28,6 +28,9 @@ class AddCategory : AppCompatActivity() {
         binding = ActivityAddCategoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        /*for(activity in ToolBox.DBManager.getActivityList()){
+            println(activity)
+        }*/
 
         //-----Color Picker-----//
         val colorPicker: TextView = findViewById(R.id.ColorPicker)

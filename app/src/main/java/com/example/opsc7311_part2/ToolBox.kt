@@ -2,12 +2,16 @@ package com.example.opsc7311_part2
 
 import android.content.ContentValues.TAG
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.util.Log
 import android.widget.Spinner
+import com.google.common.base.Converter
+import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
 import java.time.Duration
 import java.util.*
 import kotlin.collections.HashMap
+import android.util.Base64
 
 
 class ToolBox
@@ -21,7 +25,7 @@ class ToolBox
         val category: String,
         val categoryId: Int, // ID of the category
         val duration: Duration,
-        var progressionBar: ProgressionBar,
+        //var progressionBar: ProgressionBar,
         var currentTimeSpent: Duration,
         var savedTimeSpent: Duration,
         val startDate: String,
@@ -87,8 +91,7 @@ class ToolBox
     }
 
     object ActivityManager{
-        private val activityList = mutableListOf<ActivityDataClass>()
-
+        private var activityList = DBManager.getActivityList()
 
 
         fun addActivity(activity: ActivityDataClass) {
@@ -133,7 +136,7 @@ class ToolBox
             attributeMap["category"] = activity.category
             attributeMap["categoryId"] = activity.categoryId.toString()
             attributeMap["duration"] = activity.duration.toString()
-            attributeMap["progressionBar"] = activity.progressionBar.toString()
+            //attributeMap["progressionBar"] = activity.progressionBar.toString()
             attributeMap["currentTimeSpent"] = activity.currentTimeSpent.toString()
             attributeMap["savedTimeSpent"] = activity.savedTimeSpent.toString()
             attributeMap["startDate"] = activity.startDate
@@ -144,21 +147,66 @@ class ToolBox
         }
 
         //Gets a list of all the activity documents in the activity collection and returns them as a list of activity objects
-        /*fun getActivityList(): List<ActivityDataClass>{
+        fun getActivityList(): MutableList<ActivityDataClass>{
+
+            //Temp list to store db objects
+            var activityList = mutableListOf<ActivityDataClass>()
             //Gets the list of all activities in the db
-            var activities = db.collection("users")
+            var activities = db.collection("Activities")
                 .get()
                 .addOnSuccessListener { result ->
                     for (document in result) {
                         Log.d(TAG, "${document.id} => ${document.data}")
+                        var actId = document.data.get("actID").toString()
+                        var title = document.data.get("title").toString()
+                        var client = document.data.get("client").toString()
+                        var location = document.data.get("location").toString()
+                        var category = document.data.get("category").toString()
+                        var categoryID = document.data.get("categoryId").toString()
+                        var duration = document.data.get("duration").toString()
+                        var currentTimeSpent = document.data.get("currentTimeSpent").toString()
+                        var savedTimeSpent = document.data.get("savedTimeSpent").toString()
+                        var startDate = document.data.get("startDate").toString()
+                        var endDate = document.data.get("endDate").toString()
+                        var actImage = document.data.get("actImage").toString()
+
+                        var temp = ActivityDataClass(
+                            actId.toInt(),
+                            title,
+                            client,
+                            location,
+                            category,
+                            categoryID.toInt(),
+                            Duration.parse(duration),
+                            Duration.parse(currentTimeSpent),
+                            Duration.parse(savedTimeSpent),
+                            startDate,
+                            endDate,
+                            stringToBitmap(actImage)
+                        )
+                        activityList.add(temp)
                     }
                 }
                 .addOnFailureListener { exception ->
                     Log.w(TAG, "Error getting documents.", exception)
                 }
-            //Converts all the values from the db into
+            return activityList
+        }
 
-        }*/
+        fun stringToBitmap(encodedString: String): Bitmap? {
+            try {
+                // Decode the Base64 string to a byte array
+                val imageBytes = Base64.decode(encodedString, Base64.DEFAULT)
+
+                // Create a Bitmap from the byte array
+                val bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+
+                return bitmap
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            return null
+        }
 
         //Takes in an ActivityDataClass, converts it to a hashmap and adds it to the database
         fun persistActivity(activity: ActivityDataClass){
