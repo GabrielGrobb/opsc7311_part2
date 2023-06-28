@@ -2,7 +2,6 @@ package com.example.opsc7311_part2
 
 import android.graphics.Bitmap
 import android.widget.Spinner
-import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
 import java.time.Duration
 import java.util.*
@@ -219,8 +218,7 @@ class ToolBox
         }
         //Hi ishmael if you are reading this your feet smell ps gabe lifts more than you
 
-        //Instance of DB
-        var db = FirebaseFirestore.getInstance()
+
 
     }
 }
