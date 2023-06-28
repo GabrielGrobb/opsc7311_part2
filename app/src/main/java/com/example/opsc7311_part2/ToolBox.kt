@@ -2,7 +2,6 @@ package com.example.opsc7311_part2
 
 import android.graphics.Bitmap
 import android.widget.Spinner
-import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
 import java.time.Duration
 import java.util.*
@@ -87,6 +86,8 @@ class ToolBox
     object ActivityManager{
         private val activityList = mutableListOf<ActivityDataClass>()
 
+
+
         fun addActivity(activity: ActivityDataClass) {
             activityList.add(activity)
         }
@@ -121,7 +122,10 @@ class ToolBox
         fun calcCategoryTime(cat: CategoryDataClass): Duration {
             var totalDuration = Duration.ZERO
             for (activity in cat.activities) {
-                totalDuration = totalDuration.plus(activity.currentTimeSpent)
+                //if(cat.catID==activity.categoryId) {
+                    totalDuration = totalDuration.plus(activity.currentTimeSpent)
+                //}
+
             }
             return totalDuration
         }
@@ -214,8 +218,7 @@ class ToolBox
         }
         //Hi ishmael if you are reading this your feet smell ps gabe lifts more than you
 
-        //Instance of DB
-        var db = FirebaseFirestore.getInstance()
+
 
     }
 }

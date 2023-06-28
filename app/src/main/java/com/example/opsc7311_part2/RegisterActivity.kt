@@ -15,34 +15,83 @@ class RegisterActivity : AppCompatActivity() {
         var currentSettings = ToolBox.AccountManager.getSettingsObject()
         var submitButton = findViewById<Button>(R.id.btnSubmit)
 
-        var email = findViewById<TextInputEditText>(R.id.txtEmail).text
-        var username = findViewById<TextInputEditText>(R.id.txtUsername).text
-        var firstname = findViewById<TextInputEditText>(R.id.txtFirstname).text
-        var surname = findViewById<TextInputEditText>(R.id.txtSurname).text
-        var password = findViewById<TextInputEditText>(R.id.txtPassword).text
-        var confirmPassword = findViewById<TextInputEditText>(R.id.txtConfirmPassword).text
+        // Submit button click listener
+        submitButton.setOnClickListener {
+            var emailInput = findViewById<TextInputEditText>(R.id.txtEmail)
+            var usernameInput = findViewById<TextInputEditText>(R.id.txtUsername)
+            var firstnameInput = findViewById<TextInputEditText>(R.id.txtFirstname)
+            var surnameInput = findViewById<TextInputEditText>(R.id.txtSurname)
+            var passwordInput = findViewById<TextInputEditText>(R.id.txtPassword)
+            var confirmPasswordInput = findViewById<TextInputEditText>(R.id.txtConfirmPassword)
+            // Clear any previous error state and tooltips
+            clearErrorState(emailInput, usernameInput, firstnameInput, surnameInput, passwordInput, confirmPasswordInput)
+            // Get the input values as strings
+            val email = emailInput.text.toString()
+            val username = usernameInput.text.toString()
+            val firstname = firstnameInput.text.toString()
+            val surname = surnameInput.text.toString()
+            val password = passwordInput.text.toString()
+            val confirmPassword = confirmPasswordInput.text.toString()
 
-        submitButton.setOnClickListener{
-        if(password?.toString().equals(confirmPassword.toString())){
+            // Perform validations
+            val validation = Validation()
+            val invalidFields = mutableListOf<String>()
+            //validating email
+            if (!validation.isValidEmail(email)) {
+                invalidFields.add("Email")
+                emailInput.error = "Must be a valid email address!"
+            }
+            //validating username
+            if (!validation.validateStringsWithNumbers(username)) {
+                invalidFields.add("Username")
+                usernameInput.error = "Must be numbers and letters!"
+            }
+            //validating firstname
+            if (!validation.validateStringsNoNumbers(firstname)) {
+                invalidFields.add("Firstname")
+                firstnameInput.error = "Must be numbers and letters!"
+            }
+            //validating surname
+            if (!validation.validateStringsNoNumbers(surname)) {
+                invalidFields.add("Surname")
+                surnameInput.error = "Must be letters only!"
+            }
+            //ensuring passwords match
+            if (password != confirmPassword) {
+                invalidFields.add("confirmPassword")
+                confirmPasswordInput.error = "must match password!"
+            }
+            //validating password
+            if (password.length < 10){
+                invalidFields.add("Password")
+                passwordInput.error = "Must be longer than 10 chars!"
+            }
+            //checking for errors and displaying toast message if any are found
+            if (invalidFields.isNotEmpty()) {
+                val errorMessage = "Invalid input/s. Please check the following field(s): ${invalidFields.joinToString(", ")}"
+                Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
+                return@setOnClickListener // Stop execution if any field is invalid
+            }
+            // All validations passed, proceed with registration
             currentSettings.updateSettings(
                 "default",
                 1,
                 1,
-                email.toString(),
-                username.toString(),
-                firstname.toString(),
-                surname.toString(),
-                password.toString()
+                email,
+                username,
+                firstname,
+                surname,
+                password
             )
-            val intent = Intent(this,LoginActivity::class.java)
+            val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
-            }
-            else{
-                val toast = Toast.makeText(this, "Password and Confirm Password Mismatch", Toast.LENGTH_SHORT)
-                toast.show()
-            }
         }
 
     }
+    private fun clearErrorState(vararg textInputs: TextInputEditText) {
+        for (textInput in textInputs) {
+            textInput.error = null
+        }
+    }
 }
-//.........................................EndOfFile..............................................//
+//----------------------------------------END-OF-FILE------------------------------------------

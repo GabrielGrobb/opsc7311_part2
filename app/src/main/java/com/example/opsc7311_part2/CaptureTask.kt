@@ -260,7 +260,7 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
 
         // Sped up the timer counter to see if the progress bar progresses.
         // remember to change period: 1000
-        timer.scheduleAtFixedRate(timerTask, 0, 1000)
+        timer.scheduleAtFixedRate(timerTask, 0, 10)
     }
 
     //............................................................................................//
