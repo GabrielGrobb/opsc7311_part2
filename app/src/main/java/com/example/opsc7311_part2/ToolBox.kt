@@ -87,6 +87,8 @@ class ToolBox
     object ActivityManager{
         private val activityList = mutableListOf<ActivityDataClass>()
 
+
+
         fun addActivity(activity: ActivityDataClass) {
             activityList.add(activity)
         }
@@ -121,7 +123,10 @@ class ToolBox
         fun calcCategoryTime(cat: CategoryDataClass): Duration {
             var totalDuration = Duration.ZERO
             for (activity in cat.activities) {
-                totalDuration = totalDuration.plus(activity.currentTimeSpent)
+                //if(cat.catID==activity.categoryId) {
+                    totalDuration = totalDuration.plus(activity.currentTimeSpent)
+                //}
+
             }
             return totalDuration
         }
