@@ -4,7 +4,6 @@ import android.content.ContentValues.TAG
 import android.graphics.Bitmap
 import android.util.Log
 import android.widget.Spinner
-import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
 import java.time.Duration
 import java.util.*
@@ -89,6 +88,8 @@ class ToolBox
 
     object ActivityManager{
         private val activityList = mutableListOf<ActivityDataClass>()
+
+
 
         fun addActivity(activity: ActivityDataClass) {
             activityList.add(activity)
@@ -192,7 +193,10 @@ class ToolBox
         fun calcCategoryTime(cat: CategoryDataClass): Duration {
             var totalDuration = Duration.ZERO
             for (activity in cat.activities) {
-                totalDuration = totalDuration.plus(activity.currentTimeSpent)
+                //if(cat.catID==activity.categoryId) {
+                    totalDuration = totalDuration.plus(activity.currentTimeSpent)
+                //}
+
             }
             return totalDuration
         }
