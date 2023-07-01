@@ -49,7 +49,7 @@ class AddActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddActivityBinding
 
-    private var activityCounter = ToolBox.ActivityManager.getActivityList().size
+    //private var activityCounter = ToolBox.ActivityManager.getActivityList().size
     private val CAMERA_PERMISSION_REQUEST_CODE = 100
     private val STORAGE_PERMISSION_REQUEST_CODE = 101
 
@@ -62,6 +62,7 @@ class AddActivity : AppCompatActivity() {
             finish()
         }
         //Views
+        val activityList = ToolBox.DBManager.getActivityList()
         val ActivityIcon: ImageView = findViewById(R.id.ActivityIcon)
         val tilLocation: TextInputLayout = findViewById(R.id.til_Location)
         val tilCategory: TextInputLayout = findViewById(R.id.til_Category)
@@ -95,7 +96,7 @@ class AddActivity : AppCompatActivity() {
         binding.btnAddActivity.setOnClickListener {
 
             // Increment the categoryCounter
-            activityCounter++
+            //activityCounter++
 
             val actTitle = txtTitle.text.toString()
             val actClient = txtClient.text.toString()
@@ -157,7 +158,7 @@ class AddActivity : AppCompatActivity() {
                     txtEndDateError.visibility = View.INVISIBLE
                     //Creating the activity object
                     val newActivity = ToolBox.ActivityDataClass(
-                        activityCounter,
+                        1,
                         txtTitle.text.toString(),
                         txtClient.text.toString(),
                         txtLocation.text.toString(),
@@ -173,8 +174,8 @@ class AddActivity : AppCompatActivity() {
                     )
                     //adding the activity object to the activity data class
                     //Testing DB Integrations
-                    //ToolBox.DBManager.persistActivity(newActivity)
-                    ToolBox.ActivityManager.addActivity(newActivity)
+                    ToolBox.DBManager.persistActivity(newActivity)
+
 
                     category?.activities?.add(newActivity)
                     // Return to the HomePage
