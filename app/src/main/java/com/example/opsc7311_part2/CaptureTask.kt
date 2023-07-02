@@ -1,7 +1,5 @@
 package com.example.opsc7311_part2
 
-import android.app.AlertDialog
-import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
@@ -13,10 +11,9 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import com.example.opsc7311_part2.ToolBox.DBManager.getDocumentIDByTypeID
 import com.example.opsc7311_part2.ToolBox.DBManager.updateActivityCurrentTime
-import com.example.opsc7311_part2.ToolBox.DBManager.updateActivityTimeSpent
+import com.example.opsc7311_part2.ToolBox.DBManager.updateActivitySavedTimeSpent
 import com.example.opsc7311_part2.databinding.ActivityCaptureTaskBinding
 import com.google.android.material.navigation.NavigationView
-import org.w3c.dom.Text
 import java.time.Duration
 import java.util.*
 
@@ -196,10 +193,16 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
 
                 // Get the difference between the current and saved time
                 val timeDifference = updatedTimeSpent + currentActivity.savedTimeSpent
+                println(timeDifference)
 
                 // Update the current activity's currentTimeSpent with the time difference
-                //currentActivity.currentTimeSpent = timeDifference
-                updateActivityCurrentTime(currentActivity.actID.toString(), timeDifference)
+                currentActivity.currentTimeSpent = timeDifference
+                updateActivityCurrentTime(getDocumentIDByTypeID("Activities", "actID", currentActivity.actID), timeDifference)
+                // Update the savedTimeSpent with the current updatedTimeSpent
+                currentActivity.savedTimeSpent = timeDifference
+
+                updateActivitySavedTimeSpent(getDocumentIDByTypeID("Activities", "actID", currentActivity.actID), timeDifference)
+                println(currentActivity.savedTimeSpent)
 
                 // Get the category of the current activity
                 val category = ToolBox.CategoryManager.getCategoryByID(currentActivity.categoryId)
@@ -210,9 +213,7 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
                 // Update the activityTimeSpent in the CategoryDataClass
                 category.activityTimeSpent = Duration.ofMillis(totalActivityTimeSpent)
 
-                // Update the savedTimeSpent with the current updatedTimeSpent
-                //currentActivity.savedTimeSpent = timeDifference
-                updateActivityTimeSpent(getDocumentIDByTypeID("Activities", "actID", currentActivity.actID), timeDifference)
+
 
                 // ... Perform any additional actions or save the updated activity and category objects as needed
 

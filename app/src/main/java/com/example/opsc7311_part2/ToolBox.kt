@@ -16,6 +16,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 
 import java.io.ByteArrayOutputStream
 
@@ -131,6 +132,53 @@ class ToolBox {
 
         //Instance of DB
         val db = FirebaseFirestore.getInstance()
+
+        //Gets the ID of the Firestore Document based off the activity ID, which is always unique
+        fun getDocumentIDByTypeID(collectionName: String, fieldName: String, fieldValue: Any): String = runBlocking {
+            var documentID: String?
+
+            withContext(Dispatchers.IO) {
+                val db = FirebaseFirestore.getInstance()
+                val collectionRef = db.collection("Activities")
+                val querySnapshot = collectionRef.whereEqualTo(fieldName, fieldValue).get().await()
+                println(querySnapshot.toString())
+                documentID = try {
+                    querySnapshot.documents[0].id
+                } catch (exception: IndexOutOfBoundsException) {
+                    "none"
+                }
+            }
+            documentID ?: "none"
+        }
+
+        //Function to update the current time spent on an activity
+        fun updateActivityCurrentTime(actId: String, newTimeSpent: Duration) {
+            val activitiesCollection = db.collection("Activities")
+            val activityDocRef = activitiesCollection.document(getDocumentIDByTypeID("Activities", "actID", actId))
+
+            activityDocRef
+                .update("currentTimeSpent", newTimeSpent.toString())
+                .addOnSuccessListener {
+                    println("currentTimeSpent updated successfully")
+                }
+                .addOnFailureListener { e ->
+                    println("Error updating currentTimeSpent: $e")
+                }
+        }
+
+        fun updateActivitySavedTimeSpent(actId: String, newTimeSpent: Duration) {
+            val activitiesCollection = db.collection("Activities")
+            val activityDocRef = activitiesCollection.document(getDocumentIDByTypeID("Activities", "actID", actId))
+            println(newTimeSpent)
+            activityDocRef
+                .update("savedTimeSpent", newTimeSpent.toString())
+                .addOnSuccessListener {
+                    println("currentTimeSpent updated successfully")
+                }
+                .addOnFailureListener { e ->
+                    println("Error updating currentTimeSpent: $e")
+                }
+        }
 
         /*Function to count the number of activities currently in the collection, and return an
         integer representing a unique ID*/
@@ -360,6 +408,45 @@ class ToolBox {
 
             }
             return totalDuration
+        }
+
+        fun getCategoriesFromDB(): MutableList<CategoryDataClass> = runBlocking {
+            val activityListDeferred = async(Dispatchers.IO) {
+                val db = FirebaseFirestore.getInstance()
+                val result = db.collection("Categp").get().await()
+                val activityList = mutableListOf<ActivityDataClass>()
+                for (document in result) {
+                    val temp = ActivityDataClass(
+                        document.data["actID"].toString().toInt(),
+                        document.data["title"].toString(),
+                        document.data["client"].toString(),
+                        document.data["location"].toString(),
+                        document.data["category"].toString(),
+                        document.data["categoryId"].toString().toInt(),
+                        Duration.parse(document.data["duration"].toString()),
+                        Duration.parse(document.data["currentTimeSpent"].toString()),
+                        Duration.parse(document.data["savedTimeSpent"].toString()),
+                        document.data["startDate"].toString(),
+                        document.data["endDate"].toString(),
+                        null
+                    )
+
+                    // Check if the document contains the "actImage" field
+                    if (document.contains("actImage")) {
+                        val encodedImage = document.data["actImage"].toString()
+                        // Decode the Base64 encoded image to Bitmap
+                        val decodedBytes = Base64.decode(encodedImage, Base64.DEFAULT)
+                        val bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
+                        temp.actImage = bitmap // Set the actImageBitmap property
+                    }
+
+                    activityList.add(temp)
+                }
+                activityList
+            }
+
+            // Wait for the activityListDeferred to complete and return the result
+            activityListDeferred.await()
         }
 
         //Takes in a category id and returns the category object from the list if it exists
