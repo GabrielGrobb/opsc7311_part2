@@ -52,7 +52,7 @@ class AddActivity : AppCompatActivity() {
             finish()
         }
         //Views
-        val activityList = ToolBox.DBManager.getActivityListFromDB()
+        //val activityList = ToolBox.DBManager.getActivityListFromDB(MutableList())
         val ActivityIcon: ImageView = findViewById(R.id.ActivityIcon)
         val tilLocation: TextInputLayout = findViewById(R.id.til_Location)
         val tilCategory: TextInputLayout = findViewById(R.id.til_Category)
