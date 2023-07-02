@@ -5,13 +5,16 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
 import android.widget.Spinner
-import com.google.common.base.Converter
 import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
 import java.time.Duration
 import java.util.*
 import kotlin.collections.HashMap
 import android.util.Base64
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.tasks.await
 
 
 class ToolBox
@@ -30,7 +33,7 @@ class ToolBox
         var savedTimeSpent: Duration,
         val startDate: String,
         val endDate: String,
-        val actImage: Bitmap?
+        //val actImage: Bitmap?
     )
 
 
@@ -93,15 +96,18 @@ class ToolBox
     }
 
     object ActivityManager{
-        var activityList = DBManager.getActivityList()
 
         fun addActivity(activity: ActivityDataClass) {
-            activityList
+            //activityList
         }
 
         //Takes in an activityid and returns an activity object from the list if it exists
         fun getActivityObjectByID(id: Int): ActivityDataClass{
+            var activityList = getActivityList()
+            println("preloop")
             for(activity in activityList){
+                println("test")
+                println(activity.toString())
                 if(activity.actID==id){
                     return activity
                 }
@@ -111,7 +117,11 @@ class ToolBox
         }
 
         fun findActivityByName(name: String): Boolean {
-            return activityList.any { it.title == name }
+            return getActivityList().any { it.title == name }
+        }
+
+        fun getActivityList(): MutableList<ActivityDataClass>{
+            return DBManager.getActivitiesFromDB()
         }
 
     }
@@ -121,6 +131,23 @@ class ToolBox
 
         //Instance of DB
         val db = FirebaseFirestore.getInstance()
+
+        /*Function to count the number of activities currently in the collection, and return an
+        integer representing a unique ID*/
+        fun getUniqueActID(): Int{
+            val collectionRef = db.collection("Activities")
+            var returnVal = 0
+            collectionRef.get()
+                .addOnSuccessListener { querySnapshot ->
+                    val documentCount = querySnapshot.size()
+                    returnVal = documentCount
+                }
+                .addOnFailureListener { exception ->
+                    // Handle any errors that occurred while retrieving the documents
+                    println("Error getting documents: ${exception.message}")
+                }
+            return returnVal+1;
+        }
 
         //Functions to generate maps for the POCOs
         fun getActivityAttributes(activity: ActivityDataClass): HashMap<String, String> {
@@ -138,47 +165,37 @@ class ToolBox
             attributeMap["savedTimeSpent"] = activity.savedTimeSpent.toString()
             attributeMap["startDate"] = activity.startDate
             attributeMap["endDate"] = activity.endDate
-            attributeMap["actImage"] = activity.actImage.toString()
+            //attributeMap["actImage"] = activity.actImage.toString()
 
             return attributeMap
         }
 
-        //fun getDocumentID
-
-        //Gets a list of all the activity documents in the activity collection and returns them as a list of activity objects
-        fun getActivityList(): MutableList<ActivityDataClass>{
-
-            //Temp list to store db objects
-            var activityList = mutableListOf<ActivityDataClass>()
-
-            //Gets the list of all activities in the db
-            var activities = db.collection("Activities")
-                .get()
-                .addOnSuccessListener { result ->
-                    for (document in result) {
-                        var temp = ActivityDataClass(
-                            document.data.get("actID").toString().toInt(),
-                            document.data.get("title").toString(),
-                            document.data.get("client").toString(),
-                            location = document.data.get("location").toString(),
-                            document.data.get("category").toString(),
-                            document.data.get("categoryId").toString().toInt(),
-                            Duration.parse(document.data.get("duration").toString()),
-                            Duration.parse(document.data.get("currentTimeSpent").toString()),
-                            Duration.parse(document.data.get("savedTimeSpent").toString()),
-                            document.data.get("startDate").toString(),
-                            document.data.get("endDate").toString(),
-                            stringToBitmap(document.data.get("actImage").toString())
-                        )
-                        println(temp.toString())
-                        activityList.add(temp)
-                    }
-
+        fun getActivitiesFromDB(): MutableList<ActivityDataClass> = runBlocking {
+            val activityListDeferred = async(Dispatchers.IO) {
+                val db = FirebaseFirestore.getInstance()
+                val result = db.collection("Activities").get().await()
+                val activityList = mutableListOf<ActivityDataClass>()
+                for (document in result) {
+                    val temp = ActivityDataClass(
+                        document.data["actID"].toString().toInt(),
+                        document.data["title"].toString(),
+                        document.data["client"].toString(),
+                        document.data["location"].toString(),
+                        document.data["category"].toString(),
+                        document.data["categoryId"].toString().toInt(),
+                        Duration.parse(document.data["duration"].toString()),
+                        Duration.parse(document.data["currentTimeSpent"].toString()),
+                        Duration.parse(document.data["savedTimeSpent"].toString()),
+                        document.data["startDate"].toString(),
+                        document.data["endDate"].toString()
+                    )
+                    activityList.add(temp)
                 }
-                .addOnFailureListener { exception ->
-                    Log.w(TAG, "Error getting documents.", exception)
-                }
-            return activityList
+                activityList
+            }
+
+            // Wait for the activityListDeferred to complete and return the result
+            activityListDeferred.await()
         }
 
         fun stringToBitmap(encodedString: String): Bitmap? {
@@ -210,14 +227,6 @@ class ToolBox
 
         }
 
-        /*fun calcCategoryTime(): Duration{
-            var totalDuration = Duration.ZERO
-            //Get the list of activities from the db here
-            for (activity in ) {
-                totalDuration = totalDuration.plus(activity.currentTimeSpent)
-            }
-            return totalDuration
-        }*/
     }
 
     object CategoryManager {

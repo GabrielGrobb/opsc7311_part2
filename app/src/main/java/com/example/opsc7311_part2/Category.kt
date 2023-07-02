@@ -109,7 +109,7 @@ class Category : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
 
 
                         /// Set the bitmap image
-                        activity.actImage?.let {bitmap -> customView.setIcon(bitmap)}
+                        //activity.actImage?.let {bitmap -> customView.setIcon(bitmap)}
 
                         /// Adding the views to the linearlayout.
                         displayView.addView(customView)
@@ -283,9 +283,9 @@ class Category : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
                             customView.setActName(activity.title)
                             // Set the bitmap image
                             //customView.setIcon(imageResource)
-                            activity.actImage?.let { bitmap ->
+                            /*activity.actImage?.let { bitmap ->
                                 customView.setIcon(bitmap)
-                            }
+                            }*/
                             displayView.addView(customView)
                             // Adding its ID to the HashSet
                             addedActivities.add(currentActivityId)

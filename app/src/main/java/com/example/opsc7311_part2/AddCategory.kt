@@ -9,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.opsc7311_part2.databinding.ActivityAddCategoryBinding
@@ -28,9 +27,9 @@ class AddCategory : AppCompatActivity() {
         binding = ActivityAddCategoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        for(activity in ToolBox.DBManager.getActivityList()){
+        /*for(activity in ToolBox.DBManager.getActivityListFromDB()){
             println(activity)
-        }
+        }*/
 
         //-----Color Picker-----//
         val colorPicker: TextView = findViewById(R.id.ColorPicker)
@@ -50,8 +49,10 @@ class AddCategory : AppCompatActivity() {
 
             val categoryName =
                 findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.txtTitle).text.toString()
-            val activities = ToolBox.DBManager.getActivityList()
-
+            val activities = ToolBox.DBManager.getActivitiesFromDB()
+            for(activity in activities){
+                println(activity.toString())
+            }
 
             val newCategory = ToolBox.CategoryDataClass(
                 categoryCounter, // Increment the counter to generate a new unique ID

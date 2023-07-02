@@ -76,9 +76,9 @@ class Schedule : AppCompatActivity(), View.OnClickListener,
                 customView.setActID(activity.actID)
                 customView.setActName(activity.title)
 
-                activity.actImage?.let { bitmap ->
+                /*activity.actImage?.let { bitmap ->
                     customView.setIcon(bitmap)
-                }
+                }*/
 
                 displayView.addView(customView)
             }
@@ -223,9 +223,9 @@ class Schedule : AppCompatActivity(), View.OnClickListener,
                     customView.setActName(activity.title)
                     // Set the bitmap image
                     //customView.setIcon(imageResource)
-                    activity.actImage?.let { bitmap ->
+                    /*activity.actImage?.let { bitmap ->
                         customView.setIcon(bitmap)
-                    }
+                    }*/
                     // customView.setIcon(imageResource)
                     displayView.addView(customView)
                 }

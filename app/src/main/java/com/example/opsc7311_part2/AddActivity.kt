@@ -6,20 +6,15 @@ import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.opsc7311_part2.databinding.ActivityAddActivityBinding
-import com.example.opsc7311_part2.databinding.ActivityAddCategoryBinding
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import android.app.DatePickerDialog
-import android.media.Image
-import android.text.AutoText
 import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
 import android.widget.EditText
 import android.widget.Spinner
 import java.time.Duration
 import android.widget.Toast
 import android.Manifest
-import android.app.Activity
 import android.app.AlertDialog
 import android.content.*
 import android.content.pm.PackageManager
@@ -28,21 +23,16 @@ import android.provider.MediaStore
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
-import android.opengl.Visibility
 import android.os.Build
 import android.os.Environment
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
-import org.w3c.dom.Text
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.concurrent.TimeUnit
-
 
 
 class AddActivity : AppCompatActivity() {
@@ -62,7 +52,7 @@ class AddActivity : AppCompatActivity() {
             finish()
         }
         //Views
-        val activityList = ToolBox.DBManager.getActivityList()
+        //val activityList = ToolBox.DBManager.getActivityListFromDB(MutableList())
         val ActivityIcon: ImageView = findViewById(R.id.ActivityIcon)
         val tilLocation: TextInputLayout = findViewById(R.id.til_Location)
         val tilCategory: TextInputLayout = findViewById(R.id.til_Category)
@@ -158,7 +148,7 @@ class AddActivity : AppCompatActivity() {
                     txtEndDateError.visibility = View.INVISIBLE
                     //Creating the activity object
                     val newActivity = ToolBox.ActivityDataClass(
-                        1,
+                        ToolBox.DBManager.getUniqueActID(),
                         txtTitle.text.toString(),
                         txtClient.text.toString(),
                         txtLocation.text.toString(),
@@ -170,7 +160,7 @@ class AddActivity : AppCompatActivity() {
                         Duration.ZERO,
                         actStartDate.toString(),
                         actEndDate.toString(),
-                        bitmap
+                        //bitmap
                     )
                     //adding the activity object to the activity data class
                     //Testing DB Integrations
