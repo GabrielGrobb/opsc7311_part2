@@ -1,18 +1,25 @@
 package com.example.opsc7311_part2
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.widget.LinearLayout
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import com.example.opsc7311_part2.databinding.ActivityAchievementsPageBinding
 import com.google.android.material.navigation.NavigationView
 
+
+
+
 class AchievementsPage : AppCompatActivity(), View.OnClickListener,
     NavigationView.OnNavigationItemSelectedListener {
     private lateinit var binding: ActivityAchievementsPageBinding
+    private val activityCompletedList = mutableListOf<Boolean>()
+    private val completedActivityList = mutableListOf<Activity>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +43,27 @@ class AchievementsPage : AppCompatActivity(), View.OnClickListener,
         binding.navView.bringToFront()
         binding.navView.setNavigationItemSelectedListener(this)
 
+        //--------------------------------------Testing------------------------------------------///
+
+        val activityList = ToolBox.DBManager.getActivitiesFromDB()
+        val displayView = findViewById<LinearLayout>(R.id.achievementsLayout)
+
+        for (activity in activityList) {
+            val duration = activity.duration
+            val savedTimeSpent = activity.savedTimeSpent
+
+            //Comparing the time saved for an activity to the max time set by the user
+            if(savedTimeSpent >= duration){
+                val displayView = findViewById<LinearLayout>(R.id.achievementsLayout)
+                val customView = custom_activity_icon(this)
+                customView.setActID(activity.actID)
+                customView.setActName(activity.title)
+                displayView.addView(customView)
+
+            }
+        }
     }
+
 
     //............................................................................................//
 

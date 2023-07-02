@@ -62,7 +62,7 @@ class Schedule : AppCompatActivity(), View.OnClickListener,
         completedTasks = findViewById(R.id.txtCompletedTasks)
 
 
-        val activityList = ToolBox.ActivityManager.getActivityList()
+        val activityList = ToolBox.DBManager.getActivitiesFromDB()
 
         val displayView = findViewById<LinearLayout>(R.id.layout)
 
@@ -171,7 +171,7 @@ class Schedule : AppCompatActivity(), View.OnClickListener,
             day
         )
         //getting activity list
-        val activityList = ToolBox.ActivityManager.getActivityList()
+        val activityList = ToolBox.DBManager.getActivitiesFromDB()
         // Set a custom date range
         val startDate =
             ToolBox.CategoryManager.getCurrentDateString()// Set your start date as a Calendar instance

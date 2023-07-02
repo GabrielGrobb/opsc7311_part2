@@ -49,8 +49,9 @@ class RegisterActivity : AppCompatActivity() {
             //validating firstname
             if (!validation.validateStringsNoNumbers(firstname)) {
                 invalidFields.add("Firstname")
-                firstnameInput.error = "Must be numbers and letters!"
+                firstnameInput.error = "Must be letters only!"
             }
+
             //validating surname
             if (!validation.validateStringsNoNumbers(surname)) {
                 invalidFields.add("Surname")
