@@ -28,9 +28,9 @@ class AddCategory : AppCompatActivity() {
         binding = ActivityAddCategoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        /*for(activity in ToolBox.DBManager.getActivityList()){
+        for(activity in ToolBox.DBManager.getActivityList()){
             println(activity)
-        }*/
+        }
 
         //-----Color Picker-----//
         val colorPicker: TextView = findViewById(R.id.ColorPicker)
@@ -50,7 +50,7 @@ class AddCategory : AppCompatActivity() {
 
             val categoryName =
                 findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.txtTitle).text.toString()
-            val activities = ToolBox.ActivityManager.getActivityList().toMutableList()
+            val activities = ToolBox.DBManager.getActivityList()
 
 
             val newCategory = ToolBox.CategoryDataClass(

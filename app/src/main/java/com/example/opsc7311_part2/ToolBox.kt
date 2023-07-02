@@ -33,6 +33,8 @@ class ToolBox
         val actImage: Bitmap?
     )
 
+
+
     data class CategoryDataClass(
         var catID : Int,
         var name: String,
@@ -91,11 +93,10 @@ class ToolBox
     }
 
     object ActivityManager{
-        private var activityList = DBManager.getActivityList()
-
+        var activityList = DBManager.getActivityList()
 
         fun addActivity(activity: ActivityDataClass) {
-            activityList.add(activity)
+            activityList
         }
 
         //Takes in an activityid and returns an activity object from the list if it exists
@@ -107,10 +108,6 @@ class ToolBox
             }
             //Again gonna break the code, love you gents <3
             return activityList[-1]
-        }
-
-        fun getActivityList(): List<ActivityDataClass> {
-            return activityList
         }
 
         fun findActivityByName(name: String): Boolean {
@@ -146,46 +143,37 @@ class ToolBox
             return attributeMap
         }
 
+        //fun getDocumentID
+
         //Gets a list of all the activity documents in the activity collection and returns them as a list of activity objects
         fun getActivityList(): MutableList<ActivityDataClass>{
 
             //Temp list to store db objects
             var activityList = mutableListOf<ActivityDataClass>()
+
             //Gets the list of all activities in the db
             var activities = db.collection("Activities")
                 .get()
                 .addOnSuccessListener { result ->
                     for (document in result) {
-                        Log.d(TAG, "${document.id} => ${document.data}")
-                        var actId = document.data.get("actID").toString()
-                        var title = document.data.get("title").toString()
-                        var client = document.data.get("client").toString()
-                        var location = document.data.get("location").toString()
-                        var category = document.data.get("category").toString()
-                        var categoryID = document.data.get("categoryId").toString()
-                        var duration = document.data.get("duration").toString()
-                        var currentTimeSpent = document.data.get("currentTimeSpent").toString()
-                        var savedTimeSpent = document.data.get("savedTimeSpent").toString()
-                        var startDate = document.data.get("startDate").toString()
-                        var endDate = document.data.get("endDate").toString()
-                        var actImage = document.data.get("actImage").toString()
-
                         var temp = ActivityDataClass(
-                            actId.toInt(),
-                            title,
-                            client,
-                            location,
-                            category,
-                            categoryID.toInt(),
-                            Duration.parse(duration),
-                            Duration.parse(currentTimeSpent),
-                            Duration.parse(savedTimeSpent),
-                            startDate,
-                            endDate,
-                            stringToBitmap(actImage)
+                            document.data.get("actID").toString().toInt(),
+                            document.data.get("title").toString(),
+                            document.data.get("client").toString(),
+                            location = document.data.get("location").toString(),
+                            document.data.get("category").toString(),
+                            document.data.get("categoryId").toString().toInt(),
+                            Duration.parse(document.data.get("duration").toString()),
+                            Duration.parse(document.data.get("currentTimeSpent").toString()),
+                            Duration.parse(document.data.get("savedTimeSpent").toString()),
+                            document.data.get("startDate").toString(),
+                            document.data.get("endDate").toString(),
+                            stringToBitmap(document.data.get("actImage").toString())
                         )
+                        println(temp.toString())
                         activityList.add(temp)
                     }
+
                 }
                 .addOnFailureListener { exception ->
                     Log.w(TAG, "Error getting documents.", exception)
