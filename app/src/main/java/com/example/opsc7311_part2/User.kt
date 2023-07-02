@@ -1,5 +1,6 @@
 package com.example.opsc7311_part2
 
+//............................................................................................//
 class User
 {
     // Getting usernames and passwords
@@ -9,3 +10,4 @@ class User
         return mapOf("Admin" to "Admin1")
     }
 }
+//.........................................EndOfFile..............................................//

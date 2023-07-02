@@ -143,7 +143,7 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
 
         ///---------------------------------------------------------------------------------------//
 
-        val activityList = ToolBox.ActivityManager.getActivityList()
+        val activityList = ToolBox.DBManager.getActivitiesFromDB()
 
         for (activity in activityList) {
             if (activity.actID == actID && activity.title == actName) {
@@ -343,6 +343,13 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)
             }
+
+            R.id.nav_achievements -> {
+                val intent = Intent(applicationContext, AchievementsPage::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
+            }
+
         }
         binding.drawerLayout.closeDrawer(GravityCompat.START)
         // return true marks the item as selected

@@ -102,40 +102,58 @@ class AddActivity : AppCompatActivity() {
                 val selectedCategory = spCategory.selectedItem.toString()
                 val category = categoryList.find { it.name == selectedCategory }
                 val categoryId = category?.catID ?: -1 // Default value if category not found
+
+
+                //Validation of all user input fields
+                val validation = Validation()
+                val invalidFields = mutableListOf<String>()
+
                 //validating activity Title
                 isValid = Validation().validateStringsWithNumbers(actTitle)
                 if (!isValid){
-                    txtTitleError.text = "The title can only contain letters and numbers!"
+                    invalidFields.add("Activity Name")
+                    txtTitle.error = "The title can only contain letters and numbers!"
                     txtTitleError.visibility = View.VISIBLE
                     allInputsValid += 1
                 }
                 //ensuring activity title is unique
                 isValid = ToolBox.ActivityManager.findActivityByName(actTitle)
                 if(isValid == true){
-                    txtTitleError.text = "Another activity exists with the same name!"
+                    invalidFields.add("Activity Name")
+                    txtTitle.error = "This category name already exists!"
                     txtTitleError.visibility = View.VISIBLE
                     allInputsValid += 1
                 }
                 //validating activity Client
                 isValid = Validation().validateStringsNoNumbers(actClient)
                 if(!isValid){
-                    txtClientError.text = "The client can only contain letters!"
+                    invalidFields.add("Client Name")
+                    txtClient.error = "The client name can only contain letters!"
                     txtClientError.visibility = View.VISIBLE
                     allInputsValid += 1
                 }
                 //validating activity location
                 isValid = Validation().validateStringsWithNumbers(actLocation)
                 if(!isValid){
-                    txtLocationError.text = "The location can only contain letters and numbers!"
+                    invalidFields.add("Location")
+                    txtLocation.error = "The location can only contain letters and numbers!"
                     txtLocation.visibility = View.VISIBLE
                     allInputsValid +=1
                 }
                 //validating end date
                 isValid = Validation().isEndDateAfterStartDate(actStartDate,actEndDate)
                 if(!isValid){
-                    txtEndDateError.text = "The End date must be after the start date!"
+                    invalidFields.add("End Date")
+                    txtEndDate.error = "The end date cannot be before the start date!"
                     txtEndDateError.visibility = View.VISIBLE
                     allInputsValid+=1
+                }
+
+                //checking for errors and displaying toast message if any are found
+                if (invalidFields.isNotEmpty()) {
+                    val errorMessage = "Invalid input/s. Please check the following field(s): ${invalidFields.joinToString(", ")}"
+                    Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener // Stop execution if any field is invalid
                 }
                 //ensuring all inputs are valid
                 if(allInputsValid == 0){

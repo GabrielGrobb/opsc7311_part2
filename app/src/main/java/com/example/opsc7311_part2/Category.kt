@@ -296,3 +296,5 @@ class Category : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
         }
     }
 }
+
+//.........................................EndOfFile..............................................//
