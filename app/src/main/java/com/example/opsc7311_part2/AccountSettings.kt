@@ -171,6 +171,9 @@ class AccountSettings : AppCompatActivity(), View.OnClickListener,
                 password.text.toString()
             )
             updateAccountSettings()
+
+            Toast.makeText(this,"Account successfully updated", Toast.LENGTH_LONG).show()
+
         }
 
     }

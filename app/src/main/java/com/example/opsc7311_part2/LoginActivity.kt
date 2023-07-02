@@ -1,13 +1,17 @@
 package com.example.opsc7311_part2
 
 import android.app.TaskStackBuilder
+import android.content.ContentValues.TAG
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import com.google.android.material.textfield.TextInputEditText
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import java.util.Locale.Category
 
 class LoginActivity : AppCompatActivity() {
@@ -16,6 +20,8 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
 
         val btnSubmit = findViewById<Button>(R.id.btnLogin)
+
+        readFromDB()
 
         val registerText = findViewById<TextView>(R.id.registerText)
         registerText.setOnClickListener{
@@ -43,5 +49,20 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(this,"username and password is wrong", Toast.LENGTH_LONG).show()
             }
         }
+    }
+
+    private fun readFromDB()
+    {
+        val db = Firebase.firestore
+        db.collection("User")
+            .get()
+            .addOnSuccessListener { result ->
+                for (document in result) {
+                    Log.d(TAG, "${document.id} => ${document.data}")
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.w(TAG, "Error getting documents.", exception)
+            }
     }
 }

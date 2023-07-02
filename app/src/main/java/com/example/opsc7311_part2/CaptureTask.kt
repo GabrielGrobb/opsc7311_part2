@@ -140,7 +140,7 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
 
         ///---------------------------------------------------------------------------------------//
 
-        val activityList = ToolBox.ActivityManager.getActivityList()
+        val activityList = ToolBox.DBManager.getActivitiesFromDB()
 
         for (activity in activityList) {
             if (activity.actID == actID && activity.title == actName) {
@@ -154,6 +154,12 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
 
                     val timerTextView = findViewById<TextView>(R.id.txtTimerSaved)
                     timerTextView.text = timerValue
+
+                if(activity.currentTimeSpent >= activity.duration)
+                {
+                    Toast.makeText(this,"Activity has been completed", Toast.LENGTH_LONG).show()
+                    stopStartButton.isEnabled = false
+                }
 
             }
         }

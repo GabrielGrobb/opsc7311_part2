@@ -23,6 +23,7 @@ import android.provider.MediaStore
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.os.Build
 import android.os.Environment
@@ -155,12 +156,11 @@ class AddActivity : AppCompatActivity() {
                         selectedCategory,
                         categoryId,
                         Duration.ofHours(txtDuration.text.toString().toLong()),
-                        //ProgressionBar(),
                         Duration.ZERO,
                         Duration.ZERO,
                         actStartDate.toString(),
                         actEndDate.toString(),
-                        //bitmap
+                        bitmap
                     )
                     //adding the activity object to the activity data class
                     //Testing DB Integrations

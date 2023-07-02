@@ -11,17 +11,18 @@ import java.time.Duration
 import java.util.*
 import kotlin.collections.HashMap
 import android.util.Base64
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
 
+import java.io.ByteArrayOutputStream
 
-class ToolBox
-{
+class ToolBox {
     //------------------Data Classes and Objects
     data class ActivityDataClass(
-        val actID:Int,
+        val actID: Int,
         val title: String,
         val client: String,
         val location: String,
@@ -33,18 +34,17 @@ class ToolBox
         var savedTimeSpent: Duration,
         val startDate: String,
         val endDate: String,
-        //val actImage: Bitmap?
+        var actImage: Bitmap?
     )
 
 
-
     data class CategoryDataClass(
-        var catID : Int,
+        var catID: Int,
         var name: String,
         var activityTimeSpent: Duration,
         val activities: MutableList<ActivityDataClass>,
         val catColor: Int
-        )
+    )
 
     data class AccountSettings(
         var userImage: String,
@@ -55,8 +55,7 @@ class ToolBox
         var firstName: String,
         var surname: String,
         var password: String
-    )
-    {
+    ) {
         fun updateSettings(
             userImage: String,
             minHours: Int,
@@ -78,7 +77,7 @@ class ToolBox
         }
     }
 
-    object AccountManager{
+    object AccountManager {
         private val currentSettings = AccountSettings(
             "@drawable/default_profile",
             1,
@@ -87,28 +86,29 @@ class ToolBox
             "default",
             "default",
             "default",
-            "default")
+            "default"
+        )
 
-        fun getSettingsObject() : AccountSettings{
+        fun getSettingsObject(): AccountSettings {
             return currentSettings;
         }
 
     }
 
-    object ActivityManager{
+    object ActivityManager {
 
         fun addActivity(activity: ActivityDataClass) {
             //activityList
         }
 
         //Takes in an activityid and returns an activity object from the list if it exists
-        fun getActivityObjectByID(id: Int): ActivityDataClass{
+        fun getActivityObjectByID(id: Int): ActivityDataClass {
             var activityList = getActivityList()
             println("preloop")
-            for(activity in activityList){
+            for (activity in activityList) {
                 println("test")
                 println(activity.toString())
-                if(activity.actID==id){
+                if (activity.actID == id) {
                     return activity
                 }
             }
@@ -120,7 +120,7 @@ class ToolBox
             return getActivityList().any { it.title == name }
         }
 
-        fun getActivityList(): MutableList<ActivityDataClass>{
+        fun getActivityList(): MutableList<ActivityDataClass> {
             return DBManager.getActivitiesFromDB()
         }
 
@@ -134,7 +134,7 @@ class ToolBox
 
         /*Function to count the number of activities currently in the collection, and return an
         integer representing a unique ID*/
-        fun getUniqueActID(): Int{
+        fun getUniqueActID(): Int {
             val collectionRef = db.collection("Activities")
             var returnVal = 0
             collectionRef.get()
@@ -146,31 +146,68 @@ class ToolBox
                     // Handle any errors that occurred while retrieving the documents
                     println("Error getting documents: ${exception.message}")
                 }
-            return returnVal+1;
+            return returnVal + 1;
+        }
+
+        fun encodeImageToBase64(imageBitmap: Bitmap): String {
+            val baos = ByteArrayOutputStream()
+            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+            val imageBytes = baos.toByteArray()
+            return Base64.encodeToString(imageBytes, Base64.DEFAULT)
+        }
+
+        fun uploadImageToFirebaseStorage(imageBitmap: Bitmap, onComplete: (imageUrl: String?) -> Unit) {
+            val storageReference = FirebaseStorage.getInstance().reference
+            val imagesRef = storageReference.child("images")
+            val fileName = UUID.randomUUID().toString() + ".jpg"
+
+            val imageRef = imagesRef.child(fileName)
+            val baos = ByteArrayOutputStream()
+            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+            val imageData = baos.toByteArray()
+
+            val uploadTask = imageRef.putBytes(imageData)
+            uploadTask.continueWithTask { task ->
+                if (!task.isSuccessful) {
+                    task.exception?.let {
+                        throw it
+                    }
+                }
+                imageRef.downloadUrl
+            }.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val downloadUrl = task.result.toString()
+                    onComplete(downloadUrl)
+                } else {
+                    onComplete(null)
+                }
+            }
         }
 
         //Functions to generate maps for the POCOs
-        fun getActivityAttributes(activity: ActivityDataClass): HashMap<String, String> {
-            val attributeMap = HashMap<String, String>()
+        fun getActivityAttributes(activity: ActivityDataClass, imagePath: Bitmap): HashMap<String, Any> {
+            val attributeMap = HashMap<String, Any>()
 
-            attributeMap["actID"] = activity.actID.toString()
+            attributeMap["actID"] = activity.actID
             attributeMap["title"] = activity.title
             attributeMap["client"] = activity.client
             attributeMap["location"] = activity.location
             attributeMap["category"] = activity.category
-            attributeMap["categoryId"] = activity.categoryId.toString()
+            attributeMap["categoryId"] = activity.categoryId
             attributeMap["duration"] = activity.duration.toString()
-            //attributeMap["progressionBar"] = activity.progressionBar.toString()
             attributeMap["currentTimeSpent"] = activity.currentTimeSpent.toString()
             attributeMap["savedTimeSpent"] = activity.savedTimeSpent.toString()
             attributeMap["startDate"] = activity.startDate
             attributeMap["endDate"] = activity.endDate
-            //attributeMap["actImage"] = activity.actImage.toString()
+
+            // Encode the image and add it to the attribute map
+            val encodedImage = encodeImageToBase64(imagePath)
+            attributeMap["actImage"] = encodedImage
 
             return attributeMap
         }
 
-        fun getActivitiesFromDB(): MutableList<ActivityDataClass> = runBlocking {
+        /*fun getActivitiesFromDB(): MutableList<ActivityDataClass> = runBlocking {
             val activityListDeferred = async(Dispatchers.IO) {
                 val db = FirebaseFirestore.getInstance()
                 val result = db.collection("Activities").get().await()
@@ -196,6 +233,45 @@ class ToolBox
 
             // Wait for the activityListDeferred to complete and return the result
             activityListDeferred.await()
+        }*/
+
+        fun getActivitiesFromDB(): MutableList<ActivityDataClass> = runBlocking {
+            val activityListDeferred = async(Dispatchers.IO) {
+                val db = FirebaseFirestore.getInstance()
+                val result = db.collection("Activities").get().await()
+                val activityList = mutableListOf<ActivityDataClass>()
+                for (document in result) {
+                    val temp = ActivityDataClass(
+                        document.data["actID"].toString().toInt(),
+                        document.data["title"].toString(),
+                        document.data["client"].toString(),
+                        document.data["location"].toString(),
+                        document.data["category"].toString(),
+                        document.data["categoryId"].toString().toInt(),
+                        Duration.parse(document.data["duration"].toString()),
+                        Duration.parse(document.data["currentTimeSpent"].toString()),
+                        Duration.parse(document.data["savedTimeSpent"].toString()),
+                        document.data["startDate"].toString(),
+                        document.data["endDate"].toString(),
+                        null
+                    )
+
+                    // Check if the document contains the "actImage" field
+                    if (document.contains("actImage")) {
+                        val encodedImage = document.data["actImage"].toString()
+                        // Decode the Base64 encoded image to Bitmap
+                        val decodedBytes = Base64.decode(encodedImage, Base64.DEFAULT)
+                        val bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
+                        temp.actImage = bitmap // Set the actImageBitmap property
+                    }
+
+                    activityList.add(temp)
+                }
+                activityList
+            }
+
+            // Wait for the activityListDeferred to complete and return the result
+            activityListDeferred.await()
         }
 
         fun stringToBitmap(encodedString: String): Bitmap? {
@@ -214,17 +290,57 @@ class ToolBox
         }
 
         //Takes in an ActivityDataClass, converts it to a hashmap and adds it to the database
-        fun persistActivity(activity: ActivityDataClass){
-            //Get a reference to the collection
+       /* fun persistActivity(activity: ActivityDataClass) {
+            // Get a reference to the collection
             val collectionRef = db.collection("Activities")
 
-            db.collection("Activities").add(getActivityAttributes(activity)).addOnSuccessListener { documentReference ->
-                Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
-            }
+            // Get the attribute map with the encoded image
+            val attributeMap = getActivityAttributes(activity)
+
+            db.collection("Activities").add(attributeMap)
+                .addOnSuccessListener { documentReference ->
+                    Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
+                }
                 .addOnFailureListener { e ->
                     Log.w(TAG, "Error adding document", e)
                 }
+        }*/
+        fun persistActivity(activity: ActivityDataClass) {
+            val db = FirebaseFirestore.getInstance()
+            val collectionRef = db.collection("Activities")
 
+            val tempActImage = activity.actImage // Temporary variable
+
+            val encodedImage = if (tempActImage != null) {
+                encodeImageToBase64(tempActImage)
+            } else {
+                null // Set the encoded image to null if the Bitmap is null
+            }
+
+            // Create a map of activity attributes including the image URL
+            val attributeMap = hashMapOf<String, Any?>(
+                "actID" to activity.actID,
+                "title" to activity.title,
+                "client" to activity.client,
+                "location" to activity.location,
+                "category" to activity.category,
+                "categoryId" to activity.categoryId,
+                "duration" to activity.duration.toString(),
+                "currentTimeSpent" to activity.currentTimeSpent.toString(),
+                "savedTimeSpent" to activity.savedTimeSpent.toString(),
+                "startDate" to activity.startDate,
+                "endDate" to activity.endDate,
+                "actImage" to encodedImage
+            )
+
+            // Add the activity attributes to the database
+            collectionRef.add(attributeMap)
+                .addOnSuccessListener { documentReference ->
+                    Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
+                }
+                .addOnFailureListener { e ->
+                    Log.w(TAG, "Error adding document", e)
+                }
         }
 
     }
@@ -239,7 +355,7 @@ class ToolBox
             var totalDuration = Duration.ZERO
             for (activity in cat.activities) {
                 //if(cat.catID==activity.categoryId) {
-                    totalDuration = totalDuration.plus(activity.currentTimeSpent)
+                totalDuration = totalDuration.plus(activity.currentTimeSpent)
                 //}
 
             }
@@ -247,9 +363,9 @@ class ToolBox
         }
 
         //Takes in a category id and returns the category object from the list if it exists
-        fun getCategoryByID(id: Int): CategoryDataClass{
-            for(category in categoryList){
-                if(category.catID==id){
+        fun getCategoryByID(id: Int): CategoryDataClass {
+            for (category in categoryList) {
+                if (category.catID == id) {
                     return category
                 }
             }
@@ -261,9 +377,9 @@ class ToolBox
             categoryList.add(category)
         }
 
-       /* fun addActivity(activity: ActivityDataClass){
-            activityList.add(activity)
-        }*/
+        /* fun addActivity(activity: ActivityDataClass){
+             activityList.add(activity)
+         }*/
 
         fun getCategoryList(): List<CategoryDataClass> {
             return categoryList
@@ -272,7 +388,7 @@ class ToolBox
         //--------General Utility Functions
 
         //Returns the current Date as a String
-        fun getCurrentDateString(): String{
+        fun getCurrentDateString(): String {
             val TimeCalendar = Calendar.getInstance().time
             //Creating the Format for the date so the page will just show the date without time or timezone info
             val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
@@ -281,7 +397,7 @@ class ToolBox
         }
 
         //Takes in a spinner and an int and returns the index of the int in the spinner if it exists
-        fun getSpinnerIndexForValue(spinner: Spinner, value: String): Int{
+        fun getSpinnerIndexForValue(spinner: Spinner, value: String): Int {
             val adapter = spinner.adapter
 
             for (index in 0 until adapter.count) {
@@ -297,7 +413,8 @@ class ToolBox
         //Takes in an activity object and returns a percentage value as an integer related to how far through the max length the activity is
         fun calcPercentageTimeSpent(activity: ActivityDataClass): Int {
             val totalTime = activity.duration.toMillis() // Total duration in milliseconds
-            val currentTimeSpent = activity.currentTimeSpent.toMillis() // Current time spent in milliseconds
+            val currentTimeSpent =
+                activity.currentTimeSpent.toMillis() // Current time spent in milliseconds
 
             if (totalTime > 0) {
                 val percentage = (currentTimeSpent.toFloat() / totalTime.toFloat()) * 100
@@ -314,10 +431,14 @@ class ToolBox
             return format.parse(dateString)
         }
 
-        fun getActivitiesForCategoryBetweenDates(cat: CategoryDataClass, date1: Date, date2: Date): List<ActivityDataClass>{
+        fun getActivitiesForCategoryBetweenDates(
+            cat: CategoryDataClass,
+            date1: Date,
+            date2: Date
+        ): List<ActivityDataClass> {
             val workingList = mutableListOf<ActivityDataClass>()
-            for(activity in cat.activities){
-                if(parseDateString(activity.startDate)>=date1&&parseDateString(activity.endDate)<=date2){
+            for (activity in cat.activities) {
+                if (parseDateString(activity.startDate) >= date1 && parseDateString(activity.endDate) <= date2) {
                     workingList.add(activity)
                 }
             }
@@ -327,13 +448,12 @@ class ToolBox
         //Takes in two dates and calculates the amount of time spent working between said dates
         fun sumTotalWorkingTime(workingList: List<ActivityDataClass>): Int {
             var totalTime = 0
-            for(activity in workingList){
-                totalTime+=activity.savedTimeSpent.toHours().toInt()
+            for (activity in workingList) {
+                totalTime += activity.savedTimeSpent.toHours().toInt()
             }
             return totalTime
         }
         //Hi ishmael if you are reading this your feet smell ps gabe lifts more than you
-
 
 
     }
