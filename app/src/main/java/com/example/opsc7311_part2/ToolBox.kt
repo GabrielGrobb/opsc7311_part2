@@ -5,7 +5,6 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
 import android.widget.Spinner
-import com.google.common.base.Converter
 import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
 import java.time.Duration
@@ -30,7 +29,7 @@ class ToolBox
         var savedTimeSpent: Duration,
         val startDate: String,
         val endDate: String,
-        val actImage: Bitmap?
+        //val actImage: Bitmap?
     )
 
 
@@ -93,14 +92,14 @@ class ToolBox
     }
 
     object ActivityManager{
-        var activityList = DBManager.getActivityList()
 
         fun addActivity(activity: ActivityDataClass) {
-            activityList
+            //activityList
         }
 
         //Takes in an activityid and returns an activity object from the list if it exists
         fun getActivityObjectByID(id: Int): ActivityDataClass{
+            var activityList = getActivityList()
             for(activity in activityList){
                 if(activity.actID==id){
                     return activity
@@ -111,7 +110,11 @@ class ToolBox
         }
 
         fun findActivityByName(name: String): Boolean {
-            return activityList.any { it.title == name }
+            return getActivityList().any { it.title == name }
+        }
+
+        fun getActivityList(): MutableList<ActivityDataClass>{
+            return DBManager.getActivityListFromDB()
         }
 
     }
@@ -121,6 +124,24 @@ class ToolBox
 
         //Instance of DB
         val db = FirebaseFirestore.getInstance()
+
+
+        /*Function to count the number of activities currently in the collection, and return an
+        integer representing a unique ID*/
+        fun getUniqueActID(): Int{
+            val collectionRef = db.collection("Activities")
+            var returnVal = 0
+            collectionRef.get()
+                .addOnSuccessListener { querySnapshot ->
+                    val documentCount = querySnapshot.size()
+                    returnVal = documentCount
+                }
+                .addOnFailureListener { exception ->
+                    // Handle any errors that occurred while retrieving the documents
+                    println("Error getting documents: ${exception.message}")
+                }
+            return returnVal+1;
+        }
 
         //Functions to generate maps for the POCOs
         fun getActivityAttributes(activity: ActivityDataClass): HashMap<String, String> {
@@ -138,7 +159,7 @@ class ToolBox
             attributeMap["savedTimeSpent"] = activity.savedTimeSpent.toString()
             attributeMap["startDate"] = activity.startDate
             attributeMap["endDate"] = activity.endDate
-            attributeMap["actImage"] = activity.actImage.toString()
+            //attributeMap["actImage"] = activity.actImage.toString()
 
             return attributeMap
         }
@@ -146,7 +167,7 @@ class ToolBox
         //fun getDocumentID
 
         //Gets a list of all the activity documents in the activity collection and returns them as a list of activity objects
-        fun getActivityList(): MutableList<ActivityDataClass>{
+        fun getActivityListFromDB(): MutableList<ActivityDataClass>{
 
             //Temp list to store db objects
             var activityList = mutableListOf<ActivityDataClass>()
@@ -168,9 +189,8 @@ class ToolBox
                             Duration.parse(document.data.get("savedTimeSpent").toString()),
                             document.data.get("startDate").toString(),
                             document.data.get("endDate").toString(),
-                            stringToBitmap(document.data.get("actImage").toString())
+                            //stringToBitmap(document.data.get("actImage").toString())
                         )
-                        println(temp.toString())
                         activityList.add(temp)
                     }
 
@@ -178,6 +198,7 @@ class ToolBox
                 .addOnFailureListener { exception ->
                     Log.w(TAG, "Error getting documents.", exception)
                 }
+            println(activityList.size)
             return activityList
         }
 
