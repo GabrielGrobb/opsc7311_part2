@@ -62,7 +62,7 @@ class Schedule : AppCompatActivity(), View.OnClickListener,
         completedTasks = findViewById(R.id.txtCompletedTasks)
 
 
-        val activityList = ToolBox.ActivityManager.getActivityList()
+        val activityList = ToolBox.DBManager.getActivitiesFromDB()
 
         val displayView = findViewById<LinearLayout>(R.id.layout)
 
