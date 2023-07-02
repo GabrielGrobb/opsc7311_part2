@@ -137,11 +137,13 @@ class ToolBox {
         //Gets the ID of the Firestore Document based off the activity ID, which is always unique
         fun getDocumentIDByTypeID(collectionName: String, fieldName: String, fieldValue: Any): String = runBlocking {
             var documentID: String?
-
             withContext(Dispatchers.IO) {
                 val db = FirebaseFirestore.getInstance()
                 val collectionRef = db.collection("Activities")
                 val querySnapshot = collectionRef.whereEqualTo(fieldName, fieldValue).get().await()
+
+                //documentID = querySnapshot.first().toString()
+                //print(documentID)
                 documentID = try {
                     querySnapshot.documents[0].id
                 } catch (exception: IndexOutOfBoundsException) {
@@ -399,12 +401,11 @@ class ToolBox {
 
         //Returns a mutable list of activity data class given a catID
         fun getActivitiesForCategory(catID: String): MutableList<ActivityDataClass> = runBlocking {
-            var activities = mutableListOf<ActivityDataClass>()
-
             val activityListDeferred = async(Dispatchers.IO) {
                 val db = FirebaseFirestore.getInstance()
                 val collectionRef = db.collection("Activities")
                 val querySnapshot = collectionRef.whereEqualTo("categoryId", catID).get().await()
+                var activities = mutableListOf<ActivityDataClass>()
                 for (document in querySnapshot) {
                     val temp = ActivityDataClass(
                         document.data["actID"].toString().toInt(),
@@ -430,7 +431,6 @@ class ToolBox {
                             BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
                         temp.actImage = bitmap // Set the actImageBitmap property
                     }
-
                     activities.add(temp)
                 }
                 activities
