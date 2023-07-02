@@ -185,7 +185,6 @@ class AddActivity : AppCompatActivity() {
                     ToolBox.DBManager.persistActivity(newActivity)
 
 
-                    category?.activities?.add(newActivity)
                     // Return to the HomePage
                     val intent = Intent(this, HomePageTest::class.java)
                     startActivity(intent)

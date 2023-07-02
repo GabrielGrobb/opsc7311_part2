@@ -58,7 +58,6 @@ class AddCategory : AppCompatActivity() {
                 categoryCounter, // Increment the counter to generate a new unique ID
                 categoryName,
                 Duration.ZERO,
-                activities,
                 selectedColor
             )
             ToolBox.CategoryManager.addCategory(newCategory)

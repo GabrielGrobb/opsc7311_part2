@@ -76,7 +76,7 @@ class Category : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
 
         for (category in categoryList)
         {
-            val activities = category.activities
+            val activities = ToolBox.CategoryManager.getActivitiesForCategory(catID.toString())
 
             for (activity in activities)
             {
@@ -134,7 +134,8 @@ class Category : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
                 var category = ToolBox.CategoryManager.getCategoryByID(intent.getIntExtra("categoryID", 1))
                 var date1 = ToolBox.CategoryManager.parseDateString(txtStartDate.text.toString())
                 var date2 = ToolBox.CategoryManager.parseDateString(txtEndDate.text.toString())
-                var activityList = ToolBox.CategoryManager.getActivitiesForCategoryBetweenDates(category, date1, date2)
+                //var activityList = ToolBox.CategoryManager.getActivitiesForCategoryBetweenDates(category, date1, date2)
+                var activityList = ToolBox.CategoryManager.getActivitiesForCategory(category.catID.toString())
                 var activityView = findViewById<LinearLayout>(R.id.ActivityView)
                 activityView.removeAllViews()
                 for(activity in activityList){
@@ -267,7 +268,7 @@ class Category : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
         if(selectedEndDate != "" && selectedStartDate != "") {
             displayView.removeAllViews()
             for (category in categoryList) {
-                val activities = category.activities
+                val activities = ToolBox.CategoryManager.getActivitiesForCategory(catID.toString())
 
                 for (activity in activities) {
                     if (activity.categoryId == catID && activity.category == catName && activity.startDate > selectedStartDate

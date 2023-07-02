@@ -208,7 +208,7 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
                 val category = ToolBox.CategoryManager.getCategoryByID(currentActivity.categoryId)
 
                 // Calculate the total activity time spent in the category
-                val totalActivityTimeSpent = category.activities.sumOf { it.currentTimeSpent.toMillis() }
+                val totalActivityTimeSpent = ToolBox.CategoryManager.getActivitiesForCategory(category.catID.toString()).sumOf { it.currentTimeSpent.toMillis() }
 
                 // Update the activityTimeSpent in the CategoryDataClass
                 category.activityTimeSpent = Duration.ofMillis(totalActivityTimeSpent)

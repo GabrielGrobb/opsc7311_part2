@@ -11,6 +11,8 @@ import java.time.Duration
 import java.util.*
 import kotlin.collections.HashMap
 import android.util.Base64
+import com.example.opsc7311_part2.ToolBox.CategoryManager.getActivitiesForCategory
+import com.example.opsc7311_part2.ToolBox.CategoryManager.getCategoriesFromDB
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -43,7 +45,6 @@ class ToolBox {
         var catID: Int,
         var name: String,
         var activityTimeSpent: Duration,
-        val activities: MutableList<ActivityDataClass>,
         val catColor: Int
     )
 
@@ -141,7 +142,6 @@ class ToolBox {
                 val db = FirebaseFirestore.getInstance()
                 val collectionRef = db.collection("Activities")
                 val querySnapshot = collectionRef.whereEqualTo(fieldName, fieldValue).get().await()
-                println(querySnapshot.toString())
                 documentID = try {
                     querySnapshot.documents[0].id
                 } catch (exception: IndexOutOfBoundsException) {
@@ -397,25 +397,15 @@ class ToolBox {
         private val categoryList = mutableListOf<CategoryDataClass>()
         //private val activityList = mutableListOf<ActivityDataClass>()
 
-        //Takes in a category object and returns a duration representing the total amount of
-        //Time spent on that category
-        fun calcCategoryTime(cat: CategoryDataClass): Duration {
-            var totalDuration = Duration.ZERO
-            for (activity in cat.activities) {
-                //if(cat.catID==activity.categoryId) {
-                totalDuration = totalDuration.plus(activity.currentTimeSpent)
-                //}
+        //Returns a mutable list of activity data class given a catID
+        fun getActivitiesForCategory(catID: String): MutableList<ActivityDataClass> = runBlocking {
+            var activities = mutableListOf<ActivityDataClass>()
 
-            }
-            return totalDuration
-        }
-
-        fun getCategoriesFromDB(): MutableList<CategoryDataClass> = runBlocking {
             val activityListDeferred = async(Dispatchers.IO) {
                 val db = FirebaseFirestore.getInstance()
-                val result = db.collection("Categp").get().await()
-                val activityList = mutableListOf<ActivityDataClass>()
-                for (document in result) {
+                val collectionRef = db.collection("Activities")
+                val querySnapshot = collectionRef.whereEqualTo("categoryId", catID).get().await()
+                for (document in querySnapshot) {
                     val temp = ActivityDataClass(
                         document.data["actID"].toString().toInt(),
                         document.data["title"].toString(),
@@ -436,28 +426,61 @@ class ToolBox {
                         val encodedImage = document.data["actImage"].toString()
                         // Decode the Base64 encoded image to Bitmap
                         val decodedBytes = Base64.decode(encodedImage, Base64.DEFAULT)
-                        val bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
+                        val bitmap =
+                            BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
                         temp.actImage = bitmap // Set the actImageBitmap property
                     }
 
-                    activityList.add(temp)
+                    activities.add(temp)
                 }
-                activityList
+                activities
             }
-
-            // Wait for the activityListDeferred to complete and return the result
             activityListDeferred.await()
+
         }
+
+        //Takes in a category object and returns a duration representing the total amount of
+        //Time spent on that category
+        fun calcCategoryTime(cat: CategoryDataClass): Duration {
+            var totalDuration = Duration.ZERO
+            for (activity in getActivitiesForCategory(cat.catID.toString())) {
+                //if(cat.catID==activity.categoryId) {
+                totalDuration = totalDuration.plus(activity.currentTimeSpent)
+                //}
+
+            }
+            return totalDuration
+        }
+
+        fun getCategoriesFromDB(): MutableList<CategoryDataClass> = runBlocking {
+            val categoryListDeferred = async(Dispatchers.IO) {
+                val db = FirebaseFirestore.getInstance()
+                val result = db.collection("Category").get().await()
+                val categoryList = mutableListOf<CategoryDataClass>()
+                for (document in result) {
+                    var temp = CategoryDataClass(
+                        document.data["catID"].toString().toInt(),
+                        document.data["name"].toString(),
+                        Duration.parse(document.data["activityTimeSpent"].toString()),
+                        document.data["catColour"].toString().toInt()
+                    )
+                    categoryList.add(temp)
+                }
+                categoryList
+            }
+            categoryListDeferred.await()
+        }
+
 
         //Takes in a category id and returns the category object from the list if it exists
         fun getCategoryByID(id: Int): CategoryDataClass {
-            for (category in categoryList) {
+            for (category in getCategoryList()) {
                 if (category.catID == id) {
                     return category
                 }
             }
             //Not smart enough to fix will crash app sorry gents
-            return categoryList[-1]
+            return getCategoryList()[-1]
         }
 
         fun addCategory(category: CategoryDataClass) {
@@ -469,7 +492,8 @@ class ToolBox {
          }*/
 
         fun getCategoryList(): List<CategoryDataClass> {
-            return categoryList
+            for(category in getCategoriesFromDB()){println(category.toString())}
+            return getCategoriesFromDB()
         }
 
         //--------General Utility Functions
@@ -524,7 +548,7 @@ class ToolBox {
             date2: Date
         ): List<ActivityDataClass> {
             val workingList = mutableListOf<ActivityDataClass>()
-            for (activity in cat.activities) {
+            for (activity in getActivitiesForCategory(cat.catID.toString())) {
                 if (parseDateString(activity.startDate) >= date1 && parseDateString(activity.endDate) <= date2) {
                     workingList.add(activity)
                 }
