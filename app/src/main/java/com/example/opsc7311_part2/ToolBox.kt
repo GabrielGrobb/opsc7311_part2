@@ -11,9 +11,8 @@ import java.time.Duration
 import java.util.*
 import kotlin.collections.HashMap
 import android.util.Base64
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
+import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.tasks.await
 
 
@@ -134,19 +133,63 @@ class ToolBox
 
         /*Function to count the number of activities currently in the collection, and return an
         integer representing a unique ID*/
-        fun getUniqueActID(): Int{
-            val collectionRef = db.collection("Activities")
-            var returnVal = 0
-            collectionRef.get()
-                .addOnSuccessListener { querySnapshot ->
-                    val documentCount = querySnapshot.size()
-                    returnVal = documentCount
+        fun getUniqueActID(): Int = runBlocking {
+            val activityListDeferred = async(Dispatchers.IO) {
+                val db = FirebaseFirestore.getInstance()
+                val result = db.collection("Activities").get().await()
+                result.size()+1
+            }
+
+            // Wait for the activityListDeferred to complete and return the result
+            activityListDeferred.await()
+        }
+
+        //Gets the ID of the Firestore Document based off the activity ID, which is always unique
+        fun getDocumentIDByTypeID(collectionName: String, fieldName: String, fieldValue: Any): String = runBlocking {
+            var documentID: String
+
+            withContext(Dispatchers.IO) {
+                val db = FirebaseFirestore.getInstance()
+                val collectionRef = db.collection("Activities")
+                val querySnapshot = collectionRef.whereEqualTo(fieldName, fieldValue).get().await()
+                println(querySnapshot.toString())
+                try{
+                    documentID = querySnapshot.documents[0].id
                 }
-                .addOnFailureListener { exception ->
-                    // Handle any errors that occurred while retrieving the documents
-                    println("Error getting documents: ${exception.message}")
+                catch(exception: java.lang.IndexOutOfBoundsException){
+                    documentID = "none"
                 }
-            return returnVal+1;
+            }
+            documentID
+        }
+
+        //Function to update the current time spent on an activity
+        fun updateActivityCurrentTime(actId: String, newTimeSpent: Duration) {
+            val activitiesCollection = db.collection("Activities")
+            val activityDocRef = activitiesCollection.document(getDocumentIDByTypeID("Activities", "actID", actId))
+
+            activityDocRef
+                .update("currentTimeSpent", newTimeSpent.toString())
+                .addOnSuccessListener {
+                    println("currentTimeSpent updated successfully")
+                }
+                .addOnFailureListener { e ->
+                    println("Error updating currentTimeSpent: $e")
+                }
+        }
+
+        fun updateActivityTimeSpent(actId: String, newTimeSpent: Duration) {
+            val activitiesCollection = db.collection("Activities")
+            val activityDocRef = activitiesCollection.document(actId)
+
+            activityDocRef
+                .update("currentTimeSpent", newTimeSpent.toString())
+                .addOnSuccessListener {
+                    println("currentTimeSpent updated successfully")
+                }
+                .addOnFailureListener { e ->
+                    println("Error updating currentTimeSpent: $e")
+                }
         }
 
         //Functions to generate maps for the POCOs

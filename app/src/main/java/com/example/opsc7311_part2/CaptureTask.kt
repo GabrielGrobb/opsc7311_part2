@@ -11,6 +11,9 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
+import com.example.opsc7311_part2.ToolBox.DBManager.getDocumentIDByTypeID
+import com.example.opsc7311_part2.ToolBox.DBManager.updateActivityCurrentTime
+import com.example.opsc7311_part2.ToolBox.DBManager.updateActivityTimeSpent
 import com.example.opsc7311_part2.databinding.ActivityCaptureTaskBinding
 import com.google.android.material.navigation.NavigationView
 import org.w3c.dom.Text
@@ -161,6 +164,7 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
 
     //............................................................................................//
 
+    //Updates the given activity in the DB
     private fun recordTimerToActivity() {
         // Get the current activity
         val currentActivity = ToolBox.ActivityManager.getActivityObjectByID(intent.getIntExtra("activityID", -1))
@@ -188,7 +192,8 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
                 val timeDifference = updatedTimeSpent + currentActivity.savedTimeSpent
 
                 // Update the current activity's currentTimeSpent with the time difference
-                currentActivity.currentTimeSpent = timeDifference
+                //currentActivity.currentTimeSpent = timeDifference
+                updateActivityCurrentTime(currentActivity.actID.toString(), timeDifference)
 
                 // Get the category of the current activity
                 val category = ToolBox.CategoryManager.getCategoryByID(currentActivity.categoryId)
@@ -200,7 +205,8 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
                 category.activityTimeSpent = Duration.ofMillis(totalActivityTimeSpent)
 
                 // Update the savedTimeSpent with the current updatedTimeSpent
-                currentActivity.savedTimeSpent = timeDifference
+                //currentActivity.savedTimeSpent = timeDifference
+                updateActivityTimeSpent(getDocumentIDByTypeID("Activities", "actID", currentActivity.actID), timeDifference)
 
                 // ... Perform any additional actions or save the updated activity and category objects as needed
 
