@@ -68,17 +68,11 @@ class Schedule : AppCompatActivity(), View.OnClickListener,
 
         for (activity in activityList) {
             if (activity.startDate >= CurrentDateTextView.text.toString()) {
-                // Match found, perform desired actions with the activity
-
 
                 val customView = custom_activity_icon(this)
 
                 customView.setActID(activity.actID)
                 customView.setActName(activity.title)
-
-                /*activity.actImage?.let { bitmap ->
-                    customView.setIcon(bitmap)
-                }*/
 
                 displayView.addView(customView)
             }
@@ -235,3 +229,4 @@ class Schedule : AppCompatActivity(), View.OnClickListener,
     }
     //............................................................................................//
 }
+//.........................................EndOfFile..............................................//

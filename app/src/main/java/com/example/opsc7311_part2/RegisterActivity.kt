@@ -27,9 +27,19 @@ class RegisterActivity : AppCompatActivity() {
             var surnameInput = findViewById<TextInputEditText>(R.id.txtSurname)
             var passwordInput = findViewById<TextInputEditText>(R.id.txtPassword)
             var confirmPasswordInput = findViewById<TextInputEditText>(R.id.txtConfirmPassword)
-            val userImage = ContextCompat.getDrawable(this, R.drawable.default_profile) // Replace with your drawable resource ID
+            val userImage = ContextCompat.getDrawable(
+                this,
+                R.drawable.default_profile
+            ) // Replace with your drawable resource ID
             // Clear any previous error state and tooltips
-            clearErrorState(emailInput, usernameInput, firstnameInput, surnameInput, passwordInput, confirmPasswordInput)
+            clearErrorState(
+                emailInput,
+                usernameInput,
+                firstnameInput,
+                surnameInput,
+                passwordInput,
+                confirmPasswordInput
+            )
             // Get the input values as strings
             val email = emailInput.text.toString()
             val username = usernameInput.text.toString()
@@ -69,13 +79,15 @@ class RegisterActivity : AppCompatActivity() {
                 confirmPasswordInput.error = "must match password!"
             }
             //validating password
-            if (password.length < 10){
+            if (password.length < 10) {
                 invalidFields.add("Password")
                 passwordInput.error = "Must be longer than 10 chars!"
             }
             //checking for errors and displaying toast message if any are found
             if (invalidFields.isNotEmpty()) {
-                val errorMessage = "Invalid input/s. Please check the following field(s): ${invalidFields.joinToString(", ")}"
+                val errorMessage = "Invalid input/s. Please check the following field(s): ${
+                    invalidFields.joinToString(", ")
+                }"
                 Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
                 return@setOnClickListener // Stop execution if any field is invalid
             }
@@ -97,6 +109,9 @@ class RegisterActivity : AppCompatActivity() {
         }
 
     }
+
+    //........................................................................................//
+
     private fun clearErrorState(vararg textInputs: TextInputEditText) {
         for (textInput in textInputs) {
             textInput.error = null

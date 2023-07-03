@@ -147,8 +147,6 @@ class Category : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
     }
 
     //............................................................................................//
-
-
     override fun onNavigationItemSelected(item: MenuItem): Boolean
     {
 
@@ -244,7 +242,7 @@ class Category : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
 
         datePickerDialog.show()
     }
-    //-----------------------------------------------------------------------------------------
+    //............................................................................................//
     private fun filterActivities(txtEndDate:EditText,txtStartDate: EditText){
         /// Creating a HashSet for the activities.
         val addedActivities = HashSet<Int>()

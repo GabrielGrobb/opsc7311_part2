@@ -12,21 +12,25 @@ class LineChart(context: Context) : View(context) {
     private var maxHours: Int = 0
     var xAxisLabels: Int = 0
 
+    //............................................................................................//
+
     fun setDataPoints(points: List<Float>) {
         dataPoints.clear()
         dataPoints.addAll(points)
         invalidate() // Refresh the chart when data points are updated
     }
 
+    //............................................................................................//
     fun setMaxHours(maxHours: Int) {
         this.maxHours = maxHours
         invalidate() // Refresh the chart when maxHours is updated
     }
 
+    //............................................................................................//
+
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
-        //var catIDs: List<String> = emptyList()
         maxHours = ToolBox.AccountManager.getSettingsObject().maxHours
 
         xAxisLabels = ToolBox.CategoryManager.getCategoryList().size
@@ -41,9 +45,10 @@ class LineChart(context: Context) : View(context) {
 
         val minDataPoint = 0f
 
-        //val scaleX = chartWidth / (dataPoints.size - 1)
         val scaleX = chartWidth / (dataPoints.size)
         val scaleY = chartHeight / maxHours
+
+        //........................................................................................//
 
         val linePaint = Paint().apply {
             color = Color.BLUE
@@ -52,6 +57,8 @@ class LineChart(context: Context) : View(context) {
             isAntiAlias = true
         }
 
+        //........................................................................................//
+
         val markPaint = Paint().apply {
             color = Color.RED
             strokeWidth = 10f
@@ -59,12 +66,16 @@ class LineChart(context: Context) : View(context) {
             isAntiAlias = true
         }
 
+        //........................................................................................//
+
         val textPaint = Paint().apply {
             color = Color.BLACK
             textSize = 30f
             textAlign = Paint.Align.CENTER
             isAntiAlias = true
         }
+
+        //........................................................................................//
 
         val headingText = "Line Graph - Hours vs Categories"
         val headingPaint = Paint().apply {
@@ -76,22 +87,13 @@ class LineChart(context: Context) : View(context) {
 
         /// Draw heading
         val headingX = width / 2f
-        val headingY = padding - headingPaint.fontMetrics.top  // Position the heading above the chart
+        val headingY =
+            padding - headingPaint.fontMetrics.top  // Position the heading above the chart
         canvas.drawText(headingText, headingX, headingY, headingPaint)
 
         val path = Path()
 
-        // Draw x-axis line
-        //canvas.drawLine(padding, height - padding, width - padding, height - padding, linePaint)
-
-        // Draw x-axis line
-        /*canvas.drawLine(
-            padding,
-            height - padding - 1,
-            width - padding,
-            height - padding - 1,
-            linePaint
-        )*/
+        //........................................................................................//
 
         // Draw y-axis line
         canvas.drawLine(padding, height - padding, padding, padding, linePaint)
@@ -103,6 +105,8 @@ class LineChart(context: Context) : View(context) {
 
             canvas.drawText(i.toString(), x - 40, y + textPaint.textSize / 2, textPaint)
         }
+
+        //........................................................................................//
 
         // Draw line chart
         path.reset() // Reset the path before drawing the line chart
@@ -122,8 +126,16 @@ class LineChart(context: Context) : View(context) {
             }
         }
 
+        //........................................................................................//
+
         // Draw x-axis line
-        canvas.drawLine(padding, height - padding - 1, width - padding, height - padding - 1, linePaint)
+        canvas.drawLine(
+            padding,
+            height - padding - 1,
+            width - padding,
+            height - padding - 1,
+            linePaint
+        )
 
         // Draw x-axis values
         for (i in 1..dataPoints.size) { // Adjusted to start from 1 instead of 0
@@ -136,3 +148,4 @@ class LineChart(context: Context) : View(context) {
         canvas.drawPath(path, linePaint)
     }
 }
+//.........................................EndOfFile..............................................//

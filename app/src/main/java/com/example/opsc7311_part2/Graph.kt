@@ -22,7 +22,7 @@ class Graph : AppCompatActivity(), View.OnClickListener,
     private lateinit var chartContainer: FrameLayout
     private lateinit var lineChart: LineChart
 
-
+    //............................................................................................//
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityGraphBinding.inflate(layoutInflater)
@@ -80,10 +80,6 @@ class Graph : AppCompatActivity(), View.OnClickListener,
     }
 
     //............................................................................................//
-
-    private fun TimeOfMaxHrs() {
-
-    }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
 
@@ -144,3 +140,4 @@ class Graph : AppCompatActivity(), View.OnClickListener,
 
     //............................................................................................//
 }
+//.........................................EndOfFile..............................................//

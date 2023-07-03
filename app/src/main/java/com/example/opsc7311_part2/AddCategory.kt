@@ -64,6 +64,8 @@ class AddCategory : AppCompatActivity() {
         }
     }
 
+    //............................................................................................//
+
     private fun showColorPickerDialog() {
         val colorPickerDialog = AlertDialog.Builder(this)
         colorPickerDialog.setTitle("Pick a color")
@@ -86,6 +88,8 @@ class AddCategory : AppCompatActivity() {
         colorPickerDialog.show()
     }
 
+    //............................................................................................//
+
     inner class ColorAdapter(private val context: Context, private val colors: Array<Int>) :
         ArrayAdapter<Int>(context, 0, colors) {
 
@@ -99,4 +103,4 @@ class AddCategory : AppCompatActivity() {
         }
     }
 }
-
+//.........................................EndOfFile..............................................//

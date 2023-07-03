@@ -40,6 +40,7 @@ class ToolBox {
         var actImage: Bitmap?
     )
 
+    //............................................................................................//
 
     data class CategoryDataClass(
         var catID: Int,
@@ -47,6 +48,8 @@ class ToolBox {
         var activityTimeSpent: Duration,
         val catColor: Int
     )
+
+    //............................................................................................//
 
     data class AccountSettings(
         var userImage: Bitmap?,
@@ -79,6 +82,8 @@ class ToolBox {
         }
     }
 
+    //............................................................................................//
+
     object AccountManager {
          var currentSettings = AccountSettings(
             null,
@@ -91,11 +96,13 @@ class ToolBox {
             "default"
         )
 
-
+        //........................................................................................//
 
         fun getSettingsObject(): AccountSettings {
             return currentSettings;
         }
+
+        //........................................................................................//
         fun persistUser(user: AccountSettings) {
             val db = FirebaseFirestore.getInstance()
             val collectionRef = db.collection("User")
@@ -129,6 +136,7 @@ class ToolBox {
                 }
         }
 
+        //........................................................................................//
         fun getUserDocumentIDByTypeID(): String = runBlocking {
             var documentID: String?
             withContext(Dispatchers.IO) {
@@ -144,6 +152,8 @@ class ToolBox {
             }
             documentID ?: "none"
         }
+
+        //........................................................................................//
         //checks the database for a record with matching credentials
         fun checkForUserCredentials(username: String, password: String): AccountSettings? = runBlocking {
             var userData: AccountSettings? = null
@@ -176,16 +186,19 @@ class ToolBox {
             }
             userData
         }
-
-
+        //........................................................................................//
     }
+
+    //............................................................................................//
 
     object ActivityManager {
 
+        //........................................................................................//
         fun addActivity(activity: ActivityDataClass) {
             //activityList
         }
 
+        //........................................................................................//
         //Takes in an activityid and returns an activity object from the list if it exists
         fun getActivityObjectByID(id: Int): ActivityDataClass {
             var activityList = getActivityList()
@@ -198,15 +211,23 @@ class ToolBox {
             return activityList[-1]
         }
 
+        //........................................................................................//
+
         fun findActivityByName(name: String): Boolean {
             return getActivityList().any { it.title == name }
         }
+
+        //........................................................................................//
 
         fun getActivityList(): MutableList<ActivityDataClass> {
             return DBManager.getActivitiesFromDB()
         }
 
+        //........................................................................................//
+
     }
+
+    //............................................................................................//
 
     //Reworked most backend methods to use DB instead of runtime memory, kept logic the same
     object DBManager {
@@ -214,25 +235,7 @@ class ToolBox {
         //Instance of DB
         val db = FirebaseFirestore.getInstance()
 
-        //Gets the ID of the Firestore Document based off the activity ID, which is always unique
-        /*fun getDocumentIDByTypeID(collectionName: String, fieldName: String, fieldValue: Any): String = runBlocking {
-            var documentID: String?
-            withContext(Dispatchers.IO) {
-                val db = FirebaseFirestore.getInstance()
-                val collectionRef = db.collection("Activities")
-                val querySnapshot = collectionRef.whereEqualTo(fieldName, fieldValue).get().await()
-
-                //documentID = querySnapshot.first().toString()
-                //print(documentID)
-                documentID = try {
-                    querySnapshot.documents[0].id
-                } catch (exception: IndexOutOfBoundsException) {
-                    "none"
-                }
-            }
-            documentID ?: "none"
-        }*/
-
+        //........................................................................................//
         suspend fun getDocumentIDByTypeID(collectionName: String, fieldName: String, fieldValue: Any): String = runBlocking {
             var documentID: String?
             withContext(Dispatchers.IO) {
@@ -251,20 +254,7 @@ class ToolBox {
             documentID ?: "none"
         }
 
-        //Function to update the current time spent on an activity
-        /*fun updateActivityCurrentTime(actId: String, newTimeSpent: Duration) {
-            val activitiesCollection = db.collection("Activities")
-            val activityDocRef = activitiesCollection.document(getDocumentIDByTypeID("Activities", "actID", actId.toInt()))
-
-            activityDocRef
-                .update("currentTimeSpent", newTimeSpent.toString())
-                .addOnSuccessListener {
-                    println("currentTimeSpent updated successfully")
-                }
-                .addOnFailureListener { e ->
-                    println("Error updating currentTimeSpent: $e")
-                }
-        }*/
+        //........................................................................................//
 
         fun updateActivityCurrentTime(docId: String, newTimeSpent: Duration) {
 
@@ -281,18 +271,7 @@ class ToolBox {
                 }
         }
 
-        /*fun updateActivitySavedTimeSpent(actId: String, newTimeSpent: Duration) {
-            val activitiesCollection = db.collection("Activities")
-            val activityDocRef = activitiesCollection.document(getDocumentIDByTypeID("Activities", "actID", actId.toInt()))
-            activityDocRef
-                .update("savedTimeSpent", newTimeSpent.toString())
-                .addOnSuccessListener {
-                    println("currentTimeSpent updated successfully")
-                }
-                .addOnFailureListener { e ->
-                    println("Error updating currentTimeSpent: $e")
-                }
-        }*/
+        //........................................................................................//
 
         fun updateActivitySavedTimeSpent(docId: String, newTimeSpent: Duration) {
 
@@ -308,7 +287,7 @@ class ToolBox {
                     Log.w(TAG, "Error updating savedTimeSpent for document ID: $docId", e)
                 }
         }
-
+        //........................................................................................//
 
         /*Function to count the number of activities currently in the collection, and return an
         integer representing a unique ID*/
@@ -323,12 +302,16 @@ class ToolBox {
             activityListDeferred.await()
         }
 
+        //........................................................................................//
+
         fun encodeImageToBase64(imageBitmap: Bitmap): String {
             val baos = ByteArrayOutputStream()
             imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
             val imageBytes = baos.toByteArray()
             return Base64.encodeToString(imageBytes, Base64.DEFAULT)
         }
+
+        //........................................................................................//
 
         fun uploadImageToFirebaseStorage(imageBitmap: Bitmap, onComplete: (imageUrl: String?) -> Unit) {
             val storageReference = FirebaseStorage.getInstance().reference
@@ -358,6 +341,8 @@ class ToolBox {
             }
         }
 
+        //........................................................................................//
+
         //Functions to generate maps for the POCOs
         fun getActivityAttributes(activity: ActivityDataClass, imagePath: Bitmap): HashMap<String, Any> {
             val attributeMap = HashMap<String, Any>()
@@ -381,33 +366,7 @@ class ToolBox {
             return attributeMap
         }
 
-        /*fun getActivitiesFromDB(): MutableList<ActivityDataClass> = runBlocking {
-            val activityListDeferred = async(Dispatchers.IO) {
-                val db = FirebaseFirestore.getInstance()
-                val result = db.collection("Activities").get().await()
-                val activityList = mutableListOf<ActivityDataClass>()
-                for (document in result) {
-                    val temp = ActivityDataClass(
-                        document.data["actID"].toString().toInt(),
-                        document.data["title"].toString(),
-                        document.data["client"].toString(),
-                        document.data["location"].toString(),
-                        document.data["category"].toString(),
-                        document.data["categoryId"].toString().toInt(),
-                        Duration.parse(document.data["duration"].toString()),
-                        Duration.parse(document.data["currentTimeSpent"].toString()),
-                        Duration.parse(document.data["savedTimeSpent"].toString()),
-                        document.data["startDate"].toString(),
-                        document.data["endDate"].toString()
-                    )
-                    activityList.add(temp)
-                }
-                activityList
-            }
-
-            // Wait for the activityListDeferred to complete and return the result
-            activityListDeferred.await()
-        }*/
+        //........................................................................................//
 
         fun getActivitiesFromDB(): MutableList<ActivityDataClass> = runBlocking {
             val activityListDeferred = async(Dispatchers.IO) {
@@ -448,6 +407,8 @@ class ToolBox {
             activityListDeferred.await()
         }
 
+        //........................................................................................//
+
         fun stringToBitmap(encodedString: String): Bitmap? {
             try {
                 // Decode the Base64 string to a byte array
@@ -463,22 +424,8 @@ class ToolBox {
             return null
         }
 
-        //Takes in an ActivityDataClass, converts it to a hashmap and adds it to the database
-       /* fun persistActivity(activity: ActivityDataClass) {
-            // Get a reference to the collection
-            val collectionRef = db.collection("Activities")
+        //........................................................................................//
 
-            // Get the attribute map with the encoded image
-            val attributeMap = getActivityAttributes(activity)
-
-            db.collection("Activities").add(attributeMap)
-                .addOnSuccessListener { documentReference ->
-                    Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
-                }
-                .addOnFailureListener { e ->
-                    Log.w(TAG, "Error adding document", e)
-                }
-        }*/
         fun persistActivity(activity: ActivityDataClass) {
             val db = FirebaseFirestore.getInstance()
             val collectionRef = db.collection("Activities")
@@ -519,6 +466,8 @@ class ToolBox {
 
     }
 
+    //............................................................................................//
+
     object CategoryManager {
         private val categoryList = mutableListOf<CategoryDataClass>()
 
@@ -541,6 +490,7 @@ class ToolBox {
                 }
         }
 
+        //........................................................................................//
         //Returns a mutable list of activity data class given a catID
         fun getActivitiesForCategory(catID: String): MutableList<ActivityDataClass> = runBlocking {
             val activityListDeferred = async(Dispatchers.IO) {
@@ -580,18 +530,7 @@ class ToolBox {
             activityListDeferred.await()
         }
 
-        //Takes in a category object and returns a duration representing the total amount of
-        //Time spent on that category
-        /*fun calcCategoryTime(cat: CategoryDataClass): Duration {
-            var totalDuration = Duration.ZERO
-            for (activity in getActivitiesForCategory(cat.catID.toString())) {
-                //if(cat.catID==activity.categoryId) {
-                totalDuration = totalDuration.plus(activity.currentTimeSpent)
-                //}
-
-            }
-            return totalDuration
-        }*/
+        //........................................................................................//
 
         suspend fun getActivityTimeSpent(categoryId: String): Duration {
             return withContext(Dispatchers.IO) {
@@ -620,6 +559,8 @@ class ToolBox {
             }
         }
 
+        //........................................................................................//
+
         suspend fun getCategoryDocumentIDByTypeID(collectionName: String, fieldName: String, fieldValue: Any): String = runBlocking {
             var documentID: String?
             withContext(Dispatchers.IO) {
@@ -638,7 +579,7 @@ class ToolBox {
             documentID ?: "none"
         }
 
-
+        //........................................................................................//
 
         fun calcCategoryTime(categoryId: String): Duration {
             var totalDuration = Duration.ZERO
@@ -647,6 +588,8 @@ class ToolBox {
             }
             return totalDuration
         }
+
+        //........................................................................................//
 
         fun updateCategoryTimeSpent(docId: String, newTimeSpent: Duration) {
 
@@ -662,6 +605,8 @@ class ToolBox {
                     Log.w(TAG, "Error updating activityTimeSpent for document ID: $docId", e)
                 }
         }
+
+        //........................................................................................//
 
         fun getCategoriesFromDB(): MutableList<CategoryDataClass> = runBlocking {
             val categoryListDeferred = async(Dispatchers.IO) {
@@ -682,7 +627,7 @@ class ToolBox {
             categoryListDeferred.await()
         }
 
-
+        //........................................................................................//
         //Takes in a category id and returns the category object from the list if it exists
         fun getCategoryByID(id: Int): CategoryDataClass {
             for (category in getCategoryList()) {
@@ -694,17 +639,19 @@ class ToolBox {
             return getCategoryList()[-1]
         }
 
+        //........................................................................................//
+
         fun addCategory(category: CategoryDataClass) {
             categoryList.add(category)
         }
 
-        /* fun addActivity(activity: ActivityDataClass){
-             activityList.add(activity)
-         }*/
+        //........................................................................................//
 
         fun getCategoryList(): List<CategoryDataClass> {
             return getCategoriesFromDB()
         }
+
+        //........................................................................................//
 
         //--------General Utility Functions
 
@@ -716,6 +663,8 @@ class ToolBox {
             val formattedDate = dateFormat.format(TimeCalendar.time)
             return formattedDate
         }
+
+        //........................................................................................//
 
         //Takes in a spinner and an int and returns the index of the int in the spinner if it exists
         fun getSpinnerIndexForValue(spinner: Spinner, value: String): Int {
@@ -730,6 +679,8 @@ class ToolBox {
 
             return -1 // Return -1 if the desired value is not found
         }
+
+        //........................................................................................//
 
         //Takes in an activity object and returns a percentage value as an integer related to how far through the max length the activity is
         fun calcPercentageTimeSpent(activity: ActivityDataClass): Int {
@@ -746,11 +697,14 @@ class ToolBox {
             return 0
         }
 
+        //........................................................................................//
 
         fun parseDateString(dateString: String): Date {
             val format = SimpleDateFormat("yyyy-MM-dd")
             return format.parse(dateString)
         }
+
+        //........................................................................................//
 
         fun getActivitiesForCategoryBetweenDates(
             activityList: MutableList<ActivityDataClass>,
@@ -766,6 +720,8 @@ class ToolBox {
             return workingList
         }
 
+        //........................................................................................//
+
         //Takes in two dates and calculates the amount of time spent working between said dates
         fun sumTotalWorkingTime(workingList: List<ActivityDataClass>): Int {
             var totalTime = 0
@@ -774,8 +730,7 @@ class ToolBox {
             }
             return totalTime
         }
-        //Hi ishmael if you are reading this your feet smell ps gabe lifts more than you
-
-
+        //........................................................................................//
     }
 }
+//.........................................EndOfFile..............................................//

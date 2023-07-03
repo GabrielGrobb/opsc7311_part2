@@ -43,17 +43,6 @@ class LoginActivity : AppCompatActivity() {
                 } else {
                     Toast.makeText(this, "Username or Password is incorrect", Toast.LENGTH_LONG).show()
                 }
-                //Getting the stored values
-                /*val currentSettings = ToolBox.AccountManager.getSettingsObject()
-                val storedUsername = currentSettings.username
-                val storedPassword = currentSettings.password
-
-                if (name == storedUsername && pas == storedPassword) {
-                    val intent = Intent(this, HomePageTest::class.java)
-                    startActivity(intent)
-                } else {
-                    Toast.makeText(this, "Username or Password is incorrect", Toast.LENGTH_LONG).show()
-                }*/
             }catch (e: Exception){
                 Toast.makeText(this, "An error has occurred within the code $:{e.message})", Toast.LENGTH_LONG).show()
             }

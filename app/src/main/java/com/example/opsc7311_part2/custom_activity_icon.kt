@@ -17,6 +17,8 @@ class custom_activity_icon @JvmOverloads constructor(
     private var activityName: String = ""
     private var imageResource: Bitmap? = null
 
+    //............................................................................................//
+
     init {
         LayoutInflater.from(context).inflate(R.layout.activity_custom_icon, this, true)
 
@@ -36,6 +38,7 @@ class custom_activity_icon @JvmOverloads constructor(
     }
     // Perform any initialization or customization here
     // You can access and modify the views within the custom component layout
+    //............................................................................................//
 
     fun setIcon(bitmap: Bitmap)
     {
@@ -47,6 +50,8 @@ class custom_activity_icon @JvmOverloads constructor(
 
     }
 
+    //............................................................................................//
+
     fun setActName(name: String)
     {
         val catName = findViewById<TextView>(R.id.txtActivityName)
@@ -55,6 +60,8 @@ class custom_activity_icon @JvmOverloads constructor(
 
     }
 
+    //............................................................................................//
+
     fun setActID(ID: Int) {
         //categoryID = ID+1 // Increment the counter by 1
         val actID = findViewById<TextView>(R.id.activityID)
@@ -62,6 +69,7 @@ class custom_activity_icon @JvmOverloads constructor(
         activityID = ID
     }
 
+    //............................................................................................//
 }
 
 //.........................................EndOfFile..............................................//

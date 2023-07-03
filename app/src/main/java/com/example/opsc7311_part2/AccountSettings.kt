@@ -72,7 +72,7 @@ class AccountSettings : AppCompatActivity(), View.OnClickListener,
         val surname = findViewById<TextInputEditText>(R.id.txtSurname)
         val password = findViewById<TextInputEditText>(R.id.txtPassword)
         val updateButton = findViewById<Button>(R.id.updateSettings)
-        val userImage = ContextCompat.getDrawable(this, R.drawable.default_profile) // Replace with your drawable resource ID
+        val userImage = ContextCompat.getDrawable(this, R.drawable.default_profile)
         val bitmap: Bitmap? = (userImage as? BitmapDrawable)?.bitmap
         //Retrieves the current settings object from toolbox to be updated
         var currentSettings = ToolBox.AccountManager.getSettingsObject()
@@ -272,29 +272,6 @@ class AccountSettings : AppCompatActivity(), View.OnClickListener,
         val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
         return "ProfilePhoto_$timeStamp.jpg"
     }
-
-
-    //--------------------------------------------------------------------------------------------//
-    /*For devices with API level 29 (Android Q) and above, the image is saved using the MediaStore
-    API.
-    The image is stored in the Pictures directory of the primary external storage.
-    The saveImageToMediaStoreQ() function is responsible for saving the image to the MediaStore.
-
-    For devices with API level below 29, the image is saved to the public Pictures directory in the
-    external storage. The saveImageToMediaStore() function is responsible for saving the
-    image in this case.
-
-    Here are the default storage locations for both cases:
-
-    For API level 29 and above:
-
-    Directory: Environment.DIRECTORY_PICTURES
-    Location: Primary external storage (usually the user's public Pictures directory)
-    For API level below 29:
-
-    Directory: Environment.DIRECTORY_PICTURES
-    Location: Public Pictures directory in the external storage*/
-
     //--------------------------------------------------------------------------------------------//
 
     // Save the profile photo to MediaStore for API levels >= 29 (Android Q)
@@ -383,10 +360,6 @@ class AccountSettings : AppCompatActivity(), View.OnClickListener,
     }
 
     //............................................................................................//
-
-
-    //............................................................................................//
-
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
 
         when (item.itemId) {

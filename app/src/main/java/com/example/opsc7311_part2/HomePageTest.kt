@@ -89,6 +89,8 @@ class HomePageTest : AppCompatActivity(), View.OnClickListener, NavigationView.O
         }
     }
 
+    //............................................................................................//
+
     override fun onNavigationItemSelected(item: MenuItem): Boolean
     {
 

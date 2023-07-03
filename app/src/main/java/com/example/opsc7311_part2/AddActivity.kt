@@ -39,10 +39,10 @@ import java.util.*
 class AddActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddActivityBinding
-
-    //private var activityCounter = ToolBox.ActivityManager.getActivityList().size
     private val CAMERA_PERMISSION_REQUEST_CODE = 100
     private val STORAGE_PERMISSION_REQUEST_CODE = 101
+
+    //............................................................................................//
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,7 +53,6 @@ class AddActivity : AppCompatActivity() {
             finish()
         }
         //Views
-        //val activityList = ToolBox.DBManager.getActivityListFromDB(MutableList())
         val ActivityIcon: ImageView = findViewById(R.id.ActivityIcon)
         val tilLocation: TextInputLayout = findViewById(R.id.til_Location)
         val tilCategory: TextInputLayout = findViewById(R.id.til_Category)
@@ -85,10 +84,6 @@ class AddActivity : AppCompatActivity() {
         val categoryList = ToolBox.CategoryManager.getCategoryList()
         //adding activity
         binding.btnAddActivity.setOnClickListener {
-
-            // Increment the categoryCounter
-            //activityCounter++
-
             val actTitle = txtTitle.text.toString()
             val actClient = txtClient.text.toString()
             val actLocation = txtLocation.text.toString()
@@ -103,7 +98,6 @@ class AddActivity : AppCompatActivity() {
                 val selectedCategory = spCategory.selectedItem.toString()
                 val category = categoryList.find { it.name == selectedCategory }
                 val categoryId = category?.catID ?: -1 // Default value if category not found
-
 
                 //Validation of all user input fields
                 val validation = Validation()
@@ -220,11 +214,14 @@ class AddActivity : AppCompatActivity() {
 
     }
 
+    //............................................................................................//
+
     private fun getCategoryNames(): List<String> {
         val categoryList = ToolBox.CategoryManager.getCategoryList()
         return categoryList.map { it.name }
     }
 
+    //............................................................................................//
 
     private val cameraLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -240,6 +237,9 @@ class AddActivity : AppCompatActivity() {
                 }
             }
         }
+
+    //............................................................................................//
+
     private fun showYesNoDialog() {
         val dialogBuilder = AlertDialog.Builder(this)
         dialogBuilder.setMessage("Do you want to open the camera?")
@@ -255,6 +255,8 @@ class AddActivity : AppCompatActivity() {
         alert.setTitle("Confirmation")
         alert.show()
     }
+
+    //............................................................................................//
 
     private fun requestCameraPermission() {
         if (ContextCompat.checkSelfPermission(
@@ -272,12 +274,14 @@ class AddActivity : AppCompatActivity() {
         }
     }
 
+    //............................................................................................//
+
     private fun openCamera() {
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         cameraLauncher.launch(intent)
     }
 
-
+    //............................................................................................//
 
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
@@ -298,11 +302,15 @@ class AddActivity : AppCompatActivity() {
         }
     }
 
+    //............................................................................................//
+
     private fun getActivityIcon(): Uri? {
         val sharedPreferences = getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
         val profilePhotoUriString = sharedPreferences.getString("profilePhotoUri", null)
         return profilePhotoUriString?.let { Uri.parse(it) }
     }
+
+    //............................................................................................//
 
     private fun saveActivityIcon(bitmap: Bitmap) {
         val fileName = generateFileName()
@@ -326,10 +334,14 @@ class AddActivity : AppCompatActivity() {
         }
     }
 
+    //............................................................................................//
+
     private fun generateFileName(): String {
         val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
         return "ProfilePhoto_$timeStamp.jpg"
     }
+
+    //............................................................................................//
 
     private fun saveImageToMediaStoreQ(
         contentResolver: ContentResolver,
@@ -365,6 +377,7 @@ class AddActivity : AppCompatActivity() {
         return null
     }
 
+    //............................................................................................//
 
     // Save the profile photo to MediaStore for API levels < 29
     private fun saveImageToMediaStore(
@@ -396,6 +409,8 @@ class AddActivity : AppCompatActivity() {
         return null
     }
 
+    //............................................................................................//
+
     // Convert a Bitmap to a Uri
     private fun bitmapToUri(bitmap: Bitmap): Uri {
         val cachePath = File(applicationContext.cacheDir, "images")
@@ -412,6 +427,8 @@ class AddActivity : AppCompatActivity() {
 
         return Uri.fromFile(file)
     }
+
+    //............................................................................................//
 
     private fun showDatePickerDialog(textField: EditText) {
         val calendar = Calendar.getInstance()
@@ -434,3 +451,4 @@ class AddActivity : AppCompatActivity() {
         datePickerDialog.show()
     }
 }
+//.........................................EndOfFile..............................................//
