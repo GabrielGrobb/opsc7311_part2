@@ -215,7 +215,25 @@ class ToolBox {
         val db = FirebaseFirestore.getInstance()
 
         //Gets the ID of the Firestore Document based off the activity ID, which is always unique
-        fun getDocumentIDByTypeID(collectionName: String, fieldName: String, fieldValue: Any): String = runBlocking {
+        /*fun getDocumentIDByTypeID(collectionName: String, fieldName: String, fieldValue: Any): String = runBlocking {
+            var documentID: String?
+            withContext(Dispatchers.IO) {
+                val db = FirebaseFirestore.getInstance()
+                val collectionRef = db.collection("Activities")
+                val querySnapshot = collectionRef.whereEqualTo(fieldName, fieldValue).get().await()
+
+                //documentID = querySnapshot.first().toString()
+                //print(documentID)
+                documentID = try {
+                    querySnapshot.documents[0].id
+                } catch (exception: IndexOutOfBoundsException) {
+                    "none"
+                }
+            }
+            documentID ?: "none"
+        }*/
+
+        suspend fun getDocumentIDByTypeID(collectionName: String, fieldName: String, fieldValue: Any): String = runBlocking {
             var documentID: String?
             withContext(Dispatchers.IO) {
                 val db = FirebaseFirestore.getInstance()
@@ -234,7 +252,7 @@ class ToolBox {
         }
 
         //Function to update the current time spent on an activity
-        fun updateActivityCurrentTime(actId: String, newTimeSpent: Duration) {
+        /*fun updateActivityCurrentTime(actId: String, newTimeSpent: Duration) {
             val activitiesCollection = db.collection("Activities")
             val activityDocRef = activitiesCollection.document(getDocumentIDByTypeID("Activities", "actID", actId.toInt()))
 
@@ -246,9 +264,24 @@ class ToolBox {
                 .addOnFailureListener { e ->
                     println("Error updating currentTimeSpent: $e")
                 }
+        }*/
+
+        fun updateActivityCurrentTime(docId: String, newTimeSpent: Duration) {
+
+            val activitiesCollection = db.collection("Activities")
+            val activityDocRef = activitiesCollection.document(docId)
+
+            activityDocRef
+                .update("currentTimeSpent", newTimeSpent.toString())
+                .addOnSuccessListener {
+                    Log.d(TAG, "currentTimeSpent updated successfully for document ID: $docId")
+                }
+                .addOnFailureListener { e ->
+                    Log.w(TAG, "Error updating currentTimeSpent for document ID: $docId", e)
+                }
         }
 
-        fun updateActivitySavedTimeSpent(actId: String, newTimeSpent: Duration) {
+        /*fun updateActivitySavedTimeSpent(actId: String, newTimeSpent: Duration) {
             val activitiesCollection = db.collection("Activities")
             val activityDocRef = activitiesCollection.document(getDocumentIDByTypeID("Activities", "actID", actId.toInt()))
             activityDocRef
@@ -259,7 +292,23 @@ class ToolBox {
                 .addOnFailureListener { e ->
                     println("Error updating currentTimeSpent: $e")
                 }
+        }*/
+
+        fun updateActivitySavedTimeSpent(docId: String, newTimeSpent: Duration) {
+
+            val activitiesCollection = db.collection("Activities")
+            val activityDocRef = activitiesCollection.document(docId)
+
+            activityDocRef
+                .update("savedTimeSpent", newTimeSpent.toString())
+                .addOnSuccessListener {
+                    Log.d(TAG, "savedTimeSpent updated successfully for document ID: $docId")
+                }
+                .addOnFailureListener { e ->
+                    Log.w(TAG, "Error updating savedTimeSpent for document ID: $docId", e)
+                }
         }
+
 
         /*Function to count the number of activities currently in the collection, and return an
         integer representing a unique ID*/
@@ -533,7 +582,7 @@ class ToolBox {
 
         //Takes in a category object and returns a duration representing the total amount of
         //Time spent on that category
-        fun calcCategoryTime(cat: CategoryDataClass): Duration {
+        /*fun calcCategoryTime(cat: CategoryDataClass): Duration {
             var totalDuration = Duration.ZERO
             for (activity in getActivitiesForCategory(cat.catID.toString())) {
                 //if(cat.catID==activity.categoryId) {
@@ -542,6 +591,76 @@ class ToolBox {
 
             }
             return totalDuration
+        }*/
+
+        suspend fun getActivityTimeSpent(categoryId: String): Duration {
+            return withContext(Dispatchers.IO) {
+                val db = FirebaseFirestore.getInstance()
+                val categoryCollection = db.collection("Category")
+                val categoryDocRef = categoryCollection.document(categoryId)
+
+                try {
+                    val documentSnapshot = categoryDocRef.get().await()
+                    if (documentSnapshot.exists()) {
+                        val categoryData = documentSnapshot.toObject(CategoryDataClass::class.java)
+                        val activityTimeSpentString = categoryData?.activityTimeSpent
+
+                        // Convert the activityTimeSpent string to Duration
+                        val activityTimeSpent = Duration.parse(activityTimeSpentString.toString())
+
+                        activityTimeSpent
+                    } else {
+                        Duration.ZERO
+                    }
+                } catch (e: Exception) {
+                    // Handle the exception
+                    // Log.e(TAG, "Error retrieving activityTimeSpent: ${e.message}")
+                    Duration.ZERO
+                }
+            }
+        }
+
+        suspend fun getCategoryDocumentIDByTypeID(collectionName: String, fieldName: String, fieldValue: Any): String = runBlocking {
+            var documentID: String?
+            withContext(Dispatchers.IO) {
+                val db = FirebaseFirestore.getInstance()
+                val collectionRef = db.collection("Category")
+                val querySnapshot = collectionRef.whereEqualTo(fieldName, fieldValue).get().await()
+
+                //documentID = querySnapshot.first().toString()
+                //print(documentID)
+                documentID = try {
+                    querySnapshot.documents[0].id
+                } catch (exception: IndexOutOfBoundsException) {
+                    "none"
+                }
+            }
+            documentID ?: "none"
+        }
+
+
+
+        fun calcCategoryTime(categoryId: String): Duration {
+            var totalDuration = Duration.ZERO
+            for (activity in getActivitiesForCategory(categoryId)) {
+                totalDuration = totalDuration.plus(activity.currentTimeSpent)
+            }
+            return totalDuration
+        }
+
+        fun updateCategoryTimeSpent(docId: String, newTimeSpent: Duration) {
+
+            val categoryCollection = DBManager.db.collection("Category")
+            val categoryDocRef = categoryCollection.document(docId)
+
+            categoryDocRef
+                .update("activityTimeSpent", newTimeSpent.toString())
+                .addOnSuccessListener {
+                    Log.d(TAG, "activityTimeSpent updated successfully for document ID: $docId")
+                }
+                .addOnFailureListener { e ->
+                    Log.w(TAG, "Error updating activityTimeSpent for document ID: $docId", e)
+                }
         }
 
         fun getCategoriesFromDB(): MutableList<CategoryDataClass> = runBlocking {

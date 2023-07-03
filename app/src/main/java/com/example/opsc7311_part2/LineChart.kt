@@ -66,7 +66,7 @@ class LineChart(context: Context) : View(context) {
             isAntiAlias = true
         }
 
-        val headingText = "Line Graph Heading"
+        val headingText = "Line Graph - Hours vs Categories"
         val headingPaint = Paint().apply {
             color = Color.BLACK
             textSize = 40f
@@ -74,9 +74,9 @@ class LineChart(context: Context) : View(context) {
             isAntiAlias = true
         }
 
-        // Draw heading
+        /// Draw heading
         val headingX = width / 2f
-        val headingY = padding / 2f
+        val headingY = padding - headingPaint.fontMetrics.top  // Position the heading above the chart
         canvas.drawText(headingText, headingX, headingY, headingPaint)
 
         val path = Path()

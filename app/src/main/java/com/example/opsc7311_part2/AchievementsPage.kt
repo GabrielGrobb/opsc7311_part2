@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import com.example.opsc7311_part2.databinding.ActivityAchievementsPageBinding
@@ -20,6 +21,7 @@ class AchievementsPage : AppCompatActivity(), View.OnClickListener,
     private lateinit var binding: ActivityAchievementsPageBinding
     private val activityCompletedList = mutableListOf<Boolean>()
     private val completedActivityList = mutableListOf<Activity>()
+    private lateinit var currentDate: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,8 +44,14 @@ class AchievementsPage : AppCompatActivity(), View.OnClickListener,
 
         binding.navView.bringToFront()
         binding.navView.setNavigationItemSelectedListener(this)
+        currentDate = findViewById(R.id.CurrentDate)
 
         //--------------------------------------Testing------------------------------------------///
+
+        //Finding the TextView we want to update
+        var CurrentDateTextView = findViewById<TextView>(R.id.CurrentDate)
+        //Setting the value of the text view to the Calendar's current date
+        CurrentDateTextView.text = ToolBox.CategoryManager.getCurrentDateString()
 
         val activityList = ToolBox.DBManager.getActivitiesFromDB()
         val displayView = findViewById<LinearLayout>(R.id.achievementsLayout)

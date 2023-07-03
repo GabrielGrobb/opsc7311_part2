@@ -9,11 +9,13 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
+import androidx.lifecycle.lifecycleScope
 import com.example.opsc7311_part2.ToolBox.DBManager.getDocumentIDByTypeID
 import com.example.opsc7311_part2.ToolBox.DBManager.updateActivityCurrentTime
 import com.example.opsc7311_part2.ToolBox.DBManager.updateActivitySavedTimeSpent
 import com.example.opsc7311_part2.databinding.ActivityCaptureTaskBinding
 import com.google.android.material.navigation.NavigationView
+import kotlinx.coroutines.launch
 import java.time.Duration
 import java.util.*
 
@@ -94,7 +96,10 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
 
         val btnRecord = findViewById<ImageButton>(R.id.btnStop)
         btnRecord.setOnClickListener{
-            recordTimerToActivity()
+            lifecycleScope.launch{
+                recordTimerToActivity()
+            }
+            println("111111")
         }
 
         val maxTimeTextView = findViewById<TextView>(R.id.txtDuration)
@@ -168,8 +173,8 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
     //............................................................................................//
 
     //Updates the given activity in the DB
-    private fun recordTimerToActivity() {
-        // Get the current activity
+    private suspend fun recordTimerToActivity() {
+        /*// Get the current activity
         val currentActivity = ToolBox.ActivityManager.getActivityObjectByID(intent.getIntExtra("activityID", -1))
 
         // Capture the current time as a string in the format "HH:mm:ss"
@@ -197,11 +202,10 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
                 // Update the current activity's currentTimeSpent with the time difference
                 currentActivity.currentTimeSpent = timeDifference
                 updateActivityCurrentTime(getDocumentIDByTypeID("Activities", "actID", currentActivity.actID), timeDifference)
+
                 // Update the savedTimeSpent with the current updatedTimeSpent
                 currentActivity.savedTimeSpent = timeDifference
-
                 updateActivitySavedTimeSpent(getDocumentIDByTypeID("Activities", "actID", currentActivity.actID), timeDifference)
-
 
                 // Get the category of the current activity
                 val category = ToolBox.CategoryManager.getCategoryByID(currentActivity.categoryId)
@@ -218,6 +222,78 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
 
                 // Finish the current activity and return to the previous activity
                 finish()
+            }*/
+        // Get the current activity
+        val currentActivity = ToolBox.ActivityManager.getActivityObjectByID(intent.getIntExtra("activityID", -1))
+
+        // Capture the current time as a string in the format "HH:mm:ss"
+        val capturedTime = getTimerText()
+
+        val documentId = getDocumentIDByTypeID("Activities", "actID", currentActivity.actID)
+
+        //val documentIdCategory = ToolBox.CategoryManager.getCategoryDocumentIDByTypeID("Category", "catID", currentActivity.categoryId)
+
+        // Remove leading and trailing whitespace from the captured time string
+        val trimmedTime = capturedTime.trim()
+
+        // Split the trimmed time string into hours, minutes, and seconds
+        val timeParts = trimmedTime.split(" : ")
+
+        if (timeParts.size == 3) {
+            val hours = timeParts[0].toIntOrNull()
+            val minutes = timeParts[1].toIntOrNull()
+            val seconds = timeParts[2].toIntOrNull()
+
+            if (hours != null && minutes != null && seconds != null) {
+                // Convert the time parts to a Duration object
+                val updatedTimeSpent = Duration.ofSeconds(seconds.toLong())
+                    .plusMinutes(minutes.toLong())
+                    .plusHours(hours.toLong())
+
+                // Get the difference between the current and saved time
+                val timeDifference = updatedTimeSpent + currentActivity.savedTimeSpent
+
+                // Update the current activity's currentTimeSpent with the time difference
+                currentActivity.currentTimeSpent = timeDifference
+                updateActivityCurrentTime(documentId, timeDifference)
+
+                // Update the savedTimeSpent with the current updatedTimeSpent
+                currentActivity.savedTimeSpent = timeDifference
+                updateActivitySavedTimeSpent(documentId, timeDifference)
+
+                // Get the category of the current activity
+                val category = ToolBox.CategoryManager.getCategoryByID(currentActivity.categoryId)
+
+                // Calculate the total activity time spent in the category
+                val categoryId = category.catID.toString()
+                val categoryDocumentId = ToolBox.CategoryManager.getCategoryDocumentIDByTypeID("Category", "catID", categoryId) // Replace with the actual method to get the category document ID
+
+                if (categoryDocumentId != null) {
+                    val totalActivityTimeSpent = ToolBox.CategoryManager.calcCategoryTime(categoryId)
+
+                    // Update the activityTimeSpent in the CategoryDataClass
+                    ToolBox.CategoryManager.updateCategoryTimeSpent(categoryDocumentId, totalActivityTimeSpent)
+
+                    // Finish the current activity and return to the previous activity
+                    finish()
+                } else {
+                    // Handle the case where the category document ID is null
+                    Toast.makeText(this, "Failed to get category document ID", Toast.LENGTH_SHORT).show()
+                }
+
+                /*// Calculate the total activity time spent in the category
+                //val totalActivityTimeSpent = ToolBox.CategoryManager.getActivitiesForCategory(category.catID.toString()).sumOf { it.currentTimeSpent.toMillis() }
+                val totalActivityTimeSpent = ToolBox.CategoryManager.calcCategoryTime(category.catID.toString())
+
+                // Update the activityTimeSpent in the CategoryDataClass
+                ToolBox.CategoryManager.updateCategoryTimeSpent(documentIdCategory, totalActivityTimeSpent)
+
+                //category.activityTimeSpent = totalActivityTimeSpent
+
+                //category.activityTimeSpent = Duration.ofMillis(totalActivityTimeSpent)
+
+                // Finish the current activity and return to the previous activity
+                finish()*/
             }
         } else {
             // Error handling if the captured time string is not in the expected format
@@ -234,6 +310,7 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
             timerStarted = true
             setButtonUI(R.drawable.pause_circle)
             startTimer()
+
         }
         else
         {
