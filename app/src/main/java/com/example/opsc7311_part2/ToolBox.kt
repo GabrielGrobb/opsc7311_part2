@@ -134,7 +134,7 @@ class ToolBox {
             withContext(Dispatchers.IO) {
                 val db = FirebaseFirestore.getInstance()
                 val collectionRef = db.collection("User")
-                val querySnapshot = collectionRef.whereEqualTo("userID", "1").get().await()
+                val querySnapshot = collectionRef.whereEqualTo("userID", 1).get().await()
 
                 documentID = try {
                     querySnapshot.documents[0].id
@@ -164,7 +164,7 @@ class ToolBox {
                         documentSnapshot.data?.get("maxHours").toString().toInt(),
                         documentSnapshot.data?.get("email").toString(),
                         documentSnapshot.data?.get("userName").toString(),
-                        documentSnapshot.data?.get("firstName").toString(),
+                        documentSnapshot.data?.get("firstname").toString(),
                         documentSnapshot.data?.get("surname").toString(),
                         documentSnapshot.data?.get("password").toString()
                     )
