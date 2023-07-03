@@ -90,8 +90,7 @@ class Category : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
                 {
                     val totalCategoryHours = findViewById<TextView>(R.id.totalCategoryHours)
 
-                    val categoryObject = ToolBox.CategoryManager.getCategoryByID(category.catID)
-                    val categoryTime = ToolBox.CategoryManager.calcCategoryTime(categoryObject)
+                    val categoryTime = ToolBox.CategoryManager.calcCategoryTime(catID.toString())
 
                     val hours = categoryTime.toHours()
                     val minutes = categoryTime.toMinutes() % 60

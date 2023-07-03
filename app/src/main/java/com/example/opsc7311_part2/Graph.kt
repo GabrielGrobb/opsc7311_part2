@@ -7,6 +7,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.FrameLayout
+import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import com.example.opsc7311_part2.databinding.ActivityGraphBinding
@@ -17,7 +18,7 @@ class Graph : AppCompatActivity(), View.OnClickListener,
     NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var binding: ActivityGraphBinding
-
+    private lateinit var currentDate: TextView
     private lateinit var chartContainer: FrameLayout
     private lateinit var lineChart: LineChart
 
@@ -45,8 +46,14 @@ class Graph : AppCompatActivity(), View.OnClickListener,
 
         binding.navView.bringToFront()
         binding.navView.setNavigationItemSelectedListener(this)
+        currentDate = findViewById(R.id.CurrentDate)
 
         ///--------------------------------------------------------------------///
+
+        //Finding the TextView we want to update
+        var CurrentDateTextView = findViewById<TextView>(R.id.CurrentDate)
+        //Setting the value of the text view to the Calendar's current date
+        CurrentDateTextView.text = ToolBox.CategoryManager.getCurrentDateString()
 
         val displayGraph = findViewById<Button>(R.id.btnDisplayGraph)
 
@@ -70,50 +77,6 @@ class Graph : AppCompatActivity(), View.OnClickListener,
             println(ToolBox.AccountManager.getSettingsObject().maxHours)
             println(ToolBox.CategoryManager.getCategoryByID(1).activityTimeSpent)
         }
-
-        /*val tilEndDate: TextInputLayout = findViewById(R.id.til_EndDate)
-
-        tilEndDate.setEndIconOnClickListener() {
-            *//*chartContainer = findViewById(R.id.chartContainer)
-            lineChart = LineChart(this)
-
-            val dataPoints = listOf(1f, 6f, 3f, 2f, 4f)
-            lineChart.setDataPoints(dataPoints)
-
-            chartContainer.addView(lineChart)*//*
-
-            chartContainer = findViewById(R.id.chartContainer)
-            lineChart = LineChart(this)
-
-            val categoryList: List<ToolBox.CategoryDataClass> = ToolBox.CategoryManager.getCategoryList()// your list of CategoryDataClass objects
-
-            // Calculate the activity time spent values
-            val dataPoints = categoryList.map { category ->
-                category.activityTimeSpent.toHours().toFloat() // Convert duration to hours and float
-            }
-
-            // Create a list of category count labels
-            *//*val categoryCountLabels = ArrayList<String>()
-            for (i in categoryList.indices) {
-                categoryCountLabels.add("Category ${i + 1}")
-            }*//*
-
-
-            // Update the x-axis labels
-            //lineChart.xAxisLabels = categoryCountLabels.size // Set the category count labels for the x-axis
-
-            lineChart.setDataPoints(dataPoints)
-
-            chartContainer.addView(lineChart)
-
-            println(dataPoints)
-            println(ToolBox.CategoryManager.getCategoryList().size)
-            println(ToolBox.AccountManager.getSettingsObject().maxHours)
-            println(ToolBox.CategoryManager.getCategoryByID(1).activityTimeSpent)
-        }*/
-
-
-
     }
 
     //............................................................................................//
