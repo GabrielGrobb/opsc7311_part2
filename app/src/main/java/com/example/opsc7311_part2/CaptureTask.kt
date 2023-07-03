@@ -410,19 +410,8 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
                 startActivity(intent)
             }
 
-            R.id.nav_account -> {
-                val intent = Intent(applicationContext, AccountSettings::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                startActivity(intent)
-            }
-
             R.id.nav_schedule -> {
                 val intent = Intent(applicationContext, Schedule::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                startActivity(intent)
-            }
-            R.id.nav_logout -> {
-                val intent = Intent(applicationContext, LoginActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)
             }
@@ -432,6 +421,27 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)
             }
+
+            R.id.nav_graph -> {
+                val intent = Intent(applicationContext, Graph::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
+
+            }
+
+            R.id.nav_account -> {
+                val intent = Intent(applicationContext, AccountSettings::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
+            }
+
+            R.id.nav_logout -> {
+                val intent = Intent(applicationContext, LoginActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
+            }
+
+
 
         }
         binding.drawerLayout.closeDrawer(GravityCompat.START)
