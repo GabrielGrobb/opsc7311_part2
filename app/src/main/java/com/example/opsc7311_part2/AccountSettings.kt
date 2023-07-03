@@ -28,6 +28,7 @@ import java.io.IOException
 import android.content.Context
 import android.content.ContentResolver
 import android.content.ContentValues
+import android.graphics.drawable.BitmapDrawable
 import android.os.Build
 import android.os.Environment
 import java.text.SimpleDateFormat
@@ -40,8 +41,7 @@ class AccountSettings : AppCompatActivity(), View.OnClickListener,
     NavigationView.OnNavigationItemSelectedListener {
     private lateinit var binding: ActivityAccountSettingsBinding
     private val CAMERA_PERMISSION_REQUEST_CODE = 100
-    private val STORAGE_PERMISSION_REQUEST_CODE = 101
-    private var profilePicture: Bitmap? = null
+
     private lateinit var imageView: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,7 +72,8 @@ class AccountSettings : AppCompatActivity(), View.OnClickListener,
         val surname = findViewById<TextInputEditText>(R.id.txtSurname)
         val password = findViewById<TextInputEditText>(R.id.txtPassword)
         val updateButton = findViewById<Button>(R.id.updateSettings)
-
+        val userImage = ContextCompat.getDrawable(this, R.drawable.default_profile) // Replace with your drawable resource ID
+        val bitmap: Bitmap? = (userImage as? BitmapDrawable)?.bitmap
         //Retrieves the current settings object from toolbox to be updated
         var currentSettings = ToolBox.AccountManager.getSettingsObject()
 
@@ -160,7 +161,7 @@ class AccountSettings : AppCompatActivity(), View.OnClickListener,
         updateButton.setOnClickListener {
             //Setting all of the values of the currentSettings object with data user has entered
             currentSettings.updateSettings(
-                "default",
+                bitmap,
                 //Getting the currently selected item from the spinner, casting to string then int
                 minHours.selectedItem.toString().toInt(),
                 maxHours.selectedItem.toString().toInt(),
@@ -171,7 +172,7 @@ class AccountSettings : AppCompatActivity(), View.OnClickListener,
                 password.text.toString()
             )
             updateAccountSettings()
-
+            ToolBox.AccountManager.persistUser(currentSettings)
             Toast.makeText(this,"Account successfully updated", Toast.LENGTH_LONG).show()
 
         }

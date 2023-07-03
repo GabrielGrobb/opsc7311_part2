@@ -31,9 +31,20 @@ class LoginActivity : AppCompatActivity() {
 
                 val passText = findViewById<TextInputEditText>(R.id.txtPassword)
                 val pas = passText.text.toString()
+                //sending credentials to be validated
+                var currentSettings = ToolBox.AccountManager.checkForUserCredentials(name,pas)
 
+                //saving account details into object
+                if (currentSettings != null) {
+
+                    ToolBox.AccountManager.currentSettings = currentSettings
+                    val intent = Intent(this, HomePageTest::class.java)
+                    startActivity(intent)
+                } else {
+                    Toast.makeText(this, "Username or Password is incorrect", Toast.LENGTH_LONG).show()
+                }
                 //Getting the stored values
-                val currentSettings = ToolBox.AccountManager.getSettingsObject()
+                /*val currentSettings = ToolBox.AccountManager.getSettingsObject()
                 val storedUsername = currentSettings.username
                 val storedPassword = currentSettings.password
 
@@ -42,7 +53,7 @@ class LoginActivity : AppCompatActivity() {
                     startActivity(intent)
                 } else {
                     Toast.makeText(this, "Username or Password is incorrect", Toast.LENGTH_LONG).show()
-                }
+                }*/
             }catch (e: Exception){
                 Toast.makeText(this, "An error has occurred within the code $:{e.message})", Toast.LENGTH_LONG).show()
             }

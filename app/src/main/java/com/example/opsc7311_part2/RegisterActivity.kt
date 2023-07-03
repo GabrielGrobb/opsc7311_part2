@@ -1,10 +1,14 @@
 package com.example.opsc7311_part2
 
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import com.google.android.material.textfield.TextInputEditText
 
 class RegisterActivity : AppCompatActivity() {
@@ -23,6 +27,7 @@ class RegisterActivity : AppCompatActivity() {
             var surnameInput = findViewById<TextInputEditText>(R.id.txtSurname)
             var passwordInput = findViewById<TextInputEditText>(R.id.txtPassword)
             var confirmPasswordInput = findViewById<TextInputEditText>(R.id.txtConfirmPassword)
+            val userImage = ContextCompat.getDrawable(this, R.drawable.default_profile) // Replace with your drawable resource ID
             // Clear any previous error state and tooltips
             clearErrorState(emailInput, usernameInput, firstnameInput, surnameInput, passwordInput, confirmPasswordInput)
             // Get the input values as strings
@@ -32,6 +37,7 @@ class RegisterActivity : AppCompatActivity() {
             val surname = surnameInput.text.toString()
             val password = passwordInput.text.toString()
             val confirmPassword = confirmPasswordInput.text.toString()
+            val bitmap: Bitmap? = (userImage as? BitmapDrawable)?.bitmap
 
             // Perform validations
             val validation = Validation()
@@ -75,7 +81,7 @@ class RegisterActivity : AppCompatActivity() {
             }
             // All validations passed, proceed with registration
             currentSettings.updateSettings(
-                "default",
+                bitmap,
                 1,
                 1,
                 email,
@@ -84,6 +90,8 @@ class RegisterActivity : AppCompatActivity() {
                 surname,
                 password
             )
+            ToolBox.AccountManager.persistUser(currentSettings)
+            ToolBox.AccountManager.currentSettings = currentSettings
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
         }

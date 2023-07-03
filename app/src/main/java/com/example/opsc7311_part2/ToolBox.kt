@@ -49,7 +49,7 @@ class ToolBox {
     )
 
     data class AccountSettings(
-        var userImage: String,
+        var userImage: Bitmap?,
         var minHours: Int,
         var maxHours: Int,
         var email: String,
@@ -59,7 +59,7 @@ class ToolBox {
         var password: String
     ) {
         fun updateSettings(
-            userImage: String,
+            userImage: Bitmap?,
             minHours: Int,
             maxHours: Int,
             email: String,
@@ -80,8 +80,8 @@ class ToolBox {
     }
 
     object AccountManager {
-        private val currentSettings = AccountSettings(
-            "@drawable/default_profile",
+         var currentSettings = AccountSettings(
+            null,
             1,
             1,
             "default@default.com",
@@ -91,9 +91,92 @@ class ToolBox {
             "default"
         )
 
+
+
         fun getSettingsObject(): AccountSettings {
             return currentSettings;
         }
+        fun persistUser(user: AccountSettings) {
+            val db = FirebaseFirestore.getInstance()
+            val collectionRef = db.collection("User")
+            val tempUserImage = user.userImage // Temporary variable
+
+            val encodedImage = if (tempUserImage != null) {
+                DBManager.encodeImageToBase64(tempUserImage)
+            } else {
+                null // Sdet the encoded image to null if the Bitmap is null
+            }
+            // Create a map of activity attributes including the image URL
+            val attributeMap = hashMapOf<String, Any?>(
+                "email" to user.email,
+                "firstname" to user.firstName,
+                "maxHours" to user.maxHours,
+                "minHours" to user.minHours,
+                "password" to user.password,
+                "surname" to user.surname,
+                "userID" to 1,
+                "userName" to user.username,
+                "userImage" to encodedImage,
+                )
+            val documentId = getUserDocumentIDByTypeID()
+            // Add the activity attributes to the database
+            collectionRef.document(documentId).set(attributeMap)
+                .addOnSuccessListener { documentReference ->
+                    Log.d(TAG, "DocumentSnapshot added with ID: ${documentId}")
+                }
+                .addOnFailureListener { e ->
+                    Log.w(TAG, "Error adding document", e)
+                }
+        }
+
+        fun getUserDocumentIDByTypeID(): String = runBlocking {
+            var documentID: String?
+            withContext(Dispatchers.IO) {
+                val db = FirebaseFirestore.getInstance()
+                val collectionRef = db.collection("User")
+                val querySnapshot = collectionRef.whereEqualTo("userID", "1").get().await()
+
+                documentID = try {
+                    querySnapshot.documents[0].id
+                } catch (exception: IndexOutOfBoundsException) {
+                    "none"
+                }
+            }
+            documentID ?: "none"
+        }
+        //checks the database for a record with matching credentials
+        fun checkForUserCredentials(username: String, password: String): AccountSettings? = runBlocking {
+            var userData: AccountSettings? = null
+            withContext(Dispatchers.IO) {
+                val db = FirebaseFirestore.getInstance()
+                val collectionRef = db.collection("User")
+                val querySnapshot = collectionRef
+                    .whereEqualTo("userName", username)
+                    .whereEqualTo("password", password)
+                    .get()
+                    .await()
+
+                if (!querySnapshot.isEmpty) {
+                    val documentSnapshot = querySnapshot.documents[0]
+                    userData = AccountSettings(
+                        null,
+                        documentSnapshot.data?.get("minHours").toString().toInt(),
+                        documentSnapshot.data?.get("maxHours").toString().toInt(),
+                        documentSnapshot.data?.get("email").toString(),
+                        documentSnapshot.data?.get("userName").toString(),
+                        documentSnapshot.data?.get("firstName").toString(),
+                        documentSnapshot.data?.get("surname").toString(),
+                        documentSnapshot.data?.get("password").toString()
+                    )
+                    val userImage = documentSnapshot.data?.get("userImage")
+                    val decodedBytes = Base64.decode(userImage.toString(), Base64.DEFAULT)
+                    val bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
+                    userData?.userImage = bitmap // Set the actImageBitmap property
+                }
+            }
+            userData
+        }
+
 
     }
 
@@ -153,7 +236,7 @@ class ToolBox {
         //Function to update the current time spent on an activity
         fun updateActivityCurrentTime(actId: String, newTimeSpent: Duration) {
             val activitiesCollection = db.collection("Activities")
-            val activityDocRef = activitiesCollection.document(getDocumentIDByTypeID("Activities", "actID", actId))
+            val activityDocRef = activitiesCollection.document(getDocumentIDByTypeID("Activities", "actID", actId.toInt()))
 
             activityDocRef
                 .update("currentTimeSpent", newTimeSpent.toString())
@@ -167,7 +250,7 @@ class ToolBox {
 
         fun updateActivitySavedTimeSpent(actId: String, newTimeSpent: Duration) {
             val activitiesCollection = db.collection("Activities")
-            val activityDocRef = activitiesCollection.document(getDocumentIDByTypeID("Activities", "actID", actId))
+            val activityDocRef = activitiesCollection.document(getDocumentIDByTypeID("Activities", "actID", actId.toInt()))
             activityDocRef
                 .update("savedTimeSpent", newTimeSpent.toString())
                 .addOnSuccessListener {
