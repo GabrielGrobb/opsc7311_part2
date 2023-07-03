@@ -106,10 +106,7 @@ class ToolBox {
         //Takes in an activityid and returns an activity object from the list if it exists
         fun getActivityObjectByID(id: Int): ActivityDataClass {
             var activityList = getActivityList()
-            println("preloop")
             for (activity in activityList) {
-                println("test")
-                println(activity.toString())
                 if (activity.actID == id) {
                     return activity
                 }
@@ -171,7 +168,6 @@ class ToolBox {
         fun updateActivitySavedTimeSpent(actId: String, newTimeSpent: Duration) {
             val activitiesCollection = db.collection("Activities")
             val activityDocRef = activitiesCollection.document(getDocumentIDByTypeID("Activities", "actID", actId))
-            println(newTimeSpent)
             activityDocRef
                 .update("savedTimeSpent", newTimeSpent.toString())
                 .addOnSuccessListener {
@@ -184,19 +180,15 @@ class ToolBox {
 
         /*Function to count the number of activities currently in the collection, and return an
         integer representing a unique ID*/
-        fun getUniqueActID(): Int {
-            val collectionRef = db.collection("Activities")
-            var returnVal = 0
-            collectionRef.get()
-                .addOnSuccessListener { querySnapshot ->
-                    val documentCount = querySnapshot.size()
-                    returnVal = documentCount
-                }
-                .addOnFailureListener { exception ->
-                    // Handle any errors that occurred while retrieving the documents
-                    println("Error getting documents: ${exception.message}")
-                }
-            return returnVal + 1;
+        fun getUniqueActID(): Int = runBlocking {
+            val activityListDeferred = async(Dispatchers.IO) {
+                val db = FirebaseFirestore.getInstance()
+                val result = db.collection("Activities").get().await()
+                result.size()+1
+            }
+
+            // Wait for the activityListDeferred to complete and return the result
+            activityListDeferred.await()
         }
 
         fun encodeImageToBase64(imageBitmap: Bitmap): String {
@@ -374,7 +366,7 @@ class ToolBox {
                 "client" to activity.client,
                 "location" to activity.location,
                 "category" to activity.category,
-                "categoryId" to activity.categoryId,
+                "categoryId" to activity.categoryId.toString(),
                 "duration" to activity.duration.toString(),
                 "currentTimeSpent" to activity.currentTimeSpent.toString(),
                 "savedTimeSpent" to activity.savedTimeSpent.toString(),
@@ -397,7 +389,25 @@ class ToolBox {
 
     object CategoryManager {
         private val categoryList = mutableListOf<CategoryDataClass>()
-        //private val activityList = mutableListOf<ActivityDataClass>()
+
+        //Uploads a category to the database
+        fun persistCategory(cat: CategoryDataClass){
+            val db = FirebaseFirestore.getInstance()
+            val collectionRef = db.collection("Category")
+            val attributeMap = hashMapOf<String, Any>(
+                "activityTimeSpent" to cat.activityTimeSpent.toString(),
+                "catColour" to cat.catColor,
+                "catID" to cat.catID.toString(),
+                "name" to cat.name
+            )
+            collectionRef.add(attributeMap)
+                .addOnSuccessListener { documentReference ->
+                    Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
+                }
+                .addOnFailureListener { e ->
+                    Log.w(TAG, "Error adding document", e)
+                }
+        }
 
         //Returns a mutable list of activity data class given a catID
         fun getActivitiesForCategory(catID: String): MutableList<ActivityDataClass> = runBlocking {
@@ -436,7 +446,6 @@ class ToolBox {
                 activities
             }
             activityListDeferred.await()
-
         }
 
         //Takes in a category object and returns a duration representing the total amount of
@@ -492,7 +501,6 @@ class ToolBox {
          }*/
 
         fun getCategoryList(): List<CategoryDataClass> {
-            for(category in getCategoriesFromDB()){println(category.toString())}
             return getCategoriesFromDB()
         }
 
@@ -543,12 +551,12 @@ class ToolBox {
         }
 
         fun getActivitiesForCategoryBetweenDates(
-            cat: CategoryDataClass,
+            activityList: MutableList<ActivityDataClass>,
             date1: Date,
             date2: Date
         ): List<ActivityDataClass> {
             val workingList = mutableListOf<ActivityDataClass>()
-            for (activity in getActivitiesForCategory(cat.catID.toString())) {
+            for (activity in activityList) {
                 if (parseDateString(activity.startDate) >= date1 && parseDateString(activity.endDate) <= date2) {
                     workingList.add(activity)
                 }

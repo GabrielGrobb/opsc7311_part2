@@ -193,7 +193,6 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
 
                 // Get the difference between the current and saved time
                 val timeDifference = updatedTimeSpent + currentActivity.savedTimeSpent
-                println(timeDifference)
 
                 // Update the current activity's currentTimeSpent with the time difference
                 currentActivity.currentTimeSpent = timeDifference
@@ -202,7 +201,7 @@ class CaptureTask : AppCompatActivity(), View.OnClickListener, NavigationView.On
                 currentActivity.savedTimeSpent = timeDifference
 
                 updateActivitySavedTimeSpent(getDocumentIDByTypeID("Activities", "actID", currentActivity.actID), timeDifference)
-                println(currentActivity.savedTimeSpent)
+
 
                 // Get the category of the current activity
                 val category = ToolBox.CategoryManager.getCategoryByID(currentActivity.categoryId)

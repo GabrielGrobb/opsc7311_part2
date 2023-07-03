@@ -74,50 +74,49 @@ class Category : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
         /// Creating a HashSet for the activities.
         val addedActivities = HashSet<Int>()
 
+        //Loop through all categories
         for (category in categoryList)
         {
+            //Create an activity list for the category
             val activities = ToolBox.CategoryManager.getActivitiesForCategory(catID.toString())
 
+            //Loop through the activity list for said category
             for (activity in activities)
             {
-                if (activity.categoryId == catID && activity.category == catName)
+                val currentActivityId = activity.actID
+
+                /// Preventing duplication of an activity in the linearlayout
+                if (!addedActivities.contains(currentActivityId))
                 {
+                    val totalCategoryHours = findViewById<TextView>(R.id.totalCategoryHours)
 
-                    val currentActivityId = activity.actID
+                    val categoryObject = ToolBox.CategoryManager.getCategoryByID(category.catID)
+                    val categoryTime = ToolBox.CategoryManager.calcCategoryTime(categoryObject)
 
-                    /// Preventing duplication of an activity in the linearlayout
-                    if (!addedActivities.contains(currentActivityId))
-                    {
-                        val totalCategoryHours = findViewById<TextView>(R.id.totalCategoryHours)
+                    val hours = categoryTime.toHours()
+                    val minutes = categoryTime.toMinutes() % 60
+                    val seconds = categoryTime.seconds % 60
 
-                        val categoryObject = ToolBox.CategoryManager.getCategoryByID(category.catID)
-                        val categoryTime = ToolBox.CategoryManager.calcCategoryTime(categoryObject)
+                    val formattedTime = String.format("%02d:%02d:%02d", hours, minutes, seconds)
+                    totalCategoryHours.text = formattedTime
 
-                        val hours = categoryTime.toHours()
-                        val minutes = categoryTime.toMinutes() % 60
-                        val seconds = categoryTime.seconds % 60
+                    /// val imageResource = resources.getIdentifier("home_icon", "drawable", packageName)
+                    val customView = custom_activity_icon(this)
 
-                        val formattedTime = String.format("%02d:%02d:%02d", hours, minutes, seconds)
-                        totalCategoryHours.text = formattedTime
-
-                        /// val imageResource = resources.getIdentifier("home_icon", "drawable", packageName)
-                        val customView = custom_activity_icon(this)
-
-                        /// Set activity ID and name
-                        customView.setActID(activity.actID)
-                        customView.setActName(activity.title)
+                    /// Set activity ID and name
+                    customView.setActID(activity.actID)
+                    customView.setActName(activity.title)
 
 
-                        /// Set the bitmap image
-                        activity.actImage?.let {bitmap -> customView.setIcon(bitmap)}
+                    /// Set the bitmap image
+                    activity.actImage?.let {bitmap -> customView.setIcon(bitmap)}
 
-                        /// Adding the views to the linearlayout.
-                        displayView.addView(customView)
+                    /// Adding the views to the linearlayout.
+                    displayView.addView(customView)
 
-                        /// Adding its ID to the HashSet
-                        addedActivities.add(currentActivityId)
+                    /// Adding its ID to the HashSet
+                    addedActivities.add(currentActivityId)
 
-                    }
                 }
             }
         }
@@ -134,8 +133,9 @@ class Category : AppCompatActivity(), View.OnClickListener, NavigationView.OnNav
                 var category = ToolBox.CategoryManager.getCategoryByID(intent.getIntExtra("categoryID", 1))
                 var date1 = ToolBox.CategoryManager.parseDateString(txtStartDate.text.toString())
                 var date2 = ToolBox.CategoryManager.parseDateString(txtEndDate.text.toString())
-                //var activityList = ToolBox.CategoryManager.getActivitiesForCategoryBetweenDates(category, date1, date2)
-                var activityList = ToolBox.CategoryManager.getActivitiesForCategory(category.catID.toString())
+                var activitiesForCategory = ToolBox.CategoryManager.getActivitiesForCategory(category.catID.toString())
+                var activityList = ToolBox.CategoryManager.getActivitiesForCategoryBetweenDates(activitiesForCategory, date1, date2)
+
                 var activityView = findViewById<LinearLayout>(R.id.ActivityView)
                 activityView.removeAllViews()
                 for(activity in activityList){
